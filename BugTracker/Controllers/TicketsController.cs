@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BugTracker.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         public TicketsController() { }
@@ -53,39 +54,10 @@ namespace BugTracker.Controllers
         {
             var model = new CreateTicketViewModel();
 
-            //model.Assignees = new List<SelectListItem>();
-            //foreach (var item in Db.Users)
-            //{
-            //    model.Assignees.Add(new SelectListItem() { Value = item.Id, Text = item.UserName });
-            //}
             model.Assignees = new SelectList(Db.Users, "Id", "UserName");
-
-            //model.Projects = new List<SelectListItem>();
-            //foreach (var item in db.Projects)
-            //{
-            //    model.Projects.Add(new SelectListItem() { Value = item.ID.ToString(), Text = item.Name });
-            //}
             model.Projects = new SelectList(db.Projects, "ID", "Name");
-
-            //model.Priorities = new List<SelectListItem>();
-            //foreach (var item in db.TicketPriorities)
-            //{
-            //    model.Priorities.Add(new SelectListItem() { Value = item.ID.ToString(), Text = item.Name });
-            //}
             model.Priorities = new SelectList(db.TicketPriorities, "ID", "Name");
-
-            //model.Statuses = new List<SelectListItem>();
-            //foreach (var item in db.TicketStatuses)
-            //{
-            //    model.Statuses.Add(new SelectListItem() { Value = item.ID.ToString(), Text = item.Name });
-            //}
             model.Statuses = new SelectList(db.TicketStatuses, "ID", "Name");
-
-            //model.Types = new List<SelectListItem>();
-            //foreach (var item in db.TicketTypes)
-            //{
-            //    model.Types.Add(new SelectListItem() { Value = item.ID.ToString(), Text = item.Name });
-            //}
             model.Types = new SelectList(db.TicketTypes, "ID", "Name");
 
             return View(model);
@@ -100,19 +72,53 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                //ticket.SubmitterID = User.Identity.GetUserId();
-                //ticket.AssigneeID = UserManager.FindByEmail(ticket.AssigneeID).Id;
-                //ticket.Created = System.DateTime.Now;
-                //db.Tickets.Add(ticket);
-                //db.SaveChanges();
+                Ticket ticket = new Ticket();
+                ticket.SubmitterID = User.Identity.GetUserId();
+
+                ticket.Title = model.Title;
+                ticket.Description = model.Description;
+                ticket.AssigneeID = UserManager.FindById(model.Assignee).Id;
+                ticket.ProjectID = Int32.Parse(model.Project);
+                ticket.TypeID = Int32.Parse(model.Type);
+                ticket.PriorityID = Int32.Parse(model.Priority);
+                ticket.StatusID = Int32.Parse(model.Status);
+                ticket.Created = System.DateTime.UtcNow;
+                db.Tickets.Add(ticket);
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
+                {
+                    Exception raise = dbEx;
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            string message = string.Format("{0}:{1}",
+                                validationErrors.Entry.Entity.ToString(),
+                                validationError.ErrorMessage);
+                            // raise a new exception nesting
+                            // the current instance as InnerException
+                            raise = new InvalidOperationException(message, raise);
+                        }
+                    }
+                    throw raise;
+                }
+
+                TempData["notice"] = "Ticket successfully created!";
                 return RedirectToAction("Index");
             }
 
-            //ViewBag.ProjectID = new SelectList(db.Projects, "ID", "Name", ticket.ProjectID);
-            //ViewBag.PriorityID = new SelectList(db.TicketPriorities, "ID", "Name", ticket.PriorityID);
-            //ViewBag.StatusID = new SelectList(db.TicketStatuses, "ID", "Name", ticket.StatusID);
-            //ViewBag.TypeID = new SelectList(db.TicketTypes, "ID", "Name", ticket.TypeID);
-            //return View(ticket);
+            model.Assignees = new SelectList(Db.Users, "Id", "UserName");
+            model.Projects = new SelectList(db.Projects, "ID", "Name");
+            model.Priorities = new SelectList(db.TicketPriorities, "ID", "Name");
+            model.Statuses = new SelectList(db.TicketStatuses, "ID", "Name");
+            model.Types = new SelectList(db.TicketTypes, "ID", "Name");
+
+            // If we got this far, something went wrong
+            TempData["error"] = "Something went wrong. Ticket could not be created!";
             return View(model);
         }
 

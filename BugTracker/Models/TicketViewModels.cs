@@ -96,7 +96,6 @@ namespace BugTracker.Models
         public SelectList Statuses { get; set; }
         public string Status { get; set; }
 
-
         [Display(Name = "Type")]
         //public List<SelectListItem> Types { get; set; }
         public SelectList Types { get; set; }

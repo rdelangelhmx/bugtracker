@@ -13,7 +13,7 @@
         <EntityTypeShape EntityType="BugTrackerModel.TicketPriority" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BugTrackerModel.TicketStatus" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="BugTrackerModel.TicketType" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="BugTrackerModel.AspNetRole" Width="1.5" PointX="1.5" PointY="1.25" />
+        <EntityTypeShape EntityType="BugTrackerModel.AspNetRole" Width="1.5" PointX="0.75" PointY="1.375" />
         <EntityTypeShape EntityType="BugTrackerModel.AspNetUserClaim" Width="2" PointX="2.5" PointY="11.375" />
         <EntityTypeShape EntityType="BugTrackerModel.AspNetUserLogin" Width="1.5" PointX="1" PointY="8.25" />
         <EntityTypeShape EntityType="BugTrackerModel.AspNetUser" Width="1.5" PointX="4.75" PointY="3.75" />

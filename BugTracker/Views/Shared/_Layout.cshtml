@@ -6,7 +6,21 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .fader {
+            -moz-transition: opacity 1s linear;
+            -o-transition: opacity 1s linear;
+            -webkit-transition: opacity 1s linear;
+            transition: opacity 1s linear;
+        }
 
+        .fader.fadedOut {
+            opacity: 0;
+        }
+        .hide {
+            visibility: hidden;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,6 +44,16 @@
         </div>
     </div>
     <div class="container body-content">
+        @if (TempData["notice"] != null)
+        {
+            <div id="alertSuccess" class="alert alert-success fader">@TempData["notice"]</div>
+        }
+        
+        @if (TempData["error"] != null)
+        {
+           <div class="alert alert-danger fader">@TempData["error"]</div> 
+        }
+        
         @RenderBody()
         <hr />
         <footer>
@@ -37,8 +61,22 @@
         </footer>
     </div>
 
+
+
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+        $(function () {
+            $("#alertSuccess").fadeOut({
+                duration: 1500,
+                complete: function () {
+                    this.addClass("hide");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
