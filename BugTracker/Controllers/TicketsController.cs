@@ -9,6 +9,9 @@ using System.Web.Mvc;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
+using System.Linq.Expressions;
+
 
 namespace BugTracker.Controllers
 {
@@ -22,16 +25,45 @@ namespace BugTracker.Controllers
         private UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
         // GET: Tickets
-        public ActionResult Index()
+        public ActionResult Index(int? page, string searchBy , string search)
         {
-            var tickets = db.Tickets.Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
+            var pageNumber = page ?? 1;
 
+            ViewBag.Search = search;
+            ViewBag.SearchBy = searchBy ?? "Project";
+
+            // Create a query string for grabbing all tickets from the database
+            var tickets = from q in db.Tickets.Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType).OrderBy(t => t.ID) select q;
+            
+            Dictionary<string, Expression<Func<Ticket, bool>>> searchByDictionary = new Dictionary<string, Expression<Func<Ticket,bool>>>()
+            {
+                {"Project", t => t.Project.Name.Contains(search) },
+                {"Status", t => t.TicketStatus.Name.Contains(search) }
+            };
+
+            // Edit query for tickets if user searched
+            if (!String.IsNullOrWhiteSpace(search))
+            {
+                tickets = tickets.Where(searchByDictionary[searchBy]);
+            }
+            
+            // Create a List of ListTicketsViewModels
             List<ListTicketsViewModel> model = new List<ListTicketsViewModel>();
             foreach (var item in tickets)
             {
                 model.Add(new ListTicketsViewModel(item));
             }
-            return View(model);
+            IPagedList<ListTicketsViewModel> pagedList = model.ToPagedList(pageNumber, 5);
+
+            var searchByList = new List<SelectListItem>() {
+                new SelectListItem() { Value = "Project", Text = "Project", Selected = false },
+                new SelectListItem() { Value = "Status", Text = "Status", Selected = false }
+            };
+
+            var modelTuple = new Tuple<IPagedList<ListTicketsViewModel>, List<SelectListItem>>(pagedList, searchByList);
+
+            // Convert List to a PagedList and return to View
+            return View(modelTuple);
         }
 
         // GET: Tickets/Details/5
@@ -83,6 +115,7 @@ namespace BugTracker.Controllers
                 ticket.PriorityID = Int32.Parse(model.Priority);
                 ticket.StatusID = Int32.Parse(model.Status);
                 ticket.Created = System.DateTime.UtcNow;
+
                 db.Tickets.Add(ticket);
 
                 try

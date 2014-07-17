@@ -21,8 +21,6 @@ namespace BugTracker.Models
             this.Submitter = submitter.UserName;
             this.Title = ticket.Title;
             this.Description = ticket.Description;
-            this.Created = ticket.Created.ToString();
-            this.Updated = ticket.Updated.ToString();
 
             var assignee = db.Users.First(m => m.Id == ticket.AssigneeID);
             this.Assignee = (assignee != null) ? assignee.UserName : "Unassigned";
@@ -43,12 +41,6 @@ namespace BugTracker.Models
 
         [Display(Name = "Description")]
         public string Description { get; set; }
-
-        [Display(Name = "Created")]
-        public string Created { get; set; }
-
-        [Display(Name = "Updated")]
-        public string Updated { get; set; }
 
         [Display(Name = "Assignee")]
         public string Assignee { get; set; }
@@ -77,27 +69,22 @@ namespace BugTracker.Models
         public string Description { get; set; }
 
         [Display(Name = "Assignee")]
-        //public List<SelectListItem> Assignees { get; set; }
         public SelectList Assignees { get; set; }
         public string Assignee { get; set; }
 
         [Display(Name = "Project")]
-        //public List<SelectListItem> Projects { get; set; }
         public SelectList Projects { get; set; }
         public string Project { get; set; }
 
         [Display(Name = "Priority")]
-        //public List<SelectListItem> Priorities { get; set; }
         public SelectList Priorities { get; set; }
         public string Priority { get; set; }
 
         [Display(Name = "Status")]
-        //public List<SelectListItem> Statuses { get; set; }
         public SelectList Statuses { get; set; }
         public string Status { get; set; }
 
         [Display(Name = "Type")]
-        //public List<SelectListItem> Types { get; set; }
         public SelectList Types { get; set; }
         public string Type { get; set; }
     }

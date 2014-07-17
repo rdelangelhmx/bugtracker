@@ -8,17 +8,22 @@
     @Scripts.Render("~/bundles/modernizr")
     <style>
         .fader {
-            -moz-transition: opacity 1s linear;
-            -o-transition: opacity 1s linear;
-            -webkit-transition: opacity 1s linear;
-            transition: opacity 1s linear;
+            -moz-transition: opacity 2s linear;
+            -o-transition: opacity 2s linear;
+            -webkit-transition: opacity 2s linear;
+            transition: opacity 2s linear;
         }
-
         .fader.fadedOut {
             opacity: 0;
         }
-        .hide {
-            visibility: hidden;
+        #alertSuccess {
+            position: absolute;
+            width: 300px;
+            right: 0;
+            text-align: center;
+        }
+        .relative {
+            position: relative;
         }
     </style>
 </head>
@@ -43,7 +48,7 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content relative">
         @if (TempData["notice"] != null)
         {
             <div id="alertSuccess" class="alert alert-success fader">@TempData["notice"]</div>
@@ -70,13 +75,8 @@
 
     <script>
         $(function () {
-            $("#alertSuccess").fadeOut({
-                duration: 1500,
-                complete: function () {
-                    this.addClass("hide");
-                }
-            });
-        });
+            $("#alertSuccess").addClass("fadedOut");
+        })
     </script>
 </body>
 </html>
