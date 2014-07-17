@@ -50,12 +50,12 @@ namespace BugTracker.Controllers
             }
             
             // Create a List of ListTicketsViewModels
-            List<ListTicketsViewModel> model = new List<ListTicketsViewModel>();
+            List<TicketViewModel> model = new List<TicketViewModel>();
             foreach (var item in tickets)
             {
-                model.Add(new ListTicketsViewModel(item));
+                model.Add(new TicketViewModel(item));
             }
-            IPagedList<ListTicketsViewModel> pagedList = model.ToPagedList(pageNumber, 5);
+            IPagedList<TicketViewModel> pagedList = model.ToPagedList(pageNumber, 5);
 
             var searchByList = new List<SelectListItem>() {
                 new SelectListItem() { Value = "Project", Text = "Project", Selected = false },
@@ -64,7 +64,7 @@ namespace BugTracker.Controllers
                 new SelectListItem() { Value = "Type", Text = "Type", Selected = false }
             };
 
-            var modelTuple = new Tuple<IPagedList<ListTicketsViewModel>, List<SelectListItem>>(pagedList, searchByList);
+            var modelTuple = new Tuple<IPagedList<TicketViewModel>, List<SelectListItem>>(pagedList, searchByList);
 
             // Convert List to a PagedList and return to View
             return View(modelTuple);
@@ -78,11 +78,12 @@ namespace BugTracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Ticket ticket = db.Tickets.Find(id);
+            TicketViewModel model = new TicketViewModel(ticket);
             if (ticket == null)
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            return View(model);
         }
 
         // GET: Tickets/Create
@@ -207,11 +208,12 @@ namespace BugTracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Ticket ticket = db.Tickets.Find(id);
+            TicketViewModel model = new TicketViewModel(ticket);
             if (ticket == null)
             {
                 return HttpNotFound();
             }
-            return View(ticket);
+            return View(model);
         }
 
         // POST: Tickets/Delete/5

@@ -8,16 +8,15 @@ using System.Web.Mvc;
 
 namespace BugTracker.Models
 {
-    public class ListTicketsViewModel
+    public class TicketViewModel
     {
         private BugTrackerEntities1 db = new BugTrackerEntities1();
         private ApplicationDbContext Db = new ApplicationDbContext();
 
-        public ListTicketsViewModel() { }
+        public TicketViewModel() { }
 
-        public ListTicketsViewModel(Ticket ticket) : this()
+        public TicketViewModel(Ticket ticket) : this()
         {
-
             this.ID = ticket.ID;
             var submitter = Db.Users.First(m => m.Id == ticket.SubmitterID);
             this.Submitter = submitter.UserName;
