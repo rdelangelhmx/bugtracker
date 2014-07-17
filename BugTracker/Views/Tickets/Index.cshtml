@@ -109,7 +109,7 @@
         of @Model.Item1.PageCount
 
         @Html.PagedListPager(Model.Item1,
-                             page => Url.Action("Index", new { page }),
+                             page => Url.Action("Index", new { page, ViewBag.SearchBy, ViewBag.Search }),
                              new PagedListRenderOptions
                              {
                                  MaximumPageNumbersToDisplay = 10,
