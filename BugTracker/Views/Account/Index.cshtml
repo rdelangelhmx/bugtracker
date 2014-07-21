@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BugTracker.Models.EditUserViewModel>
+
+@{
+    ViewBag.Title = "List of Users";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a href="@Url.Action("New", "Account")">Create New User</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <a href="@Url.Action("Show", "Account", new { id = item.UserId })">@item.UserName</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.UserId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.UserId })
+        </td>
+    </tr>
+}
+
+</table>
