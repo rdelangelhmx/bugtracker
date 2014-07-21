@@ -7,9 +7,10 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using(Html.BeginForm("Update", "Tickets", new { id = Model.ID }))
 {
     @Html.AntiForgeryToken()
+    @Html.HttpMethodOverride(HttpVerbs.Put)
     
     <div class="form-horizontal">
         <h4>Ticket</h4>
@@ -44,16 +45,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Assignees, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("Assignee", Model.Assignees, htmlAttributes: new { @class="form-control" })
+                @Html.DropDownList("Assignee", Model.Assignees, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Assignees, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Projects, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Project", Model.Projects, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Projects, "", new { @class = "text-danger" })
             </div>
         </div>
 

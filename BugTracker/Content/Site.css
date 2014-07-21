@@ -15,3 +15,27 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.table th,
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-list tr th:last-child, 
+.table-list tr td:last-child {
+    width: 100px;
+}
+
+.table p {
+    display: inline-block;
+    vertical-align: middle
+}
+
+.search {
+    width: 300px;
+}
+
+.delete-ticket-btn {
+
+}

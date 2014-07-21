@@ -17,26 +17,44 @@ namespace BugTracker.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            return View(db.Projects.ToList());
+            var projects = db.Projects.ToList();
+
+            List<ProjectViewModel> model = new List<ProjectViewModel>();
+            foreach (var item in projects)
+            {
+                model.Add(new ProjectViewModel(item));
+            }
+
+            return View(model);
         }
 
-        // GET: Projects/Details/5
-        public ActionResult Details(int? id)
+        // GET: projects/5
+        public ActionResult Show(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Project project = db.Projects.Find(id);
+
             if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+
+            List<TicketViewModel> projectTicketViewModels = new List<TicketViewModel>();
+            foreach (var item in project.Tickets.ToList())
+            {
+                projectTicketViewModels.Add(new TicketViewModel(item));
+            }
+
+            DetailsProjectViewModel model = new DetailsProjectViewModel(project, projectTicketViewModels);
+
+            return View(model);
         }
 
-        // GET: Projects/Create
-        public ActionResult Create()
+        // GET: projects/new
+        public ActionResult New()
         {
             return View();
         }
@@ -55,7 +73,7 @@ namespace BugTracker.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(project);
+            return View("New", project);
         }
 
         // GET: Projects/Edit/5
@@ -76,9 +94,9 @@ namespace BugTracker.Controllers
         // POST: Projects/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name")] Project project)
+        public ActionResult Update([Bind(Include = "ID,Name")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -105,11 +123,12 @@ namespace BugTracker.Controllers
         }
 
         // POST: Projects/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Destroy(int id)
         {
             Project project = db.Projects.Find(id);
+			db.Tickets.RemoveRange(project.Tickets);
             db.Projects.Remove(project);
             db.SaveChanges();
             return RedirectToAction("Index");

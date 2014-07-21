@@ -1,33 +1,52 @@
-﻿@model IEnumerable<BugTracker.Models.Project>
+﻿@model IEnumerable<BugTracker.Models.ProjectViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects";
 }
 
-<h2>Index</h2>
+<h2>Projects</h2>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div>
+            <a class="btn btn-success btn-sm" href="@Url.Action("New")">
+                <i class="glyphicon glyphicon-plus"></i>
+            </a>
+        </div>
+    </div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
+    <table class="table table-condensed table-list projects-table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                # Tickets
+            </th>
+            <th>
+                # Members
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Show", new { id = item.ID })">@item.Name</a>
+                </td>
+                <td>
+                    @Html.ActionLink(@item.NumberTickets, "Index", "Tickets", new { projectId = item.ID }, null)
+                </td>
+                <td>
+                    @item.NumberMembers
+                </td>
+                <td>
+                    <div class="btn-group-xs">
+                        <a class="glyphicon glyphicon-edit btn btn-primary" href="@Url.Action("Edit", new { id=item.ID })"></a>
+                        <a class="glyphicon glyphicon-remove btn btn-danger" href="@Url.Action("Delete", "Projects", new { id=item.ID })"></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

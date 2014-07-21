@@ -3,7 +3,7 @@
 }
 
 <div class="jumbotron">
-    <h1>BugTracker</h1>
+    <h1>BugHero</h1>
     @if (String.IsNullOrEmpty(User.Identity.Name))
     {
         <p class="lead">Welcome!</p>
@@ -17,8 +17,5 @@
 </div>
         
 <ul>
-    <li>@Html.ActionLink("List Tickets", "Index", "Tickets")</li>
-    <li>@Html.ActionLink("Submit New Ticket", "Create", "Tickets")</li>
-    <li>@Html.ActionLink("List Projects","Index", "Projects")</li>
-    <li>@Html.ActionLink("Create New Project", "Create", "Projects")</li>
+    <li>@Html.ActionLink("My Projects","Index", "Projects")</li>
 </ul>

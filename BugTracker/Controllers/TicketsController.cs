@@ -15,7 +15,7 @@ using System.Linq.Expressions;
 
 namespace BugTracker.Controllers
 {
-    [Authorize]
+	[Authorize]
     public class TicketsController : Controller
     {
         public TicketsController() { }
@@ -25,19 +25,26 @@ namespace BugTracker.Controllers
         private UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
         // GET: Tickets
-        public ActionResult Index(int? page, string searchBy , string search)
+        public ActionResult Index(int projectId, int? page, string searchBy , string search)
         {
+			ViewBag.ProjectName = db.Projects.FirstOrDefault(p => p.ID == projectId).Name;
+			ViewBag.ProjectId = projectId;
+			// Create a query string for grabbing all tickets from the database
+			var tickets = from q in db.Tickets.Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType).OrderBy(t => t.ID)
+						  where q.ProjectID == projectId 
+						  select q;
+
+			// Get the page number
             var pageNumber = page ?? 1;
 
-            ViewBag.Search = search;
-            ViewBag.SearchBy = searchBy ?? "Project";
+			// Default searchBy to Priority
+			searchBy = searchBy ?? "Priority";
 
-            // Create a query string for grabbing all tickets from the database
-            var tickets = from q in db.Tickets.Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType).OrderBy(t => t.ID) select q;
+            ViewBag.Search = search;
+			ViewBag.SearchBy = searchBy;
             
             Dictionary<string, Expression<Func<Ticket, bool>>> searchByDictionary = new Dictionary<string, Expression<Func<Ticket,bool>>>()
             {
-                {"Project", t => t.Project.Name.Contains(search) },
                 {"Status", t => t.TicketStatus.Name.Contains(search) },
                 {"Priority", t => t.TicketPriority.Name.Contains(search) },
                 {"Type", t => t.TicketType.Name.Contains(search) }
@@ -58,7 +65,6 @@ namespace BugTracker.Controllers
             IPagedList<TicketViewModel> pagedList = model.ToPagedList(pageNumber, 5);
 
             var searchByList = new List<SelectListItem>() {
-                new SelectListItem() { Value = "Project", Text = "Project", Selected = false },
                 new SelectListItem() { Value = "Priority", Text = "Priority", Selected = false },
                 new SelectListItem() { Value = "Status", Text = "Status", Selected = false },
                 new SelectListItem() { Value = "Type", Text = "Type", Selected = false }
@@ -71,13 +77,13 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Show(int projectId, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ticket ticket = db.Tickets.Find(id);
+            Ticket ticket = db.Tickets.Where(t => t.ProjectID == projectId).FirstOrDefault(t => t.ID == id);
             TicketViewModel model = new TicketViewModel(ticket);
             if (ticket == null)
             {
@@ -87,12 +93,14 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
-        public ActionResult Create()
+        public ActionResult New(int projectId)
         {
-            var model = new CreateTicketViewModel();
+			ViewBag.ProjectName = db.Projects.FirstOrDefault(p => p.ID == projectId).Name;
+			ViewBag.ProjectID = projectId;
+
+            var model = new NewTicketViewModel();
 
             model.Assignees = new SelectList(Db.Users, "Id", "UserName");
-            model.Projects = new SelectList(db.Projects, "ID", "Name");
             model.Priorities = new SelectList(db.TicketPriorities, "ID", "Name");
             model.Statuses = new SelectList(db.TicketStatuses, "ID", "Name");
             model.Types = new SelectList(db.TicketTypes, "ID", "Name");
@@ -105,7 +113,7 @@ namespace BugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateTicketViewModel model)
+        public ActionResult Create(int projectId, NewTicketViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +123,7 @@ namespace BugTracker.Controllers
                 ticket.Title = model.Title;
                 ticket.Description = model.Description;
                 ticket.AssigneeID = UserManager.FindById(model.Assignee).Id;
-                ticket.ProjectID = Int32.Parse(model.Project);
+				ticket.ProjectID = projectId;
                 ticket.TypeID = Int32.Parse(model.Type);
                 ticket.PriorityID = Int32.Parse(model.Priority);
                 ticket.StatusID = Int32.Parse(model.Status);
@@ -149,8 +157,7 @@ namespace BugTracker.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.Assignees = new SelectList(Db.Users, "Id", "UserName");
-            model.Projects = new SelectList(db.Projects, "ID", "Name");
+			model.Assignees = new SelectList(Db.Users, "Id", "UserName");
             model.Priorities = new SelectList(db.TicketPriorities, "ID", "Name");
             model.Statuses = new SelectList(db.TicketStatuses, "ID", "Name");
             model.Types = new SelectList(db.TicketTypes, "ID", "Name");
@@ -182,13 +189,13 @@ namespace BugTracker.Controllers
         // POST: Tickets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditTicketViewModel model)
+        public ActionResult Update(int projectId, EditTicketViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var ticket = db.Tickets.FirstOrDefault(t => t.ID == model.ID);
+                var ticket = db.Tickets.Where(t => t.Project.ID == projectId).FirstOrDefault(t => t.ID == model.ID);
                 model.UpdateTicket(ticket);
 
                 db.Entry(ticket).State = EntityState.Modified;
@@ -201,13 +208,15 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int projectId, int? id)
         {
+			ViewBag.ProjectId = projectId;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ticket ticket = db.Tickets.Find(id);
+            Ticket ticket = db.Tickets.Where(t => t.ProjectID == projectId).FirstOrDefault(t => t.ID == id);
             TicketViewModel model = new TicketViewModel(ticket);
             if (ticket == null)
             {
@@ -217,9 +226,9 @@ namespace BugTracker.Controllers
         }
 
         // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult Destroy(int projectId, int id)
         {
             Ticket ticket = db.Tickets.Find(id);
             db.Tickets.Remove(ticket);

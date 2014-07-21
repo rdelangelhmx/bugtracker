@@ -21,12 +21,14 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("Destroy", "Projects", new { id = Model.ID }))
+    {
         @Html.AntiForgeryToken()
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "Index", new { })
         </div>
     }
 </div>

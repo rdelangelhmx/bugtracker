@@ -6,100 +6,106 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Tickets</h2>
-@using (Html.BeginForm("Index", "Tickets", FormMethod.Get, new { id = "searchForm" }))
-{
-    @Html.Hidden("searchBy", "Project")
-    <div class="row">
-        <div class="col-md-offset-9 col-md-3">
-            <div class="input-group">
-                @Html.TextBox("search", null, new { placeholder = "Search by " + ViewBag.SearchBy, @class = "form-control", id = "search" })
-                <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                        <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                    <button type ="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        @foreach (var item in Model.Item2)
-                        {
-                            <li><a id="@item.Text" href="#" onclick="(function () { $('#searchBy').val('@item.Text'); $('#searchForm').submit(); })()">@item.Text</a></li>
-                        }
-                    </ul>
+<h2>@ViewBag.ProjectName</h2>
+<h4>Tickets</h4>
+
+<div class="panel panel-default">
+
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-4">
+                <div>
+                    <a class="btn btn-success btn-sm" href="@Url.Action("New")">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <div class="pull-right search">
+                    @using (Html.BeginForm("Index", "Tickets", FormMethod.Get, new { id = "searchForm", @class = "form-inline" }))
+                    {
+                        @Html.Hidden("searchBy")
+                        <div class="input-group input-group-sm">
+                            @Html.TextBox("search", null, new { placeholder = "Search by " + ViewBag.SearchBy, @class = "form-control", id = "search" })
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                    @foreach (var item in Model.Item2)
+                                    {
+                                        <li><a id="@item.Text" href="#" onclick="(function () { $('#searchBy').val('@item.Text'); $('#searchForm').submit(); })()">@item.Text</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
-}
 
-<p>
-    @Html.ActionLink("New Ticket", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Project)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Submitter)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Assignee)
-        </th>
 
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Priority)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(m => m.Item1[0].Type)
-        </th>
-        <th></th>
-    </tr>
+    <table class="table table-condensed table-list">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Submitter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Assignee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Priority)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.Item1[0].Type)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model.Item1) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Submitter)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Assignee)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Priority)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Type)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
-</table>
+        @foreach (var item in Model.Item1)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("Show", "Tickets", new { id=item.ID, projectId=ViewBag.ProjectID })">@item.Title</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Submitter)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assignee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <div class="btn-group-xs">
+                        <a class="glyphicon glyphicon-edit btn btn-primary" href="@Url.Action("Edit", new { id=item.ID })"></a>
+                        <a class="glyphicon glyphicon-remove btn btn-danger delete-ticket-btn" href="@Url.Action("Delete", "Tickets", new { id = item.ID, projectId = ViewBag.ProjectId })"></a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 
 @if (Model.Item1.PageCount > 1)
 {
@@ -109,14 +115,14 @@
         of @Model.Item1.PageCount
 
         @Html.PagedListPager(Model.Item1,
-                             page => Url.Action("Index", new { page, ViewBag.SearchBy, ViewBag.Search }),
-                             new PagedListRenderOptions
-                             {
-                                 MaximumPageNumbersToDisplay = 10,
-                                 LinkToFirstPageFormat = "First",
-                                 LinkToLastPageFormat = "Last",
-                                 LinkToNextPageFormat = "Next",
-                                 LinkToPreviousPageFormat = "Previous"
-                             })
+                        page => Url.Action("Index", new { page, ViewBag.SearchBy, ViewBag.Search }),
+                        new PagedListRenderOptions
+                        {
+                            MaximumPageNumbersToDisplay = 10,
+                            LinkToFirstPageFormat = "First",
+                            LinkToLastPageFormat = "Last",
+                            LinkToNextPageFormat = "Next",
+                            LinkToPreviousPageFormat = "Previous"
+                        })
     </div>
 }

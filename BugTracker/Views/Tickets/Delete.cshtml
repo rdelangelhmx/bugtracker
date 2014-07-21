@@ -93,8 +93,10 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm("Destroy", "Tickets", new { id = Model.ID, projectId = ViewBag.ProjectId }))
+    {
         @Html.AntiForgeryToken()
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |

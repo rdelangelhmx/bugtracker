@@ -7,9 +7,10 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Update", "Projects", new { id = Model.ID }))
 {
     @Html.AntiForgeryToken()
+    @Html.HttpMethodOverride(HttpVerbs.Put)
     
     <div class="form-horizontal">
         <h4>Project</h4>

@@ -1,18 +1,18 @@
-﻿@model BugTracker.Models.CreateTicketViewModel
+﻿@model BugTracker.Models.NewTicketViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = ViewBag.ProjectName + "New Ticket";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.ProjectName</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Tickets", new { projectId = ViewBag.ProjectID }))
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Ticket</h4>
+        <h4>Submit new ticket</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -36,14 +36,6 @@
             <div class="col-md-10">
                 @Html.DropDownList("Assignee", Model.Assignees, null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Assignees, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Projects, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("Project", Model.Projects, null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Projects, "", new { @class = "text-danger" })
             </div>
         </div>
 

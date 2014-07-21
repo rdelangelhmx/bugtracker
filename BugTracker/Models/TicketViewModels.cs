@@ -59,9 +59,9 @@ namespace BugTracker.Models
         public string Type { get; set; }
     }
 
-    public class CreateTicketViewModel
+    public class NewTicketViewModel
     {
-        public CreateTicketViewModel() { }
+        public NewTicketViewModel() { }
 
         [Display(Name = "Title")]
         public string Title { get; set; }
@@ -72,10 +72,6 @@ namespace BugTracker.Models
         [Display(Name = "Assignee")]
         public SelectList Assignees { get; set; }
         public string Assignee { get; set; }
-
-        [Display(Name = "Project")]
-        public SelectList Projects { get; set; }
-        public string Project { get; set; }
 
         [Display(Name = "Priority")]
         public SelectList Priorities { get; set; }
@@ -110,9 +106,8 @@ namespace BugTracker.Models
         public SelectList Assignees { get; set; }
         public string Assignee { get; set; }
 
-        [Display(Name = "Project")]
-        public SelectList Projects { get; set; }
-        public string Project { get; set; }
+		[Display(Name = "Project")]
+		public string Project { get; set; }
 
         [Display(Name = "Priority")]
         public SelectList Priorities { get; set; }
@@ -135,7 +130,7 @@ namespace BugTracker.Models
             this.Title = ticket.Title;
             this.Description = ticket.Description;
             this.Assignees = new SelectList(Db.Users, "ID", "UserName", ticket.AssigneeID);
-            this.Projects = new SelectList(db.Projects, "ID", "Name", ticket.ProjectID);
+			this.Project = ticket.Project.Name;
             this.Priorities = new SelectList(db.TicketPriorities, "ID", "Name", ticket.PriorityID);
             this.Statuses = new SelectList(db.TicketStatuses, "ID", "Name", ticket.StatusID);
             this.Types = new SelectList(db.TicketTypes, "ID", "Name", ticket.TypeID);
@@ -146,7 +141,6 @@ namespace BugTracker.Models
             ticket.Title = this.Title;
             ticket.Description = this.Description;
             ticket.AssigneeID = this.Assignee;
-            ticket.ProjectID = Int32.Parse(this.Project);
             ticket.PriorityID = Int32.Parse(this.Priority);
             ticket.StatusID = Int32.Parse(this.Status);
             ticket.TypeID = Int32.Parse(this.Type);

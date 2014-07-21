@@ -1,0 +1,74 @@
+﻿@model BugTracker.Models.DetailsProjectViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.Name</h2>
+<hr />
+<div>
+    <h3>@Model.NumberMembers @(Model.NumberMembers == "1" ? "Member" : "Members")</h3>
+</div>
+
+<div>
+    <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
+
+    @if (Int32.Parse(Model.NumberTickets) > 0)
+    {
+        <table class="table table-condensed">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Submitter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Assignee)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Priority)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Type)
+                </th>
+            </tr>
+            @foreach (var item in Model.ProjectTickets)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Submitter)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Assignee)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Priority)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
