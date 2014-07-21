@@ -14,6 +14,8 @@ namespace BugTracker
 
 			map.Root<HomeController>(x => x.Index());
 
+			map.Resources<AccountController>();
+
 			map.Resources<ProjectsController>(projects => projects.Resources<TicketsController>());
             /*
              * TODO: Add your routes here.

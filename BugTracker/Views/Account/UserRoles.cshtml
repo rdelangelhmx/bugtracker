@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "UserRoles";
+}
+
+<h2>UserRoles</h2>
+
+@model BugTracker.Models.AssignUsersViewModel
+@{
+    ViewBag.Title = "UserRoles";
+}
+
+<h2>User Roles for @Html.DisplayFor(m => m.Name)</h2>
+
+@using (@Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+    </div>
+
+    <h4>Select Role Assignments</h4>
+    <br />
+    <br />
+
+    <table>
+        <tr>
+            <th>
+                Select
+            </th>
+            <th>
+                Role
+            </th>
+        </tr>
+        @Html.EditorFor(model => model.ItemList)
+    </table>
+    <br />
+    <br />
+
+    <div class="form-group">
+        <div class="col-mod-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}

@@ -220,6 +220,7 @@
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectViewModels.cs" />
+    <Compile Include="Models\SharedViewModels.cs" />
     <Compile Include="Models\Ticket.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
@@ -363,6 +364,17 @@
     <Content Include="Views\Projects\Show.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\New.cshtml" />
+    <Content Include="Views\Account\CreateRole.cshtml" />
+    <Content Include="Views\Account\ListRoles.cshtml" />
+    <Content Include="Views\Account\DeleteRole.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\UserRoles.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\EditRole.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\SelectUserViewModel.cshtml" />
+    <Content Include="Views\Account\Show.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
