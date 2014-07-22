@@ -1,12 +1,22 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
+﻿
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+}
+
+#logo {
+    padding-top: 5px;
+    font-family: 'Lato', sans-serif;
+    font-size: 64px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #000;
+}
+
+#logo span {
+    color: #3366CC;
+    font-weight: 400;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
@@ -30,12 +40,4 @@ textarea {
 .table p {
     display: inline-block;
     vertical-align: middle
-}
-
-.search {
-    width: 300px;
-}
-
-.delete-ticket-btn {
-
 }
