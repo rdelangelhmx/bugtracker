@@ -58,7 +58,9 @@ namespace BugTracker.Controllers
         {
 			AspNetUser user = db.AspNetUsers.Find(accountId);
 
-            return View();
+			CreateProjectViewModel model = new CreateProjectViewModel();
+
+            return View(model);
         }
 
         // POST: Projects/Create

@@ -60,14 +60,13 @@ namespace BugTracker.Models
 
 	public class CreateProjectViewModel
 	{
-		[Display(Name = "Name")]
+		[Required]
+		[Display(Name = "Project Name")]
 		public string Name { get; set; }
 
+		[Required]
 		[Display(Name = "Project Manager")]
 		public string Manager { get; set; }
-
-		[Display(Name = "Name")]
-		public string Creator { get; set; }
 
 		[Display(Name = "Members")]
 		public ICollection<AspNetUser> Members { get; set; }
@@ -82,7 +81,6 @@ namespace BugTracker.Models
 			Project project = new Project() {
 				Name = this.Name,
 				Manager = this.Manager,
-				Creator = this.Creator,
 				AspNetUsers = this.Members
 			};
 			return project;

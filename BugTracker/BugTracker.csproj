@@ -197,6 +197,7 @@
     <Compile Include="Models\AspNetUserClaim.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AspNetUserExt.cs" />
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
