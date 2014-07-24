@@ -5,7 +5,6 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="a0e28e09b9654eefaf202dc0196e84bc" Name="Diagram1" ZoomLevel="93">
-        <EntityTypeShape EntityType="BugTrackerModel.Project" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="BugTrackerModel.TicketAttachment" Width="1.875" PointX="7.5" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BugTrackerModel.TicketComment" Width="1.5" PointX="7.5" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BugTrackerModel.TicketHistory" Width="1.5" PointX="7.5" PointY="7.375" IsExpanded="true" />
@@ -24,9 +23,7 @@
         <AssociationConnector Association="BugTrackerModel.FK_TicketHistory_AspNetUsers" />
         <AssociationConnector Association="BugTrackerModel.FK_TicketNotifications_AspNetUsers" />
         <AssociationConnector Association="BugTrackerModel.AspNetUserRoles" />
-        <AssociationConnector Association="BugTrackerModel.ProjectUsers" />
         <EntityTypeShape EntityType="BugTrackerModel.Ticket" Width="1.5" PointX="11" PointY="5.5" />
-        <AssociationConnector Association="BugTrackerModel.FK_Tickets_Projects" />
         <AssociationConnector Association="BugTrackerModel.FK_TicketAttachments_Tickets" />
         <AssociationConnector Association="BugTrackerModel.FK_TicketComments_Tickets" />
         <AssociationConnector Association="BugTrackerModel.FK_TicketHistory_Tickets" />
@@ -35,6 +32,9 @@
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_TicketStatuses" />
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_TicketTypes" />
         <AssociationConnector Association="BugTrackerModel.TicketsUsers" />
+        <EntityTypeShape EntityType="BugTrackerModel.Project" Width="1.5" PointX="7" PointY="14.25" />
+        <AssociationConnector Association="BugTrackerModel.FK_Tickets_Projects" />
+        <AssociationConnector Association="BugTrackerModel.ProjectUsers" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

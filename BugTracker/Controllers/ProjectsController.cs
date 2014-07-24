@@ -53,9 +53,11 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-        // GET: projects/new
-        public ActionResult New()
+		// GET: accounts/{accountId}/projects/new
+        public ActionResult New(string accountId)
         {
+			AspNetUser user = db.AspNetUsers.Find(accountId);
+
             return View();
         }
 

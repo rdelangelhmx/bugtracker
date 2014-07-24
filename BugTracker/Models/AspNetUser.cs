@@ -23,8 +23,8 @@ namespace BugTracker.Models
             this.TicketHistories = new HashSet<TicketHistory>();
             this.TicketNotifications = new HashSet<TicketNotification>();
             this.AspNetRoles = new HashSet<AspNetRole>();
-            this.Projects = new HashSet<Project>();
             this.Tickets = new HashSet<Ticket>();
+            this.Projects = new HashSet<Project>();
         }
     
         public string Id { get; set; }
@@ -47,7 +47,7 @@ namespace BugTracker.Models
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
         public virtual ICollection<TicketNotification> TicketNotifications { get; set; }
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
-        public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
     }
 }

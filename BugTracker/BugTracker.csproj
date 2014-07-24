@@ -541,6 +541,8 @@
     <Content Include="js\libs\jquery.min.map" />
     <Content Include="js\plugins\datatables\img\Sorting icons.psd" />
     <Content Include="js\plugins\datepicker\less\datepicker.less" />
+    <None Include="Properties\PublishProfiles\aleury-bugtracker - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\aleury-bugtracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -57,4 +57,35 @@ namespace BugTracker.Models
             this.ProjectTickets = tvm;
         }
     }
+
+	public class CreateProjectViewModel
+	{
+		[Display(Name = "Name")]
+		public string Name { get; set; }
+
+		[Display(Name = "Project Manager")]
+		public string Manager { get; set; }
+
+		[Display(Name = "Name")]
+		public string Creator { get; set; }
+
+		[Display(Name = "Members")]
+		public ICollection<AspNetUser> Members { get; set; }
+
+		public CreateProjectViewModel()
+		{
+
+		}
+
+		public Project GetProject() 
+		{
+			Project project = new Project() {
+				Name = this.Name,
+				Manager = this.Manager,
+				Creator = this.Creator,
+				AspNetUsers = this.Members
+			};
+			return project;
+		}
+	}
 }
