@@ -1,11 +1,9 @@
 ﻿@model BugTracker.Models.DetailsProjectViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = @Model.Name;
 }
 
-<h2>@Model.Name</h2>
-<hr />
 <div>
     <h3>@Model.NumberMembers @(Model.NumberMembers == "1" ? "Member" : "Members")</h3>
 </div>

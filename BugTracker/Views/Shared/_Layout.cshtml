@@ -1,274 +1,156 @@
-﻿<!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!-->
-<html lang="en">
+﻿@using Microsoft.AspNet.Identity;
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
  <!--<![endif]-->
 <head>
-    <title>Unify | Welcome...</title>
-    <!-- Meta -->
+
+    <title>Blank Page - Canvas Admin</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
-    <!-- CSS Global Compulsory -->
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/assets/css/style.css">
-    <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="~/assets/plugins/line-icons/line-icons.css">
-    <link rel="stylesheet" href="~/assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/flexslider/flexslider.css">
-    <link rel="stylesheet" href="~/assets/plugins/parallax-slider/css/parallax-slider.css">
-    <!-- CSS Theme -->
-    <link rel="stylesheet" href="~/assets/css/themes/default.css" id="style_color">
-    <!-- CSS Customization -->
-    <link rel="stylesheet" href="~/assets/css/custom.css">
-    <link rel="stylesheet" href="~/Content/Site.css">
+    <meta name="author" content="" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css" />
+    @*<link rel="stylesheet" href="./css/bootstrap.min.css" type="text/css" />*@
+    <link rel="stylesheet" href="~/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css" />
+
+    <link rel="stylesheet" href="~/css/App.css" type="text/css" />
+
+    <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
+
+    <link rel="stylesheet" href="~/Content/Site.css" type="text/css" />
 </head>
 
-<body class="header-fixed">
-    <div class="wrapper">
-        <!--=== Header ===-->
-        <div class="header">
-            <!-- Topbar -->
-            <div class="topbar">
-                <div class="container">
-                    <!-- Topbar Navigation -->
-                    <ul class="loginbar pull-right">
-                        @Html.Partial("_LoginPartial")
+<body>
+
+    <div id="wrapper">
+
+        <header id="header">
+
+            <h1 id="site-logo">
+                <a href="./index.html">
+                    <img src="~/img/logos/logo.png" alt="Site Logo" />
+                </a>
+            </h1>
+
+            <a href="javascript:;" data-toggle="collapse" data-target=".top-bar-collapse" id="top-bar-toggle" class="navbar-toggle collapsed">
+                <i class="fa fa-cog"></i>
+            </a>
+
+            <a href="javascript:;" data-toggle="collapse" data-target=".sidebar-collapse" id="sidebar-toggle" class="navbar-toggle collapsed">
+                <i class="fa fa-reorder"></i>
+            </a>
+
+        </header> <!-- header -->
+
+
+        <nav id="top-bar" class="collapse top-bar-collapse">
+
+            <ul class="nav navbar-nav pull-left">
+                <li class="">
+                    <a href="@Url.Action("Show", "Account", new { id = User.Identity.GetUserId() })">
+                        <i class="fa fa-home"></i>
+                        Home
+                    </a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+                        Dropdown <span class="caret"></span>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="javascript:;"><i class="fa fa-user"></i>&nbsp;&nbsp;Example #1</a></li>
+                        <li><a href="javascript:;"><i class="fa fa-calendar"></i>&nbsp;&nbsp;Example #2</a></li>
+                        <li class="divider"></li>
+                        <li><a href="javascript:;"><i class="fa fa-tasks"></i>&nbsp;&nbsp;Example #3</a></li>
                     </ul>
-                    <!-- End Topbar Navigation -->
-                </div>
-            </div>
-            <!-- End Topbar -->
+                </li>
 
-            <!-- Navbar -->
-            <div class="navbar navbar-default" role="navigation">
-                <div class="container">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                            <span class="sr-only">Toggle navigation</span>
-                            <span class="fa fa-bars"></span>
-                        </button>
-                        <a id="logo" class="navbar-brand" href="@Url.Action("Index", "Home")">
-                            Bug<span>Hero</span>
-                            @*<img id="logo-header" src="~/assets/img/logo1-default.png" alt="Logo">*@
+            </ul>
+
+            @Html.Partial("_LoginPartial")
+
+        </nav> <!-- /#top-bar -->
+
+
+        <div id="sidebar-wrapper" class="collapse sidebar-collapse">
+
+            <div id="search">
+                <form>
+                    <input class="form-control input-sm" type="text" name="search" placeholder="Search..." />
+
+                    <button type="submit" id="search-btn" class="btn"><i class="fa fa-search"></i></button>
+                </form>
+            </div> <!-- #search -->
+
+            <nav id="sidebar">
+
+                <ul id="main-nav" class="open-active">
+
+                    <li class="">
+                        <a href="@Url.Action("Index", "Projects", new { accountId = User.Identity.GetUserId() })">
+                            My Projects
                         </a>
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-responsive-collapse">
-                        <ul class="nav navbar-nav">
-                            <!-- Home -->
-                            <li class="dropdown active">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                                    Home
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="index.html">Option 1: Default Page</a></li>
-                                    <li><a href="page_home1.html">Option 2: Layer Slider</a></li>
-                                    <li><a href="page_home2.html">Option 3: Revolution Slider</a></li>
-                                    <li><a href="page_home3.html">Option 4: Amazing Content</a></li>
-                                    <li><a href="page_home4.html">Option 5: Home Sidebar</a></li>
-                                    <li><a href="page_home5.html">Option 6: Home Flatty</a></li>
-                                    <li><a href="page_home6.html">Option 7: Home Magazine</a></li>
-                                    <li><a href="page_home7.html">Option 8: Home Portfolio</a></li>
-                                    <li><a href="page_home8.html">Option 9: Home Discover</a></li>
-                                    <li><a href="page_jobs.html">Option 10: Home Jobs</a></li>
-                                    <li><a href="page_home9.html">Option 11: Home Boxed</a></li>
-                                    <li><a href="page_home11.html">Option 12: Home Boxed Image</a></li>
-                                    <li class="active"><a href="page_home10.html">Option 13: Home Fixed Menu</a></li>
-                                </ul>
-                            </li>
-                            <!-- End Home -->
-                            <!-- Blog -->
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                                    Blog
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="blog_page.html">Blog Page</a></li>
-                                    <li><a href="blog_large.html">Blog Large</a></li>
-                                    <li><a href="blog_medium.html">Blog Medium</a></li>
-                                    <li><a href="blog_full_width.html">Blog Full Width</a></li>
-                                    <li><a href="blog_timeline.html">Blog Timeline</a></li>
-                                    <li><a href="blog_right_sidebar.html">Blog Right Sidebar</a></li>
-                                    <li><a href="blog_left_sidebar.html">Blog Left Sidebar</a></li>
-                                    <li><a href="blog_item_option1.html">Blog Item Option 1</a></li>
-                                    <li><a href="blog_item_option2.html">Blog Item Option 2</a></li>
-                                </ul>
-                            </li>
-                            <!-- End Blog -->
-                            <!-- Contacts -->
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
-                                    Contacts
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="page_contact1.html">Contacts Default</a></li>
-                                    <li><a href="page_contact2.html">Contacts Option 1</a></li>
-                                    <li><a href="page_contact3.html">Contacts Option 2</a></li>
-                                </ul>
-                            </li>
-                            <!-- End Contacts -->
-                            <!-- Search Block -->
-                            <li>
-                                <i class="search fa fa-search search-btn"></i>
-                                <div class="search-open">
-                                    <div class="input-group animated fadeInDown">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <span class="input-group-btn">
-                                            <button class="btn-u" type="button">Go</button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                            <!-- End Search Block -->
-                        </ul>
-                    </div><!--/navbar-collapse-->
-                </div>
-            </div>
-            <!-- End Navbar -->
-        </div>
-        <!--=== End Header ===-->
+                    </li>
+
+                </ul>
+
+            </nav> <!-- #sidebar -->
+
+        </div> <!-- /#sidebar-wrapper -->
 
 
 
-        
-        @RenderBody()
-    
+        <div id="content">
 
-        </div><!--/container-->
-        <!-- End Content Part -->
-        <!--=== Footer ===-->
-        <div class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 md-margin-bottom-40">
-                        <!-- About -->
-                        <div class="headline"><h2>About</h2></div>
-                        <p class="margin-bottom-25 md-margin-bottom-40">Unify is an incredibly beautiful responsive Bootstrap Template for corporate and creative professionals.</p>
-                        <!-- End About -->
-                        <!-- Monthly Newsletter -->
-                        <div class="headline"><h2>Monthly Newsletter</h2></div>
-                        <p>Subscribe to our newsletter and stay up to date with the latest news and deals!</p>
-                        <form class="footer-subsribe">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Email Address">
-                                <span class="input-group-btn">
-                                    <button class="btn-u" type="button">Subscribe</button>
-                                </span>
-                            </div>
-                        </form>
-                        <!-- End Monthly Newsletter -->
-                    </div><!--/col-md-4-->
+            <div id="content-header">
+                <h1>@ViewBag.Title</h1>
+            </div> <!-- #content-header -->
 
-                    <div class="col-md-4 md-margin-bottom-40">
-                        <!-- Recent Blogs -->
-                        <div class="posts">
-                            <div class="headline"><h2>Recent Blog Entries</h2></div>
-                            <dl class="dl-horizontal">
-                                <dt><a href="#"><img src="~/assets/img/sliders/elastislide/6.jpg" alt="" /></a></dt>
-                                <dd>
-                                    <p><a href="#">Anim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</a></p>
-                                </dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt><a href="#"><img src="~/assets/img/sliders/elastislide/10.jpg" alt="" /></a></dt>
-                                <dd>
-                                    <p><a href="#">Anim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</a></p>
-                                </dd>
-                            </dl>
-                            <dl class="dl-horizontal">
-                                <dt><a href="#"><img src="~/assets/img/sliders/elastislide/11.jpg" alt="" /></a></dt>
-                                <dd>
-                                    <p><a href="#">Anim moon officia Unify is an incredibly beautiful responsive Bootstrap Template</a></p>
-                                </dd>
-                            </dl>
-                        </div>
-                        <!-- End Recent Blogs -->
-                    </div><!--/col-md-4-->
-                    <div class="col-md-4">
-                        <!-- Contact Us -->
-                        <div class="headline"><h2>Contact Us</h2></div>
-                        <address class="md-margin-bottom-40">
-                            25, Lorem Lis Street, Orange <br />
-                            California, US <br />
-                            Phone: 800 123 3456 <br />
-                            Fax: 800 123 3456 <br />
-                            Email: <a href="mailto:info@anybiz.com" class="">info@anybiz.com</a>
-                        </address>
-                        <!-- End Contact Us -->
-                        <!-- Social Links -->
-                        <div class="headline"><h2>Stay Connected</h2></div>
-                        <ul class="social-icons">
-                            <li><a href="#" data-original-title="Feed" class="social_rss"></a></li>
-                            <li><a href="#" data-original-title="Facebook" class="social_facebook"></a></li>
-                            <li><a href="#" data-original-title="Twitter" class="social_twitter"></a></li>
-                            <li><a href="#" data-original-title="Goole Plus" class="social_googleplus"></a></li>
-                            <li><a href="#" data-original-title="Pinterest" class="social_pintrest"></a></li>
-                            <li><a href="#" data-original-title="Linkedin" class="social_linkedin"></a></li>
-                            <li><a href="#" data-original-title="Vimeo" class="social_vimeo"></a></li>
-                        </ul>
-                        <!-- End Social Links -->
-                    </div><!--/col-md-4-->
-                </div>
-            </div>
-        </div><!--/footer-->
-        <!--=== End Footer ===-->
-        <!--=== Copyright ===-->
-        <div class="copyright">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <p>
-                            2014 &copy; Unify. ALL Rights Reserved.
-                            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-                        </p>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="index.html">
-                            <img class="pull-right" id="logo-footer" src="~/assets/img/logo2-default.png" alt="">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div><!--/copyright-->
-        <!--=== End Copyright ===-->
-    </div><!--/wrapper-->
 
-    <!-- MVC 5 JavaScript Files -->
+            <div id="content-container">
+
+
+
+                @RenderBody()
+
+
+
+
+            </div> <!-- /#content-container -->
+
+        </div> <!-- #content -->
+
+
+    </div> <!-- #wrapper -->
+
+    <footer id="footer">
+        <ul class="nav pull-right">
+            <li>
+                Copyright &copy; 2013, Jumpstart Themes.
+            </li>
+        </ul>
+    </footer>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <!-- JS Global Compulsory -->
-    @*<script type="text/javascript" src="~/assets/plugins/jquery-1.10.2.min.js"></script>*@
-    <script type="text/javascript" src="~/assets/plugins/jquery-migrate-1.2.1.min.js"></script>
-    @*<script type="text/javascript" src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>*@
+    @*<script src="./js/libs/jquery-1.9.1.min.js"></script>*@
+    <script src="~/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
+    @*<script src="./js/libs/bootstrap.min.js"></script>*@
 
-    <!-- JS Implementing Plugins -->
-    <script type="text/javascript" src="~/assets/plugins/back-to-top.js"></script>
-    <script type="text/javascript" src="~/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
-    <script type="text/javascript" src="~/assets/plugins/parallax-slider/js/modernizr.js"></script>
-    <script type="text/javascript" src="~/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+    <script src="~/js/App.js"></script>
 
-    <!-- JS Page Level -->
-    <script type="text/javascript" src="~/assets/js/app.js"></script>
-    <script type="text/javascript" src="~/assets/js/pages/index.js"></script>
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-            App.init();
-            App.initSliders();
-            Index.initParallaxSlider();
-        });
-    </script>
-    <!--[if lt IE 9]>
-        <script src="assets/plugins/respond.js"></script>
-    <![endif]-->
 </body>
 </html>

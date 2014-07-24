@@ -14,10 +14,10 @@ namespace BugTracker.Controllers
     {
         private BugTrackerEntities1 db = new BugTrackerEntities1();
 
-        // GET: Projects
-        public ActionResult Index()
+		// GET: accounts/{accountId}/projects
+        public ActionResult Index(string accountId)
         {
-            var projects = db.Projects.ToList();
+			var projects = db.AspNetUsers.FirstOrDefault(user => user.Id == accountId).Projects;
 
             List<ProjectViewModel> model = new List<ProjectViewModel>();
             foreach (var item in projects)
