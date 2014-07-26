@@ -16,6 +16,8 @@ namespace BugTracker
 
 			map.Resources<AccountController>(accounts =>
 			{
+				accounts.As("users");
+				accounts.Only("Show", "Edit", "Update");
 				accounts.Resources<ProjectsController>(projects => projects.Resources<TicketsController>());
 			});
 

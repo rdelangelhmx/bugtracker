@@ -1,6 +1,13 @@
 var App = function () {
     "use strict";
 
+    (function () {
+        $('#my-select').multiSelect({
+            selectableHeader: "<div><strong>Select Users</strong></div>",
+            selectionHeader: "<div><strong>Project Members</strong></div>", 
+        });
+    })();
+
     // My LogOut function
     (function () {
         $('#signout-link').click(function (event) {
@@ -19,7 +26,7 @@ var App = function () {
                 location.reload();
             });
         });
-    })()
+    })();
 
 	var chartColors = ['#e5412d', '#f0ad4e', '#444', '#888','#555','#999','#bbb','#ccc','#eee'];
 	

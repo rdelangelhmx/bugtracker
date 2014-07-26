@@ -10,6 +10,7 @@ using BugTracker.Models;
 
 namespace BugTracker.Controllers
 {
+	[Authorize]
     public class ProjectsController : Controller
     {
         private BugTrackerEntities1 db = new BugTrackerEntities1();
@@ -55,11 +56,20 @@ namespace BugTracker.Controllers
 
 		// GET: accounts/{accountId}/projects/new
         public ActionResult New(string accountId)
-        {
-			AspNetUser user = db.AspNetUsers.Find(accountId);
+		{
+			IEnumerable<AspNetUser> users = db.AspNetUsers;
+
+			AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
 
 			CreateProjectViewModel model = new CreateProjectViewModel();
+			model.SelectedUsers = new List<string>();
+			model.SelectedUsers.Add(user.Id);
 
+			model.Users = users.Select(u => new SelectListItem
+			{
+				Value = u.Id,
+				Text = u.UserName
+			});
             return View(model);
         }
 
@@ -68,16 +78,37 @@ namespace BugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name")] Project project)
+        public ActionResult Create(string accountId, CreateProjectViewModel model)
         {
             if (ModelState.IsValid)
             {
+				// Get currently logged in user
+				IEnumerable<AspNetUser> users = db.AspNetUsers;
+				AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+
+				// Create new project from info contained in the CreatProjectViewModel
+				Project project = new Project();
+				project.Name = model.Name;
+				project.Creator = user.UserName;
+				project.Manager = model.Manager;
+
+				// Add selected users to project list
+				foreach (var item in model.SelectedUsers)
+				{
+					project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
+				}
+
+				// Add newly created project to users
+				user.Projects.Add(project);
+
+				// Save changes to database
+				db.Entry(user).State = EntityState.Modified;
                 db.Projects.Add(project);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+				return RedirectToAction("Index", new { accountId = accountId });
             }
 
-            return View("New", project);
+            return View("New", model);
         }
 
         // GET: Projects/Edit/5

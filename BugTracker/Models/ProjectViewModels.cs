@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace BugTracker.Models
 {
@@ -68,22 +69,15 @@ namespace BugTracker.Models
 		[Display(Name = "Project Manager")]
 		public string Manager { get; set; }
 
+		[Display(Name = "Users")]
+		public IEnumerable<SelectListItem> Users { get; set; }
+
 		[Display(Name = "Members")]
-		public ICollection<AspNetUser> Members { get; set; }
+		public List<string> SelectedUsers { get; set; }
 
 		public CreateProjectViewModel()
 		{
 
-		}
-
-		public Project GetProject() 
-		{
-			Project project = new Project() {
-				Name = this.Name,
-				Manager = this.Manager,
-				AspNetUsers = this.Members
-			};
-			return project;
 		}
 	}
 }

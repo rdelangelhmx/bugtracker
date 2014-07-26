@@ -28,6 +28,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
+                @Html.ListBoxFor(m => m.SelectedUsers, Model.Users, new { id = "my-select", name = "my-select[]", @class="form-control", multiple="multiple" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>

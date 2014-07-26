@@ -260,6 +260,7 @@
     <Content Include="css\custom.css" />
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\Login.css" />
+    <Content Include="css\multi-select.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
@@ -294,6 +295,7 @@
     <Content Include="img\pricing\label-editable.png" />
     <Content Include="img\pricing\label-red.png" />
     <Content Include="img\pricing\label-yellow.png" />
+    <Content Include="img\switch.png" />
     <Content Include="js\App.js" />
     <Content Include="js\demos\buttons.js" />
     <Content Include="js\demos\calendar.js" />
@@ -320,6 +322,7 @@
     <Content Include="js\demos\popups.js" />
     <Content Include="js\demos\pricing.js" />
     <Content Include="js\demos\sliders.js" />
+    <Content Include="js\plugins\multiselect\jquery.multi-select.js" />
     <Content Include="js\libs\bootstrap.js" />
     <Content Include="js\libs\bootstrap.min.js" />
     <Content Include="js\libs\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
