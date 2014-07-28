@@ -98,8 +98,8 @@ namespace BugTracker.Controllers
 					project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
 				}
 
-				// Add newly created project to users
-				user.Projects.Add(project);
+				//// Add newly created project to users
+				//user.Projects.Add(project);
 
 				// Save changes to database
 				db.Entry(user).State = EntityState.Modified;
@@ -111,19 +111,33 @@ namespace BugTracker.Controllers
             return View("New", model);
         }
 
-        // GET: Projects/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: users/{accountId}/projects/{id}
+        public ActionResult Edit(string accountId, int? id)
         {
-            if (id == null)
+            if (accountId == null && id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Project project = db.Projects.Find(id);
-            if (project == null)
+
+			IEnumerable<AspNetUser> users = db.AspNetUsers;
+
+			AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+			ViewBag.UserId = accountId;
+
+			Project project = user.Projects.FirstOrDefault(p => p.ID == id);
+			if (project == null)
             {
                 return HttpNotFound();
             }
-            return View(project);
+
+			EditProjectViewModel model = new EditProjectViewModel(project);
+			model.Users = users.Select(x => new SelectListItem
+			{
+				Value = x.Id,
+				Text = x.UserName
+			});
+
+            return View(model);
         }
 
         // POST: Projects/Edit/5
@@ -131,15 +145,27 @@ namespace BugTracker.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Update([Bind(Include = "ID,Name")] Project project)
+        public ActionResult Update(string accountId, EditProjectViewModel model)
         {
             if (ModelState.IsValid)
             {
+				List<AspNetUser> users = db.AspNetUsers.ToList();
+				AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+				Project project = user.Projects.FirstOrDefault(p => p.ID == model.ID);
+				project.Name = model.Name;
+				project.Manager = model.Manager;
+
+				project.AspNetUsers.Clear();
+				foreach (var item in model.SelectedUsers)
+				{
+					project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
+				}
+
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(project);
+            return View(model);
         }
 
         // GET: Projects/Delete/5
