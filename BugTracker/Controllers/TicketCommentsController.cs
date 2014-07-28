@@ -36,29 +36,40 @@ namespace BugTracker.Controllers
             return View(ticketComment);
         }
 
-        // GET: TicketComments/Create
-        public ActionResult Create()
+		// GET: users/{accountId}/projects/{projectId}/tickets/{ticketId}/ticketcomments/new
+        public ActionResult New(string accountId, int projectId, int ticketId)
         {
-            ViewBag.TicketID = new SelectList(db.Tickets, "ID", "UserID");
-            return View();
+			NewTicketCommentViewModel model = new NewTicketCommentViewModel();
+			ViewBag.accountId = accountId;
+			ViewBag.projectId = projectId;
+			ViewBag.ticketId = ticketId;
+
+            return View(model);
         }
 
-        // POST: TicketComments/Create
+		// POST: users/{accountId}/projects/{projectId}/tickets/{ticketId}/ticketcomments	
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Comment,UserID,Created,TicketID")] TicketComment ticketComment)
+        public ActionResult Create(string accountId, int projectId, int ticketId, NewTicketCommentViewModel model)
         {
             if (ModelState.IsValid)
             {
+				Ticket ticket = db.Tickets.FirstOrDefault(t => t.ID == ticketId);
+				TicketComment ticketComment = new TicketComment();
+				ticketComment.Ticket = ticket;
+				ticketComment.AspNetUser = db.AspNetUsers.FirstOrDefault(u => u.UserName == User.Identity.Name);
+				ticketComment.Created = DateTime.UtcNow;
+				ticketComment.Comment = model.Comment;
+				ticketComment.UserID = ticketComment.AspNetUser.Id;
+
                 db.TicketComments.Add(ticketComment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+				return RedirectToAction("Show", "Tickets", new { accountId = accountId, projectId = projectId, id = ticketId });
             }
 
-            ViewBag.TicketID = new SelectList(db.Tickets, "ID", "UserID", ticketComment.TicketID);
-            return View(ticketComment);
+			return View("Show", model);
         }
 
         // GET: TicketComments/Edit/5

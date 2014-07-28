@@ -3,105 +3,88 @@
 @{
     ViewBag.Title = @Model.Title + " - Info";
 }
-
 <div class="row">
     <div class="col-lg-3">
         <ul class="list-group">
+            <li class="list-group-item">
+                <div>
+                    <strong>Title:</strong>
+                    @Html.DisplayFor(model => model.Title)
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Description:</strong>
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Project:</strong>
+                    @Html.DisplayFor(model => model.Project)
+                </div>
+            </li>
             <li class="list-group-item">
                 <div>
                     <strong>Opened By:</strong>
                     @Html.DisplayFor(model => model.Submitter)
                 </div>
             </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Assigned To:</strong>
+                    @Html.DisplayFor(model => model.Assignee)
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Priority:</strong>
+                    @Html.DisplayFor(model => model.Priority)
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Status:</strong>
+                    @Html.DisplayFor(model => model.Status)
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div>
+                    <strong>Type:</strong>
+                    @Html.DisplayFor(model => model.Type)
+                </div>
+            </li>
         </ul>
+    </div>
+
+    <div class="col-lg-8">
+        <section id="ticketComments">
+            <h2><strong>@Model.Comments.Count() @(Model.Comments.Count() == 1 ? "Comment" : "Comments")</strong></h2>
+            <!-- TicketComments -->
+            @if (Model.Comments.Count() > 0)
+            {
+                foreach (var item in Model.Comments)
+                {
+                    <div class="ticket-comment">
+                        <h3>
+                            <a href="@Url.Action("Show", "Account", new { id = item.AuthorId })">@item.Author</a>
+                        </h3>
+                        <p>@item.Comment</p>
+                    </div>
+                }
+                <p>
+                    @Html.ActionLink("Comment", "New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, new { @class = "btn btn-default" })
+                </p>
+            }
+            else
+            {
+                <p>
+                    <a href="@Url.Action("New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
+                        Be the first to write a comment!
+                    </a>
+                </p>
+            }
+        </section>
     </div>
 </div>
 
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Submitter)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Submitter)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>*@
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Assignee)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Assignee)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Project)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Project)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Priority)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Type)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

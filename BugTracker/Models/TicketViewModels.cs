@@ -13,7 +13,10 @@ namespace BugTracker.Models
         private BugTrackerEntities1 db = new BugTrackerEntities1();
         private ApplicationDbContext Db = new ApplicationDbContext();
 
-        public TicketViewModel() { }
+        public TicketViewModel() 
+		{
+			this.Comments = new List<TicketCommentViewModel>();
+		}
 
         public TicketViewModel(Ticket ticket) : this()
         {
@@ -30,6 +33,13 @@ namespace BugTracker.Models
             this.Priority = ticket.TicketPriority.Name;
             this.Status = ticket.TicketStatus.Name;
             this.Type = ticket.TicketType.Name;
+
+			// Form a list of TicketComments
+			foreach (var item in ticket.TicketComments)
+			{
+				this.Comments.Add(new TicketCommentViewModel(item));
+			}
+			
         }
 
         public int ID { get; set; }
@@ -57,6 +67,9 @@ namespace BugTracker.Models
 
         [Display(Name = "Type")]
         public string Type { get; set; }
+
+		[Display(Name = "Comments")]
+		public ICollection<TicketCommentViewModel> Comments { get; set; }
     }
 
     public class NewTicketViewModel

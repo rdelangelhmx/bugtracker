@@ -231,6 +231,7 @@
     <Compile Include="Models\TicketComment.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TicketCommentViewModel.cs" />
     <Compile Include="Models\TicketHistory.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
@@ -322,6 +323,7 @@
     <Content Include="js\demos\popups.js" />
     <Content Include="js\demos\pricing.js" />
     <Content Include="js\demos\sliders.js" />
+    <Content Include="js\timeAgo.js" />
     <Content Include="js\plugins\multiselect\jquery.multi-select.js" />
     <Content Include="js\libs\bootstrap.js" />
     <Content Include="js\libs\bootstrap.min.js" />
@@ -560,12 +562,15 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Shared\page_home10.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -600,7 +605,7 @@
     <Content Include="Views\TicketAttachments\Details.cshtml" />
     <Content Include="Views\TicketAttachments\Edit.cshtml" />
     <Content Include="Views\TicketAttachments\Index.cshtml" />
-    <Content Include="Views\TicketComments\Create.cshtml" />
+    <Content Include="Views\TicketComments\New.cshtml" />
     <Content Include="Views\TicketComments\Delete.cshtml" />
     <Content Include="Views\TicketComments\Details.cshtml" />
     <Content Include="Views\TicketComments\Edit.cshtml" />
