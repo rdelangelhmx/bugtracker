@@ -35,7 +35,6 @@ namespace BugTracker.Models
         public int PriorityID { get; set; }
         public int StatusID { get; set; }
     
-        public virtual Project Project { get; set; }
         public virtual ICollection<TicketAttachment> TicketAttachments { get; set; }
         public virtual ICollection<TicketComment> TicketComments { get; set; }
         public virtual ICollection<TicketHistory> TicketHistories { get; set; }
@@ -44,5 +43,6 @@ namespace BugTracker.Models
         public virtual TicketStatus TicketStatus { get; set; }
         public virtual TicketType TicketType { get; set; }
         public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
+        public virtual Project Project { get; set; }
     }
 }

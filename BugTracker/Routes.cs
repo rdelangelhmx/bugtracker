@@ -14,9 +14,22 @@ namespace BugTracker
 
 			map.Root<HomeController>(x => x.Index());
 
-			map.Resources<AccountController>();
+			map.Resources<AccountController>(accounts =>
+			{
+				accounts.As("users");
+				accounts.Only("Show", "Edit", "Update");
 
-			map.Resources<ProjectsController>(projects => projects.Resources<TicketsController>());
+				accounts.Resources<ProjectsController>(projects =>
+				{
+					projects.Resources<TicketsController>(tickets =>
+					{
+						tickets.Resources<TicketCommentsController>();
+					});
+				});
+			});
+
+			//map.Resources<ProjectsController>(projects => projects.Resources<TicketsController>());
+
             /*
              * TODO: Add your routes here.
              * 

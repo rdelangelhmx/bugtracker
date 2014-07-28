@@ -25,7 +25,6 @@ namespace BugTracker.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<TicketAttachment> TicketAttachments { get; set; }
         public virtual DbSet<TicketComment> TicketComments { get; set; }
         public virtual DbSet<TicketHistory> TicketHistories { get; set; }
@@ -38,5 +37,6 @@ namespace BugTracker.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
     }
 }

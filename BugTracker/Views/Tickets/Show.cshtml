@@ -1,14 +1,23 @@
 ﻿@model BugTracker.Models.TicketViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = @Model.Title + " - Info";
 }
 
-<h2>Details</h2>
+<div class="row">
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div>
+                    <strong>Opened By:</strong>
+                    @Html.DisplayFor(model => model.Submitter)
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
 
 <div>
-    <h4>Ticket</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Submitter)

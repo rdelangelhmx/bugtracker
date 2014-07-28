@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace BugTracker.Models
 {
@@ -57,4 +58,62 @@ namespace BugTracker.Models
             this.ProjectTickets = tvm;
         }
     }
+
+	public class CreateProjectViewModel
+	{
+		[Required]
+		[Display(Name = "Project Name")]
+		public string Name { get; set; }
+
+		[Required]
+		[Display(Name = "Project Manager")]
+		public string Manager { get; set; }
+
+		[Display(Name = "Users")]
+		public IEnumerable<SelectListItem> Users { get; set; }
+
+		[Display(Name = "Members")]
+		public List<string> SelectedUsers { get; set; }
+
+		public CreateProjectViewModel()
+		{
+
+		}
+	}
+
+	public class EditProjectViewModel
+	{
+		[Required]
+		public int ID { get; set; }
+
+		[Required]
+		[Display(Name = "Project Name")]
+		public string Name { get; set; }
+
+		[Required]
+		[Display(Name = "Project Manager")]
+		public string Manager { get; set; }
+
+		[Display(Name = "Users")]
+		public IEnumerable<SelectListItem> Users { get; set; }
+
+		[Display(Name = "Members")]
+		public List<string> SelectedUsers { get; set; }
+
+		public EditProjectViewModel()
+		{
+			this.Users = new List<SelectListItem>();
+			this.SelectedUsers = new List<string>();
+		}
+
+		public EditProjectViewModel(Project project)
+			: this()
+		{
+			this.ID = project.ID;
+			this.Name = project.Name;
+			this.Manager = project.Manager;
+			this.SelectedUsers = project.AspNetUsers.Select(u => u.Id).ToList();
+		}
+	}
+
 }

@@ -14,10 +14,10 @@ namespace BugTracker.Controllers
     {
         private BugTrackerEntities1 db = new BugTrackerEntities1();
 
-        // GET: TicketComments
-        public ActionResult Index()
+		// GET: users/{accountId}/projects/{projectId}/tickets/{ticketId}/ticketcomments
+        public ActionResult Index(string accountId, int projectId, int ticketId)
         {
-            var ticketComments = db.TicketComments.Include(t => t.Ticket);
+			var ticketComments = db.TicketComments.Include(t => t.Ticket);
             return View(ticketComments.ToList());
         }
 
