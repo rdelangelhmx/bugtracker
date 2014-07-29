@@ -11,8 +11,6 @@ namespace BugTracker.Models
 		private BugTrackerEntities1 db = new BugTrackerEntities1();
 
 		public string Comment { get; set; }
-
-		[Display(Name="By: ")]
 		public string Author { get; set; }
 		public string AuthorId { get; set; }
 

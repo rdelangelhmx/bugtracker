@@ -58,7 +58,7 @@ namespace BugTracker.Controllers
             
             // Create a List of ListTicketsViewModels
             List<TicketViewModel> model = new List<TicketViewModel>();
-            foreach (var item in tickets)
+            foreach (var item in tickets.ToList())
             {
                 model.Add(new TicketViewModel(item));
             }

@@ -11,7 +11,7 @@
 
             <ul class="dropdown-menu" role="menu">
                 <li>
-                    <a href="@Url.Action("Show", "Account", new { id = User.Identity.GetUserId() })">
+                    <a href="@Url.Action("Show", "Account", new { username = User.Identity.GetUserName() })">
                         <i class="fa fa-user"></i>
                         &nbsp;&nbsp;My Profile
                     </a>

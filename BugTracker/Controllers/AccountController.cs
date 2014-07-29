@@ -59,9 +59,9 @@ namespace BugTracker.Controllers
 			return View(model);
 		}
 
-		public ActionResult Show(string id)
+		public ActionResult Show(string username)
 		{
-			ApplicationUser user = UserManager.FindById(id);
+			ApplicationUser user = UserManager.FindByName(username);
 			EditUserViewModel model = new EditUserViewModel(user);
 
 			return View(model);
@@ -105,10 +105,11 @@ namespace BugTracker.Controllers
 
 		//
 		// GET: /Account/Edit/5
-		public ActionResult Edit(string id)
+		public ActionResult Edit(string username)
 		{
-			var Db = new ApplicationDbContext();
-			var user = Db.Users.FirstOrDefault(m => m.Id == id);
+			//var Db = new ApplicationDbContext();
+			////var user = Db.Users.FirstOrDefault(m => m.UserName == username);
+			ApplicationUser user = UserManager.FindByName(username);
 
 			return View(new EditUserViewModel(user));
 		}
@@ -587,7 +588,8 @@ namespace BugTracker.Controllers
 
 		//
 		// GET: /Account/Manage
-		public ActionResult Manage(ManageMessageId? message)
+		[Route("users/{username:alpha}/settings", Name="userSettings")]
+		public ActionResult Manage(string username, ManageMessageId? message)
 		{
 			ViewBag.StatusMessage =
 				message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -767,6 +769,7 @@ namespace BugTracker.Controllers
 		// POST: /Account/LogOff
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Route("users/logout")]
 		public ActionResult LogOff()
 		{
 			AuthenticationManager.SignOut();

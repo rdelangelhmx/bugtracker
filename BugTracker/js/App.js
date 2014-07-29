@@ -9,7 +9,7 @@ var App = function () {
     })();
 
     // My LogOut function
-    (function () {
+    (function (window) {
         $('#signout-link').click(function (event) {
             event.preventDefault;
 
@@ -18,15 +18,17 @@ var App = function () {
             var data = {};
             data['__RequestVerificationToken'] = token;
 
+            var host = window.location.host;
+
             $.ajax({
-                url: 'http://localhost:64255/Account/LogOff',
+                url: "https://" + host + '/users/logout',
                 type: 'POST',
                 data: data
             }).done(function () {
-                location.reload();
+                window.location = "https://" + host;
             });
         });
-    })();
+    })(window);
 
 	var chartColors = ['#e5412d', '#f0ad4e', '#444', '#888','#555','#999','#bbb','#ccc','#eee'];
 	

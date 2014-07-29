@@ -15,10 +15,10 @@ namespace BugTracker.Controllers
     {
         private BugTrackerEntities1 db = new BugTrackerEntities1();
 
-		// GET: accounts/{accountId}/projects
-        public ActionResult Index(string accountId)
+		// GET: accounts/{accountUsername}/projects
+        public ActionResult Index(string accountUsername)
         {
-			var projects = db.AspNetUsers.FirstOrDefault(user => user.Id == accountId).Projects;
+			var projects = db.AspNetUsers.FirstOrDefault(user => user.UserName == accountUsername).Projects;
 
             List<ProjectViewModel> model = new List<ProjectViewModel>();
             foreach (var item in projects)
@@ -54,12 +54,12 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-		// GET: accounts/{accountId}/projects/new
-        public ActionResult New(string accountId)
+		// GET: accounts/{accountUsername}/projects/new
+        public ActionResult New(string accountUsername)
 		{
 			IEnumerable<AspNetUser> users = db.AspNetUsers;
 
-			AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+			AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUsername);
 
 			CreateProjectViewModel model = new CreateProjectViewModel();
 			model.SelectedUsers = new List<string>();
@@ -73,18 +73,18 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-        // POST: Projects/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		// POST: users/{accountUsername}/projects
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string accountId, CreateProjectViewModel model)
+        public ActionResult Create(string accountUserName, CreateProjectViewModel model)
         {
             if (ModelState.IsValid)
             {
 				// Get currently logged in user
 				IEnumerable<AspNetUser> users = db.AspNetUsers;
-				AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+				AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUserName);
 
 				// Create new project from info contained in the CreatProjectViewModel
 				Project project = new Project();
@@ -105,24 +105,24 @@ namespace BugTracker.Controllers
 				db.Entry(user).State = EntityState.Modified;
                 db.Projects.Add(project);
                 db.SaveChanges();
-				return RedirectToAction("Index", new { accountId = accountId });
+				return RedirectToAction("Index", new { accountId = accountUserName });
             }
 
             return View("New", model);
         }
 
-        // GET: users/{accountId}/projects/{id}
-        public ActionResult Edit(string accountId, int? id)
+        // GET: users/{accountUserName}/projects/{id}
+        public ActionResult Edit(string accountUserName, int? id)
         {
-            if (accountId == null && id == null)
+			if (accountUserName == null && id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
 			IEnumerable<AspNetUser> users = db.AspNetUsers;
 
-			AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
-			ViewBag.UserId = accountId;
+			AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUserName);
+			ViewBag.UserName = accountUserName;
 
 			Project project = user.Projects.FirstOrDefault(p => p.ID == id);
 			if (project == null)
@@ -140,17 +140,17 @@ namespace BugTracker.Controllers
             return View(model);
         }
 
-        // POST: Projects/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		// PUT: users/{accountUsername}/projects/{id}
         [HttpPut]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(string accountId, EditProjectViewModel model)
+        public ActionResult Update(string accountUsername, int id, EditProjectViewModel model)
         {
             if (ModelState.IsValid)
             {
 				List<AspNetUser> users = db.AspNetUsers.ToList();
-				AspNetUser user = users.FirstOrDefault(u => u.Id == accountId);
+				AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUsername);
 				Project project = user.Projects.FirstOrDefault(p => p.ID == model.ID);
 				project.Name = model.Name;
 				project.Manager = model.Manager;

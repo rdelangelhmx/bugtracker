@@ -67,7 +67,7 @@
                 {
                     <div class="ticket-comment">
                         <h3>
-                            <a href="@Url.Action("Show", "Account", new { id = item.AuthorId })">@item.Author</a>
+                            <a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a>
                         </h3>
                         <p>@item.Comment</p>
                     </div>

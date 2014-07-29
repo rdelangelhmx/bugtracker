@@ -26,7 +26,7 @@
                     <i class="fa fa-chevron-right list-group-chevron"></i>
                 </a>
 
-                <a href="@Url.Action("Index", "Projects", new { accountId = Model.UserId })" class="list-group-item">
+                <a href="@Url.Action("Index", "Projects", new { accountUsername = Model.UserName })" class="list-group-item">
                     <i class="fa fa-book"></i> &nbsp;&nbsp;Projects
 
                     <i class="fa fa-chevron-right list-group-chevron"></i>
@@ -39,7 +39,7 @@
                     <i class="fa fa-chevron-right list-group-chevron"></i>
                 </a>
 
-                <a href="javascript:;" class="list-group-item">
+                <a href="@Url.RouteUrl("userSettings")" class="list-group-item">
                     <i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
 
                     <i class="fa fa-chevron-right list-group-chevron"></i>

@@ -18,12 +18,12 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,800italic,400,600,800" type="text/css">
     <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css" />
     <link rel="stylesheet" href="~/js/libs/css/ui-lightness/jquery-ui-1.9.2.custom.css" type="text/css" />
 
     <link rel="stylesheet" href="~/css/App.css" type="text/css" />
-    <link href="~/css/multi-select.css" media="screen" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/css/multi-select.css" media="screen" type="text/css">
     <link rel="stylesheet" href="~/css/custom.css" type="text/css" />
 
     <link rel="stylesheet" href="~/Content/Site.css" type="text/css" />
@@ -84,7 +84,7 @@
                     @if (Request.IsAuthenticated)
                     {
                         <li class="">
-                            <a href="@Url.Action("Index", "Projects", new { accountId = User.Identity.GetUserId() })">
+                            <a href="@Url.Action("Index", "Projects", new { accountUserName = User.Identity.GetUserName() })">
                                 My Projects
                             </a>
                         </li>
@@ -132,15 +132,18 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    @*<script src="./js/libs/jquery-1.9.1.min.js"></script>*@
+    <!-- JQuery UI -->
     <script src="~/js/libs/jquery-ui-1.9.2.custom.min.js"></script>
-    @*<script src="./js/libs/bootstrap.min.js"></script>*@
 
     <!--  Plugins I added -->
     <script src="~/js/plugins/multiselect/jquery.multi-select.js"></script>
     <script src="~/js/timeAgo.js"></script>
 
+    <!-- App specific JS -->
     <script src="~/js/App.js"></script>
+
+    <!-- LogOut Javascript-->
+    @*@RenderSection("LogoutScript")*@
 
 </body>
 </html>
