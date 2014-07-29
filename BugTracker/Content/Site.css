@@ -41,3 +41,8 @@ textarea {
     display: inline-block;
     vertical-align: middle
 }
+
+.my-spinner {
+    margin: 0 auto;
+    text-align: center;
+}

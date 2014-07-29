@@ -18,10 +18,9 @@
 
             <br />
 
-            <div class="list-group">
-
+            <div id="profile-nav" class="list-group">
                 <a href="javascript:;" class="list-group-item">
-                    <i class="fa fa-asterisk"></i> &nbsp;&nbsp;Activity Feed
+                    <i class="fa fa-github"></i> &nbsp;&nbsp;Github Feed
 
                     <i class="fa fa-chevron-right list-group-chevron"></i>
                 </a>
@@ -31,18 +30,6 @@
 
                     <i class="fa fa-chevron-right list-group-chevron"></i>
                     <span class="badge">3</span>
-                </a>
-
-                <a href="javascript:;" class="list-group-item">
-                    <i class="fa fa-envelope"></i> &nbsp;&nbsp;Messages
-
-                    <i class="fa fa-chevron-right list-group-chevron"></i>
-                </a>
-
-                <a href="@Url.RouteUrl("userSettings")" class="list-group-item">
-                    <i class="fa fa-cog"></i> &nbsp;&nbsp;Settings
-
-                    <i class="fa fa-chevron-right list-group-chevron"></i>
                 </a>
             </div> <!-- /.list-group -->
 
@@ -74,10 +61,14 @@
 
             <br />
 
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec.</p>
-
-            <hr />
-
+            <div id="ajax-content">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+                    Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                    Donec quam felis, ultricies nec.
+                </p>
+            </div>
+           
             <br />
 
             <h3 class="heading">Social Feed</h3>
@@ -238,7 +229,6 @@
         </div>
 
     </div>
-
 </div>
 
 
@@ -277,6 +267,32 @@
 
     </div>
 </div>
+<!-- /.row -->
 
+@section scripts {
+<script>
+    $(document).ready(function() {
+        $("#profile-nav a").click(function (event) {
+            event.preventDefault();
 
-</div> <!-- /.row -->
+            //$("#ajax-content").empty().append("<div class='my-spinner'><i class='fa fa-spinner fa-spin fa-5x'></i></div>");
+            $("#profile-nav a").removeClass("active");
+            $(this).addClass("active");
+
+            $.ajax({
+                url: this.href,
+                dataType: 'json'
+            })
+            .done(function (jsonData) {
+                var header = "<h3>Projects</h3> <hr />";
+                var projectsList = "<ul>";
+                for (var i = 0; i < jsonData.length; i++) {
+                    projectsList += "<li><a href='#'>" + jsonData[i].Name + "</a> (Developer)</li>";
+                }
+                
+                $("#ajax-content").empty().append(header + projectsList);
+            });
+        });
+    });
+</script>
+}

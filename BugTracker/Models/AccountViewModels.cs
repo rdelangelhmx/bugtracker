@@ -157,4 +157,26 @@ namespace BugTracker.Models
 		public string RoleName { get; set; }
 		public string RoleId { get; set; }
 	}
+
+	public class UserProfileViewModel
+	{
+		public UserProfileViewModel() { }
+
+		public UserProfileViewModel(ApplicationUser user)
+			: this()
+		{
+			this.UserId = user.Id;
+			this.UserName = user.UserName;
+			this.Email = user.Email;
+		}
+
+		public string UserId { get; set; }
+
+		[Display(Name = "Username")]
+		public string UserName { get; set; }
+
+		[Display(Name = "Email")]
+		[EmailAddress]
+		public string Email { get; set; }
+	}
 }

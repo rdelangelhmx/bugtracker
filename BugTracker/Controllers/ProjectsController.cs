@@ -26,7 +26,15 @@ namespace BugTracker.Controllers
                 model.Add(new ProjectViewModel(item));
             }
 
-            return View(model);
+			if (Request.IsAjaxRequest())
+			{
+				return Json(model, JsonRequestBehavior.AllowGet);
+			}
+			else
+			{
+				return View(model);
+			}
+            
         }
 
         // GET: projects/5
