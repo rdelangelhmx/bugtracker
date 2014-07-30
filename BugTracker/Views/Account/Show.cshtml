@@ -71,7 +71,7 @@
            
             <br />
 
-            <h3 class="heading">Social Feed</h3>
+            @*<h3 class="heading">Social Feed</h3>
 
 
             <div class="feed-item feed-item-idea">
@@ -224,7 +224,7 @@
                     <a href="javascript:;" class="pull-right"><i class="fa fa-clock-o"></i> 2 days ago</a>
                 </div> <!-- /.feed-actions -->
 
-            </div> <!-- /.feed-item -->
+            </div> <!-- /.feed-item -->*@
 
         </div>
 
@@ -290,7 +290,7 @@
                     projectsList += "<li><a href='#'>" + jsonData[i].Name + "</a> (Developer)</li>";
                 }
                 
-                $("#ajax-content").empty().append(header + projectsList);
+                $("#ajax-content").empty().hide().append(header + projectsList).show('normal');
             });
         });
     });
