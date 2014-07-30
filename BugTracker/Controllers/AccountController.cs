@@ -19,6 +19,7 @@ namespace BugTracker.Controllers
 	public class AccountController : Controller
 	{
 		private ApplicationUserManager _userManager;
+		private BugTrackerEntities1 db = new BugTrackerEntities1();
 
 		public AccountController()
 		{
@@ -45,306 +46,23 @@ namespace BugTracker.Controllers
 		// GET: /Account/ListUsers
 		public ActionResult Index()
 		{
-			var Db = new ApplicationDbContext();
+			List<AspNetUser> users = db.AspNetUsers.ToList();
 
-			var users = Db.Users;
 			var model = new List<EditUserViewModel>();
-
 			foreach (var user in users)
 			{
 				var u = new EditUserViewModel(user);
 				model.Add(u);
 			}
-
 			return View(model);
 		}
 
 		public ActionResult Show(string username)
 		{
-			ApplicationUser user = UserManager.FindByName(username);
+			//ApplicationUser user = UserManager.FindByName(username);
+			AspNetUser user = db.AspNetUsers.FirstOrDefault(u => u.UserName == username);
 			EditUserViewModel model = new EditUserViewModel(user);
 
-			return View(model);
-		}
-
-		//
-		// GET: /Account/Create
-		public ActionResult New()
-		{
-			return View();
-		}
-
-		//
-		// POST: /Account/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create(RegisterViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser user = model.GetUser();
-				if (user.UserName == null)
-				{
-					user.UserName = user.Email;
-				}
-
-				IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/Edit/5
-		public ActionResult Edit(string username)
-		{
-			//var Db = new ApplicationDbContext();
-			////var user = Db.Users.FirstOrDefault(m => m.UserName == username);
-			ApplicationUser user = UserManager.FindByName(username);
-
-			return View(new EditUserViewModel(user));
-		}
-
-		//
-		// POST: /Account/Edit/5
-		[HttpPut]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Update(string UserId, EditUserViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = await UserManager.FindByIdAsync(model.UserId);
-				user.UserName = model.UserName;
-				user.Email = model.Email;
-
-				var result = await UserManager.UpdateAsync(user);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-			var errors = ModelState.Values.SelectMany(v => v.Errors);
-			// If we got this far, something failed, redisplay form
-			TempData["message"] = "Something went wrong!";
-			return View(model);
-		}
-
-		//
-		// GET: /Account/Delete/:id
-		public ActionResult Delete(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var user = Db.Users.FirstOrDefault(m => m.Id == id);
-
-			return View(new EditUserViewModel(user));
-		}
-
-		//
-		// POST: /Account/Delete/:id
-		[HttpDelete]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Destroy(EditUserViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = await UserManager.FindByIdAsync(model.UserId);
-				var result = await UserManager.DeleteAsync(user);
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay the view
-			return View(model);
-		}
-
-		// GET: /Account/ListRoles
-		public ActionResult ListRoles()
-		{
-			var Db = new ApplicationDbContext(); // Create database instance
-			var roles = Db.Roles; // Return list of IdentityRole objects
-			var model = new List<RolesViewModel>();
-
-			foreach (var item in roles)
-			{
-				var r = new RolesViewModel(item);
-				model.Add(r);
-			}
-
-			return View(model);
-		}
-
-		//
-		// GET: /Account/CreateRole
-		public ActionResult CreateRole()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		//[Authorize(Roles = "Administrator")]
-		[ValidateAntiForgeryToken]
-		public ActionResult CreateRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-				var result = rm.Create(new IdentityRole(model.RoleName));
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/EditRole/:id
-		public ActionResult EditRole(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var role = Db.Roles.FirstOrDefault(m => m.Id == id);
-
-			return View(new RolesViewModel(role));
-		}
-
-		//
-		// POST: /Account/EditRole/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> EditRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-
-				var role = await rm.FindByIdAsync(model.RoleId);
-				role.Name = model.RoleName;
-
-				var result = await rm.UpdateAsync(role);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/DeleteRole/:id
-		public ActionResult DeleteRole(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var role = Db.Roles.FirstOrDefault(m => m.Id == id);
-
-			return View(new RolesViewModel(role));
-		}
-
-		//
-		// POST: /Account/DeleteRole/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> DeleteRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-				var role = await rm.FindByIdAsync(model.RoleId);
-				var result = await rm.DeleteAsync(role);
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we get this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/UserRoles/:id
-		public ActionResult UserRoles(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var user = Db.Users.FirstOrDefault(m => m.Id == id);
-
-
-			return View(new AssignUsersViewModel(user));
-		}
-
-		//
-		// POST: /Account/UserRoles/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> UserRoles(AssignUsersViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = await UserManager.FindByIdAsync(model.Id);
-				user.Roles.Clear();
-
-				foreach (var item in model.ItemList) // iterate through the list of SelectUserViewModel objects
-				{
-					if (item.Selected)
-					{
-						IdentityUserRole userRole = new IdentityUserRole();
-						userRole.UserId = user.Id;
-						userRole.RoleId = item.Id;
-
-						user.Roles.Add(userRole);
-					}
-				}
-
-				var request = await UserManager.UpdateAsync(user);
-
-				if (request.Succeeded)
-				{
-					return RedirectToAction("Index", "Account", new { id = user.Id });
-				}
-				else
-				{
-					AddErrors(request);
-				}
-			}
-
-			// If we got this far, something failed, redisplay view
 			return View(model);
 		}
 

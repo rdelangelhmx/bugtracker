@@ -62,6 +62,12 @@ namespace BugTracker.Models
 		[RegularExpression(@"^[a-zA-Z0-9]*$")]
 		public string UserName { get; set; }
 
+		[Display(Name = "First Name")]
+		public string FirstName { get; set; }
+
+		[Display(Name = "Last Name")]
+		public string LastName { get; set; }
+
 		[Required]
 		[EmailAddress]
 		[Display(Name = "Email")]
@@ -79,12 +85,14 @@ namespace BugTracker.Models
 		public string ConfirmPassword { get; set; }
 
 		// Return a pre-populated instance of ApplicationUser;
-		public ApplicationUser GetUser()
+		public AspNetUser GetUser()
 		{
-			var user = new ApplicationUser()
+			var user = new AspNetUser()
 			{
 				UserName = this.UserName,
-				Email = this.Email,
+				FirstName = this.FirstName,
+				LastName = this.LastName,
+				Email = this.Email
 			};
 			this.UserId = user.Id;
 			return user;
@@ -124,12 +132,15 @@ namespace BugTracker.Models
 	{
 		public EditUserViewModel() { }
 
-		public EditUserViewModel(ApplicationUser user)
-			: this()
+		public EditUserViewModel(AspNetUser user) : this()
 		{
 			this.UserId = user.Id;
 			this.UserName = user.UserName;
+			this.FirstName = user.FirstName;
+			this.LastName = user.LastName;
 			this.Email = user.Email;
+			this.Website = user.Website;
+			this.About = user.About;
 		}
 
 		public string UserId { get; set; }
@@ -137,9 +148,21 @@ namespace BugTracker.Models
 		[Display(Name = "Username")]
 		public string UserName { get; set; }
 
-		[Display(Name = "Email")]
+		[Display(Name = "First Name")]
+		public string FirstName { get; set; }
+
+		[Display(Name = "Last Name")]
+		public string LastName { get; set; }
+
+		[Display(Name = "Email Address")]
 		[EmailAddress]
 		public string Email { get; set; }
+
+		[Display(Name = "Website")]
+		public string Website { get; set; }
+
+		[Display(Name = "About You")]
+		public string About { get; set; }
 	}
 
 	public class RolesViewModel
@@ -162,8 +185,7 @@ namespace BugTracker.Models
 	{
 		public UserProfileViewModel() { }
 
-		public UserProfileViewModel(ApplicationUser user)
-			: this()
+		public UserProfileViewModel(ApplicationUser user) : this()
 		{
 			this.UserId = user.Id;
 			this.UserName = user.UserName;
@@ -178,5 +200,11 @@ namespace BugTracker.Models
 		[Display(Name = "Email")]
 		[EmailAddress]
 		public string Email { get; set; }
+	}
+
+	public class UserSettingsViewModel
+	{
+		public EditUserViewModel EditUserViewModel { get; set; }
+		public ManageUserViewModel ManageUserViewModel { get; set; }
 	}
 }

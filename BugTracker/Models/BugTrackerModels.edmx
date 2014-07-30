@@ -55,6 +55,11 @@
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="256" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="256" />
+          <Property Name="Website" Type="nvarchar(max)" />
+          <Property Name="About" Type="nvarchar(max)" />
+          <Property Name="AvatarFilePath" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Projects">
           <Key>
@@ -519,8 +524,8 @@
           <Property Name="DataFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Created" Type="DateTimeOffset" Nullable="false" Precision="0" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketAttachments_AspNetUsers" FromRole="TicketAttachment" ToRole="AspNetUser" />
           <NavigationProperty Name="Ticket" Relationship="BugTrackerModel.FK_TicketAttachments_Tickets" FromRole="TicketAttachment" ToRole="Ticket" />
+          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketAttachments_AspNetUsers" FromRole="TicketAttachment" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="TicketComment">
           <Key>
@@ -531,8 +536,8 @@
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Created" Type="DateTimeOffset" Nullable="false" Precision="0" />
           <Property Name="TicketID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketComments_AspNetUsers" FromRole="TicketComment" ToRole="AspNetUser" />
           <NavigationProperty Name="Ticket" Relationship="BugTrackerModel.FK_TicketComments_Tickets" FromRole="TicketComment" ToRole="Ticket" />
+          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketComments_AspNetUsers" FromRole="TicketComment" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="TicketHistory">
           <Key>
@@ -545,8 +550,8 @@
           <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Changed" Type="DateTimeOffset" Nullable="false" Precision="0" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketHistory_AspNetUsers" FromRole="TicketHistory" ToRole="AspNetUser" />
           <NavigationProperty Name="Ticket" Relationship="BugTrackerModel.FK_TicketHistory_Tickets" FromRole="TicketHistory" ToRole="Ticket" />
+          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketHistory_AspNetUsers" FromRole="TicketHistory" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="TicketNotification">
           <Key>
@@ -555,8 +560,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TicketID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketNotifications_AspNetUsers" FromRole="TicketNotification" ToRole="AspNetUser" />
           <NavigationProperty Name="Ticket" Relationship="BugTrackerModel.FK_TicketNotifications_Tickets" FromRole="TicketNotification" ToRole="Ticket" />
+          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_TicketNotifications_AspNetUsers" FromRole="TicketNotification" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="TicketPriority">
           <Key>
@@ -593,35 +598,6 @@
           <EntitySet Name="AspNetRoles" EntityType="BugTrackerModel.AspNetRole" />
           <EntitySet Name="AspNetUserClaims" EntityType="BugTrackerModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="BugTrackerModel.AspNetUserLogin" />
-          <EntitySet Name="AspNetUsers" EntityType="BugTrackerModel.AspNetUser" />
-          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="BugTrackerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
-          </AssociationSet>
-          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="BugTrackerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketAttachments_AspNetUsers" Association="BugTrackerModel.FK_TicketAttachments_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="TicketAttachment" EntitySet="TicketAttachments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketComments_AspNetUsers" Association="BugTrackerModel.FK_TicketComments_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="TicketComment" EntitySet="TicketComments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketHistory_AspNetUsers" Association="BugTrackerModel.FK_TicketHistory_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="TicketHistory" EntitySet="TicketHistories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TicketNotifications_AspNetUsers" Association="BugTrackerModel.FK_TicketNotifications_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="TicketNotification" EntitySet="TicketNotifications" />
-          </AssociationSet>
-          <AssociationSet Name="AspNetUserRoles" Association="BugTrackerModel.AspNetUserRoles">
-            <End Role="AspNetRole" EntitySet="AspNetRoles" />
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-          </AssociationSet>
           <EntitySet Name="Tickets" EntityType="BugTrackerModel.Ticket" />
           <AssociationSet Name="FK_TicketAttachments_Tickets" Association="BugTrackerModel.FK_TicketAttachments_Tickets">
             <End Role="Ticket" EntitySet="Tickets" />
@@ -651,18 +627,47 @@
             <End Role="TicketType" EntitySet="TicketTypes" />
             <End Role="Ticket" EntitySet="Tickets" />
           </AssociationSet>
-          <AssociationSet Name="TicketsUsers" Association="BugTrackerModel.TicketsUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Ticket" EntitySet="Tickets" />
-          </AssociationSet>
           <EntitySet Name="Projects" EntityType="BugTrackerModel.Project" />
           <AssociationSet Name="FK_Tickets_Projects" Association="BugTrackerModel.FK_Tickets_Projects">
             <End Role="Project" EntitySet="Projects" />
             <End Role="Ticket" EntitySet="Tickets" />
           </AssociationSet>
+          <EntitySet Name="AspNetUsers" EntityType="BugTrackerModel.AspNetUser" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="BugTrackerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="BugTrackerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketAttachments_AspNetUsers" Association="BugTrackerModel.FK_TicketAttachments_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TicketAttachment" EntitySet="TicketAttachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketComments_AspNetUsers" Association="BugTrackerModel.FK_TicketComments_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TicketComment" EntitySet="TicketComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketHistory_AspNetUsers" Association="BugTrackerModel.FK_TicketHistory_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TicketHistory" EntitySet="TicketHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketNotifications_AspNetUsers" Association="BugTrackerModel.FK_TicketNotifications_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="TicketNotification" EntitySet="TicketNotifications" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="BugTrackerModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
           <AssociationSet Name="ProjectUsers" Association="BugTrackerModel.ProjectUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+          <AssociationSet Name="TicketsUsers" Association="BugTrackerModel.TicketsUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Ticket" EntitySet="Tickets" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="AspNetRole">
@@ -694,112 +699,6 @@
           <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
         </EntityType>
-        <EntityType Name="AspNetUser">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
-          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="AspNetUserClaims" Relationship="BugTrackerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
-          <NavigationProperty Name="AspNetUserLogins" Relationship="BugTrackerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
-          <NavigationProperty Name="TicketAttachments" Relationship="BugTrackerModel.FK_TicketAttachments_AspNetUsers" FromRole="AspNetUser" ToRole="TicketAttachment" />
-          <NavigationProperty Name="TicketComments" Relationship="BugTrackerModel.FK_TicketComments_AspNetUsers" FromRole="AspNetUser" ToRole="TicketComment" />
-          <NavigationProperty Name="TicketHistories" Relationship="BugTrackerModel.FK_TicketHistory_AspNetUsers" FromRole="AspNetUser" ToRole="TicketHistory" />
-          <NavigationProperty Name="TicketNotifications" Relationship="BugTrackerModel.FK_TicketNotifications_AspNetUsers" FromRole="AspNetUser" ToRole="TicketNotification" />
-          <NavigationProperty Name="AspNetRoles" Relationship="BugTrackerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
-          <NavigationProperty Name="Tickets" Relationship="BugTrackerModel.TicketsUsers" FromRole="AspNetUser" ToRole="Ticket" />
-          <NavigationProperty Name="Projects" Relationship="BugTrackerModel.ProjectUsers" FromRole="AspNetUser" ToRole="Project" />
-        </EntityType>
-        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="BugTrackerModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserClaim">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="BugTrackerModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="AspNetUserLogin">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketAttachments_AspNetUsers">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="BugTrackerModel.TicketAttachment" Role="TicketAttachment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TicketAttachment">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketComments_AspNetUsers">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="BugTrackerModel.TicketComment" Role="TicketComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TicketComment">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketHistory_AspNetUsers">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="BugTrackerModel.TicketHistory" Role="TicketHistory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TicketHistory">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TicketNotifications_AspNetUsers">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="BugTrackerModel.TicketNotification" Role="TicketNotification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TicketNotification">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AspNetUserRoles">
-          <End Type="BugTrackerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
-        </Association>
         <EntityType Name="Ticket">
           <Key>
             <PropertyRef Name="ID" />
@@ -822,8 +721,8 @@
           <NavigationProperty Name="TicketPriority" Relationship="BugTrackerModel.FK_Tickets_TicketPriorities" FromRole="Ticket" ToRole="TicketPriority" />
           <NavigationProperty Name="TicketStatus" Relationship="BugTrackerModel.FK_Tickets_TicketStatuses" FromRole="Ticket" ToRole="TicketStatus" />
           <NavigationProperty Name="TicketType" Relationship="BugTrackerModel.FK_Tickets_TicketTypes" FromRole="Ticket" ToRole="TicketType" />
-          <NavigationProperty Name="AspNetUsers" Relationship="BugTrackerModel.TicketsUsers" FromRole="Ticket" ToRole="AspNetUser" />
           <NavigationProperty Name="Project" Relationship="BugTrackerModel.FK_Tickets_Projects" FromRole="Ticket" ToRole="Project" />
+          <NavigationProperty Name="AspNetUsers" Relationship="BugTrackerModel.TicketsUsers" FromRole="Ticket" ToRole="AspNetUser" />
         </EntityType>
         <Association Name="FK_TicketAttachments_Tickets">
           <End Type="BugTrackerModel.Ticket" Role="Ticket" Multiplicity="1" />
@@ -909,10 +808,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="TicketsUsers">
-          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
-          <End Type="BugTrackerModel.Ticket" Role="Ticket" Multiplicity="*" />
-        </Association>
         <EntityType Name="Project">
           <Key>
             <PropertyRef Name="ID" />
@@ -936,9 +831,124 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="About" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AvatarFilePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="BugTrackerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="BugTrackerModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="TicketAttachments" Relationship="BugTrackerModel.FK_TicketAttachments_AspNetUsers" FromRole="AspNetUser" ToRole="TicketAttachment" />
+          <NavigationProperty Name="TicketComments" Relationship="BugTrackerModel.FK_TicketComments_AspNetUsers" FromRole="AspNetUser" ToRole="TicketComment" />
+          <NavigationProperty Name="TicketHistories" Relationship="BugTrackerModel.FK_TicketHistory_AspNetUsers" FromRole="AspNetUser" ToRole="TicketHistory" />
+          <NavigationProperty Name="TicketNotifications" Relationship="BugTrackerModel.FK_TicketNotifications_AspNetUsers" FromRole="AspNetUser" ToRole="TicketNotification" />
+          <NavigationProperty Name="AspNetRoles" Relationship="BugTrackerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <NavigationProperty Name="Projects" Relationship="BugTrackerModel.ProjectUsers" FromRole="AspNetUser" ToRole="Project" />
+          <NavigationProperty Name="Tickets" Relationship="BugTrackerModel.TicketsUsers" FromRole="AspNetUser" ToRole="Ticket" />
+        </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="BugTrackerModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="BugTrackerModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketAttachments_AspNetUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="BugTrackerModel.TicketAttachment" Role="TicketAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TicketAttachment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketComments_AspNetUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="BugTrackerModel.TicketComment" Role="TicketComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TicketComment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketHistory_AspNetUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="BugTrackerModel.TicketHistory" Role="TicketHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TicketHistory">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketNotifications_AspNetUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="BugTrackerModel.TicketNotification" Role="TicketNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TicketNotification">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Type="BugTrackerModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
         <Association Name="ProjectUsers">
           <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
           <End Type="BugTrackerModel.Project" Role="Project" Multiplicity="*" />
+        </Association>
+        <Association Name="TicketsUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+          <End Type="BugTrackerModel.Ticket" Role="Ticket" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1042,9 +1052,41 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Tickets">
+            <EntityTypeMapping TypeName="BugTrackerModel.Ticket">
+              <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
+                <ScalarProperty Name="PriorityID" ColumnName="PriorityID" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="AssigneeID" ColumnName="AssigneeID" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="SubmitterID" ColumnName="SubmitterID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="BugTrackerModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="Creator" ColumnName="Creator" />
+                <ScalarProperty Name="Manager" ColumnName="Manager" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="BugTrackerModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="AvatarFilePath" ColumnName="AvatarFilePath" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="Website" ColumnName="Website" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
@@ -1068,44 +1110,17 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Tickets">
-            <EntityTypeMapping TypeName="BugTrackerModel.Ticket">
-              <MappingFragment StoreEntitySet="Tickets">
-                <ScalarProperty Name="StatusID" ColumnName="StatusID" />
-                <ScalarProperty Name="PriorityID" ColumnName="PriorityID" />
-                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
-                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
-                <ScalarProperty Name="AssigneeID" ColumnName="AssigneeID" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="Created" ColumnName="Created" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="SubmitterID" ColumnName="SubmitterID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="TicketsUsers" TypeName="BugTrackerModel.TicketsUsers" StoreEntitySet="TicketsUsers">
-            <EndProperty Name="Ticket">
-              <ScalarProperty Name="ID" ColumnName="TicketID" />
+          <AssociationSetMapping Name="ProjectUsers" TypeName="BugTrackerModel.ProjectUsers" StoreEntitySet="ProjectUsers">
+            <EndProperty Name="Project">
+              <ScalarProperty Name="ID" ColumnName="ProjectID" />
             </EndProperty>
             <EndProperty Name="AspNetUser">
               <ScalarProperty Name="Id" ColumnName="UserID" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Projects">
-            <EntityTypeMapping TypeName="BugTrackerModel.Project">
-              <MappingFragment StoreEntitySet="Projects">
-                <ScalarProperty Name="Creator" ColumnName="Creator" />
-                <ScalarProperty Name="Manager" ColumnName="Manager" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="ProjectUsers" TypeName="BugTrackerModel.ProjectUsers" StoreEntitySet="ProjectUsers">
-            <EndProperty Name="Project">
-              <ScalarProperty Name="ID" ColumnName="ProjectID" />
+          <AssociationSetMapping Name="TicketsUsers" TypeName="BugTrackerModel.TicketsUsers" StoreEntitySet="TicketsUsers">
+            <EndProperty Name="Ticket">
+              <ScalarProperty Name="ID" ColumnName="TicketID" />
             </EndProperty>
             <EndProperty Name="AspNetUser">
               <ScalarProperty Name="Id" ColumnName="UserID" />

@@ -285,11 +285,13 @@
             })
             .done(function (jsonData) {
                 var header = "<h3>Projects</h3> <hr />";
+
                 var projectsList = "<ul>";
                 for (var i = 0; i < jsonData.length; i++) {
                     projectsList += "<li><a href='#'>" + jsonData[i].Name + "</a> (Developer)</li>";
                 }
-                
+                projectsList += "</ul>";
+
                 $("#ajax-content").empty().hide().append(header + projectsList).show('normal');
             });
         });
