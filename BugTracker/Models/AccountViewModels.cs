@@ -58,6 +58,7 @@ namespace BugTracker.Models
 	{
 		public string UserId { get; set; }
 
+		[Required]
 		[Display(Name = "Username")]
 		[RegularExpression(@"^[a-zA-Z0-9]*$")]
 		public string UserName { get; set; }
@@ -85,13 +86,11 @@ namespace BugTracker.Models
 		public string ConfirmPassword { get; set; }
 
 		// Return a pre-populated instance of ApplicationUser;
-		public AspNetUser GetUser()
+		public ApplicationUser GetUser()
 		{
-			var user = new AspNetUser()
+			var user = new ApplicationUser()
 			{
 				UserName = this.UserName,
-				FirstName = this.FirstName,
-				LastName = this.LastName,
 				Email = this.Email
 			};
 			this.UserId = user.Id;
@@ -204,6 +203,18 @@ namespace BugTracker.Models
 
 	public class UserSettingsViewModel
 	{
+
+		public UserSettingsViewModel() 
+		{
+			EditUserViewModel = new EditUserViewModel();
+		}
+
+		public UserSettingsViewModel(EditUserViewModel editUserViewModel, ManageUserViewModel manageUserViewModel)
+		{
+			EditUserViewModel = editUserViewModel;
+			ManageUserViewModel = manageUserViewModel;
+		}
+
 		public EditUserViewModel EditUserViewModel { get; set; }
 		public ManageUserViewModel ManageUserViewModel { get; set; }
 	}

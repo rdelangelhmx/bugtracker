@@ -1,4 +1,6 @@
-﻿@using BugTracker.Models;
+﻿@model BugTracker.Models.UserSettingsViewModel
+
+@using BugTracker.Models;
 @using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Account Settings";
@@ -40,97 +42,10 @@
 
         <div class="tab-content stacked-content">
             <div class="tab-pane fade in active" id="profile-tab">
-
-                <h3 class="">Edit Profile Settings</h3>
-
-                <hr />
-
-                <br />
-
-                <form action="./page-settings.html" class="form-horizontal">
-
-
-
-                    <div class="form-group">
-
-                        <label class="col-md-3">Avatar</label>
-
-                        <div class="col-md-7">
-                            <div class="">
-                                <div class="thumbnail" style="width: 180px; height: 180px;"><img src="~/img/avatars/adam.jpeg" alt="Profile Avatar" /></div>
-                                <div class="btn btn-default btn-file">
-                                    <input type="file" />
-                                </div>
-                            </div>
-                        </div> <!-- /.col -->
-
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-
-                        <label class="col-md-3">Username</label>
-
-                        <div class="col-md-7">
-                            <!-- Username input box (disabled) -->
-                        </div> <!-- /.col -->
-
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-md-3">First Name</label>
-                        <div class="col-md-7">
-                            <!-- First Name input box -->
-                        </div> <!-- /.col -->
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-md-3">Last Name</label>
-                        <div class="col-md-7">
-                            <!-- Last Name input box -->
-                        </div> <!-- /.col -->
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-
-                        <label class="col-md-3">Email Address</label>
-
-                        <div class="col-md-7">
-                            <!-- Email address input box-->
-                        </div> <!-- /.col -->
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-md-3">Website</label>
-                        <div class="col-md-7">
-                            <!-- "Website" Input Box -->
-                        </div> <!-- /.col -->
-                    </div> <!-- /.form-group -->
-
-                    <div class="form-group">
-                        <label class="col-md-3">About You</label>
-                        <div class="col-md-7">
-                            <!-- "About You" textarea  goes here -->
-                        </div> <!-- /.col -->
-                    </div> <!-- /.form-group -->
-
-                    <br />
-
-                    <div class="form-group">
-
-                        <div class="col-md-7 col-md-push-3">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                            &nbsp;
-                            <button type="reset" class="btn btn-default">Cancel</button>
-                        </div> <!-- /.col -->
-
-                    </div> <!-- /.form-group -->
-
-                </form>
-
-
+                @Html.Partial("_UserSettingsPartial", Model.EditUserViewModel)
             </div>
             <div class="tab-pane fade" id="password-tab">
-                @Html.Partial("_ChangePasswordPartial")
+                @Html.Partial("_ChangePasswordPartial", Model.ManageUserViewModel)
             </div>
 
             <div class="tab-pane fade" id="messaging">
