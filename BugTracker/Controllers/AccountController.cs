@@ -67,6 +67,32 @@ namespace BugTracker.Controllers
 			return View(model);
 		}
 
+		//
+		// PUT: users/{username}
+		[HttpPut]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Update(string username, EditUserViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = db.AspNetUsers.FirstOrDefault(u => u.UserName == username);
+				user.FirstName = model.FirstName;
+				user.LastName = model.LastName;
+				user.Email = model.Email;
+				user.Website = model.Website;
+				user.About = model.About;
+
+				db.Entry(user).State = EntityState.Modified;
+				await db.SaveChangesAsync();
+
+				return RedirectToAction("Manage", new { username = username });
+			}
+
+			// If we got this far, something failed, redisplay form
+			TempData["message"] = "Something went wrong!";
+			return View("Manage", model);
+		}
+
 		// GET: /Account/Login
 		[AllowAnonymous]
 		public ActionResult Login(string returnUrl)

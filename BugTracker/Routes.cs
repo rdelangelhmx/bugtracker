@@ -18,7 +18,7 @@ namespace BugTracker
 			{
 				accounts.As("users");
 				accounts.IdParameter("username");
-				accounts.Only("Show", "Edit", "Update");
+				accounts.Only("Show", "Update");
 
 				accounts.Resources<ProjectsController>(projects =>
 				{

@@ -6,29 +6,36 @@
 
 <br />
 
-<form action="./page-settings.html" class="form-horizontal">
+@using (@Html.BeginForm("Update", "Account", new { username = Model.UserName }, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
     <div class="form-group">
-
         <label class="col-md-3">Avatar</label>
-
         <div class="col-md-7">
-            <div class="">
-                <div class="thumbnail" style="width: 180px; height: 180px;"><img src="~/img/avatars/adam.jpeg" alt="Profile Avatar" /></div>
-                <div class="btn btn-default btn-file">
-                    <input type="file" />
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div class="fileupload-new thumbnail" style="width: 180px; height: 180px;"><img src="~/img/avatars/adam.jpeg" alt="Profile Avatar" /></div>
+                <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+                <div>
+                    <span class="btn btn-default btn-file">
+                        <span class="fileupload-new">Select image</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input type="file" />
+                    </span>
+                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
                 </div>
             </div>
         </div> <!-- /.col -->
 
     </div> <!-- /.form-group -->
-
     <div class="form-group">
 
         <label class="col-md-3">Username</label>
 
         <div class="col-md-7">
             <!-- Username input box (disabled) -->
-            @Html.TextBoxFor(m => m.UserName, new { disabled="disabled", @class="form-control" }) 
+            @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control" })
         </div> <!-- /.col -->
 
     </div> <!-- /.form-group -->
@@ -71,7 +78,7 @@
         <label class="col-md-3">About You</label>
         <div class="col-md-7">
             <!-- "About You" textarea  goes here -->
-            @Html.TextBoxFor(m => m.About, new { @class = "form-control" })
+            @Html.TextAreaFor(m => m.About, new { @class = "form-control" })
         </div> <!-- /.col -->
     </div> <!-- /.form-group -->
 
@@ -86,5 +93,4 @@
         </div> <!-- /.col -->
 
     </div> <!-- /.form-group -->
-
-</form>
+}
