@@ -12,6 +12,8 @@ using Microsoft.Owin.Security;
 using Owin;
 using BugTracker.Models;
 using System.Net;
+using System.Data.Entity;
+using System.IO;
 
 namespace BugTracker.Controllers
 {
@@ -19,6 +21,7 @@ namespace BugTracker.Controllers
 	public class AccountController : Controller
 	{
 		private ApplicationUserManager _userManager;
+		private BugTrackerEntities1 db = new BugTrackerEntities1();
 
 		public AccountController()
 		{
@@ -45,307 +48,65 @@ namespace BugTracker.Controllers
 		// GET: /Account/ListUsers
 		public ActionResult Index()
 		{
-			var Db = new ApplicationDbContext();
+			List<AspNetUser> users = db.AspNetUsers.ToList();
 
-			var users = Db.Users;
 			var model = new List<EditUserViewModel>();
-
 			foreach (var user in users)
 			{
 				var u = new EditUserViewModel(user);
 				model.Add(u);
 			}
-
 			return View(model);
 		}
 
 		public ActionResult Show(string username)
 		{
-			ApplicationUser user = UserManager.FindByName(username);
+			//ApplicationUser user = UserManager.FindByName(username);
+			AspNetUser user = db.AspNetUsers.FirstOrDefault(u => u.UserName == username);
 			EditUserViewModel model = new EditUserViewModel(user);
 
 			return View(model);
 		}
 
 		//
-		// GET: /Account/Create
-		public ActionResult New()
-		{
-			return View();
-		}
-
-		//
-		// POST: /Account/Create
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Create(RegisterViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				ApplicationUser user = model.GetUser();
-				if (user.UserName == null)
-				{
-					user.UserName = user.Email;
-				}
-
-				IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/Edit/5
-		public ActionResult Edit(string username)
-		{
-			//var Db = new ApplicationDbContext();
-			////var user = Db.Users.FirstOrDefault(m => m.UserName == username);
-			ApplicationUser user = UserManager.FindByName(username);
-
-			return View(new EditUserViewModel(user));
-		}
-
-		//
-		// POST: /Account/Edit/5
+		// PUT: users/{username}
 		[HttpPut]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Update(string UserId, EditUserViewModel model)
+		public async Task<ActionResult> Update(string username, EditUserViewModel model, HttpPostedFileBase AvatarFile)
 		{
 			if (ModelState.IsValid)
 			{
-				var user = await UserManager.FindByIdAsync(model.UserId);
-				user.UserName = model.UserName;
+				var user = db.AspNetUsers.FirstOrDefault(u => u.UserName == username);
+				user.FirstName = model.FirstName;
+				user.LastName = model.LastName;
 				user.Email = model.Email;
+				user.Website = model.Website;
+				user.About = model.About;
 
-				var result = await UserManager.UpdateAsync(user);
-				if (result.Succeeded)
+				if ((AvatarFile != null) && (AvatarFile.ContentLength > 0) && !String.IsNullOrEmpty(AvatarFile.FileName))
 				{
-					return RedirectToAction("Index");
+					string FileName = AvatarFile.FileName;
+					string FileContentType = AvatarFile.ContentType;
+					//byte[] FileBytes = new byte[AvatarFile.ContentLength];
+					//AvatarFile.InputStream.Read(FileBytes, 0, Convert.ToInt32(AvatarFile.ContentLength));
+
+					// Finally save file bytes to a folder on disk!
+					string AvatarFilePath = Path.Combine(Server.MapPath("~\\img\\avatars\\"), FileName);
+					AvatarFile.SaveAs(AvatarFilePath);
+
+					// Assign Avatar file path to user model
+					user.AvatarFilePath = AvatarFilePath;
 				}
-				else
-				{
-					AddErrors(result);
-				}
+
+				db.Entry(user).State = EntityState.Modified;
+				await db.SaveChangesAsync();
+
+				return RedirectToAction("Manage", new { username = username });
 			}
-			var errors = ModelState.Values.SelectMany(v => v.Errors);
+
 			// If we got this far, something failed, redisplay form
 			TempData["message"] = "Something went wrong!";
-			return View(model);
-		}
-
-		//
-		// GET: /Account/Delete/:id
-		public ActionResult Delete(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var user = Db.Users.FirstOrDefault(m => m.Id == id);
-
-			return View(new EditUserViewModel(user));
-		}
-
-		//
-		// POST: /Account/Delete/:id
-		[HttpDelete]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Destroy(EditUserViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = await UserManager.FindByIdAsync(model.UserId);
-				var result = await UserManager.DeleteAsync(user);
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Index");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay the view
-			return View(model);
-		}
-
-		// GET: /Account/ListRoles
-		public ActionResult ListRoles()
-		{
-			var Db = new ApplicationDbContext(); // Create database instance
-			var roles = Db.Roles; // Return list of IdentityRole objects
-			var model = new List<RolesViewModel>();
-
-			foreach (var item in roles)
-			{
-				var r = new RolesViewModel(item);
-				model.Add(r);
-			}
-
-			return View(model);
-		}
-
-		//
-		// GET: /Account/CreateRole
-		public ActionResult CreateRole()
-		{
-			return View();
-		}
-
-		[HttpPost]
-		//[Authorize(Roles = "Administrator")]
-		[ValidateAntiForgeryToken]
-		public ActionResult CreateRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-				var result = rm.Create(new IdentityRole(model.RoleName));
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/EditRole/:id
-		public ActionResult EditRole(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var role = Db.Roles.FirstOrDefault(m => m.Id == id);
-
-			return View(new RolesViewModel(role));
-		}
-
-		//
-		// POST: /Account/EditRole/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> EditRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-
-				var role = await rm.FindByIdAsync(model.RoleId);
-				role.Name = model.RoleName;
-
-				var result = await rm.UpdateAsync(role);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we got this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/DeleteRole/:id
-		public ActionResult DeleteRole(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var role = Db.Roles.FirstOrDefault(m => m.Id == id);
-
-			return View(new RolesViewModel(role));
-		}
-
-		//
-		// POST: /Account/DeleteRole/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> DeleteRole(RolesViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
-				var role = await rm.FindByIdAsync(model.RoleId);
-				var result = await rm.DeleteAsync(role);
-
-				if (result.Succeeded)
-				{
-					return RedirectToAction("ListRoles");
-				}
-				else
-				{
-					AddErrors(result);
-				}
-			}
-
-			// If we get this far, something failed, redisplay form
-			return View(model);
-		}
-
-		//
-		// GET: /Account/UserRoles/:id
-		public ActionResult UserRoles(string id)
-		{
-			var Db = new ApplicationDbContext();
-			var user = Db.Users.FirstOrDefault(m => m.Id == id);
-
-
-			return View(new AssignUsersViewModel(user));
-		}
-
-		//
-		// POST: /Account/UserRoles/:id
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> UserRoles(AssignUsersViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var user = await UserManager.FindByIdAsync(model.Id);
-				user.Roles.Clear();
-
-				foreach (var item in model.ItemList) // iterate through the list of SelectUserViewModel objects
-				{
-					if (item.Selected)
-					{
-						IdentityUserRole userRole = new IdentityUserRole();
-						userRole.UserId = user.Id;
-						userRole.RoleId = item.Id;
-
-						user.Roles.Add(userRole);
-					}
-				}
-
-				var request = await UserManager.UpdateAsync(user);
-
-				if (request.Succeeded)
-				{
-					return RedirectToAction("Index", "Account", new { id = user.Id });
-				}
-				else
-				{
-					AddErrors(request);
-				}
-			}
-
-			// If we got this far, something failed, redisplay view
-			return View(model);
+			return View("Manage", model);
 		}
 
 		// GET: /Account/Login
@@ -413,27 +174,30 @@ namespace BugTracker.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = model.GetUser(); // Gets user object created from submitted form data held in 'model'
-				if (user.UserName == null)
-				{
-					user.UserName = user.Email;
-				}
-				IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+				ApplicationUser applicationUser = model.GetUser(); // Gets user object created from submitted form data held in 'model'
+
+				IdentityResult result = await UserManager.CreateAsync(applicationUser, model.Password);
 				if (result.Succeeded)
 				{
+					AspNetUser user = db.AspNetUsers.FirstOrDefault(u => u.Id == applicationUser.Id);
+					user.FirstName = model.FirstName;
+					user.LastName = model.LastName;
+					db.Entry(user).State = EntityState.Modified;
+					db.SaveChanges();
+
 					// Automatically signin newly registered user
-					//await SignInAsync(user, isPersistent: false);
+					await SignInAsync(applicationUser, isPersistent: false);
 
 					// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
 					// Send an email with this link
-					string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					string code = await UserManager.GenerateEmailConfirmationTokenAsync(applicationUser.Id);
 					var callbackUrl = Url.Action(
 						"ConfirmEmail",
 						"Account",
 						new { userId = user.Id, code = code },
 						protocol: Request.Url.Scheme);
 
-					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+					await UserManager.SendEmailAsync(applicationUser.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
 					TempData["message"] = "Thank you for registratering!. Please confirm your account before signing in.";
 					return RedirectToAction("Index", "Home");
@@ -566,27 +330,6 @@ namespace BugTracker.Controllers
 		}
 
 		//
-		// POST: /Account/Disassociate
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Disassociate(string loginProvider, string providerKey)
-		{
-			ManageMessageId? message = null;
-			IdentityResult result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
-			if (result.Succeeded)
-			{
-				var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-				await SignInAsync(user, isPersistent: false);
-				message = ManageMessageId.RemoveLoginSuccess;
-			}
-			else
-			{
-				message = ManageMessageId.Error;
-			}
-			return RedirectToAction("Manage", new { Message = message });
-		}
-
-		//
 		// GET: /Account/Manage
 		[Route("users/{username:alpha}/settings", Name="userSettings")]
 		public ActionResult Manage(string username, ManageMessageId? message)
@@ -599,7 +342,14 @@ namespace BugTracker.Controllers
 				: "";
 			ViewBag.HasLocalPassword = HasPassword();
 			ViewBag.ReturnUrl = Url.Action("Manage");
-			return View();
+
+			var user = db.AspNetUsers.FirstOrDefault(u => u.UserName == username);
+			EditUserViewModel userModel = new EditUserViewModel(user);
+			ManageUserViewModel manageUserModel = new ManageUserViewModel();
+
+			UserSettingsViewModel model = new UserSettingsViewModel(userModel, manageUserModel);
+
+			return View(model);
 		}
 
 		//
@@ -656,116 +406,6 @@ namespace BugTracker.Controllers
 		}
 
 		//
-		// POST: /Account/ExternalLogin
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public ActionResult ExternalLogin(string provider, string returnUrl)
-		{
-			// Request a redirect to the external login provider
-			return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
-		}
-
-		//
-		// GET: /Account/ExternalLoginCallback
-		[AllowAnonymous]
-		public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-		{
-			var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-			if (loginInfo == null)
-			{
-				return RedirectToAction("Login");
-			}
-
-			// Sign in the user with this external login provider if the user already has a login
-			var user = await UserManager.FindAsync(loginInfo.Login);
-			if (user != null)
-			{
-				await SignInAsync(user, isPersistent: false);
-				return RedirectToLocal(returnUrl);
-			}
-			else
-			{
-				// If the user does not have an account, then prompt the user to create an account
-				ViewBag.ReturnUrl = returnUrl;
-				ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-				return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
-			}
-		}
-
-		//
-		// POST: /Account/LinkLogin
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public ActionResult LinkLogin(string provider)
-		{
-			// Request a redirect to the external login provider to link a login for the current user
-			return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
-		}
-
-		//
-		// GET: /Account/LinkLoginCallback
-		public async Task<ActionResult> LinkLoginCallback()
-		{
-			var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());
-			if (loginInfo == null)
-			{
-				return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
-			}
-			IdentityResult result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
-			if (result.Succeeded)
-			{
-				return RedirectToAction("Manage");
-			}
-			return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
-		}
-
-		//
-		// POST: /Account/ExternalLoginConfirmation
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-		{
-			if (User.Identity.IsAuthenticated)
-			{
-				return RedirectToAction("Manage");
-			}
-
-			if (ModelState.IsValid)
-			{
-				// Get the information about the user from the external login provider
-				var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-				if (info == null)
-				{
-					return View("ExternalLoginFailure");
-				}
-				var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-				IdentityResult result = await UserManager.CreateAsync(user);
-				if (result.Succeeded)
-				{
-					result = await UserManager.AddLoginAsync(user.Id, info.Login);
-					if (result.Succeeded)
-					{
-						await SignInAsync(user, isPersistent: false);
-
-						// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-						// Send an email with this link
-						// string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-						// var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-						// SendEmail(user.Email, callbackUrl, "Confirm your account", "Please confirm your account by clicking this link");
-
-						return RedirectToLocal(returnUrl);
-					}
-				}
-				AddErrors(result);
-			}
-
-			ViewBag.ReturnUrl = returnUrl;
-			return View(model);
-		}
-
-		//
 		// POST: /Account/LogOff
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -774,22 +414,6 @@ namespace BugTracker.Controllers
 		{
 			AuthenticationManager.SignOut();
 			return RedirectToAction("Index", "Home");
-		}
-
-		//
-		// GET: /Account/ExternalLoginFailure
-		[AllowAnonymous]
-		public ActionResult ExternalLoginFailure()
-		{
-			return View();
-		}
-
-		[ChildActionOnly]
-		public ActionResult RemoveAccountList()
-		{
-			var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
-			ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
-			return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
 		}
 
 		protected override void Dispose(bool disposing)

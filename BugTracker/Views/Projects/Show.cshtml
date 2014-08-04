@@ -6,10 +6,31 @@
 
 <div>
     <h3>@Model.NumberMembers @(Model.NumberMembers == "1" ? "Member" : "Members")</h3>
+
+    <hr />
+
+    <div class="row">
+    @foreach (var item in Model.Members)
+    {
+        <div class="col-md-3 col-sm-6">
+            <div class="thumbnail">
+                <div class="thumbnail-view">
+                    <a href="@item.AvatarFilePath" class="thumbnail-view-hover ui-lightbox"></a>
+                    <img src="@item.AvatarFilePath" style="width: 300px; height: 300px" alt="Gallery Image" />
+                </div>
+            </div>
+            <div class="caption">
+                <h3><a href="@Url.Action("Show", "Account", new { username = item.UserName })">@(item.FirstName + " " + item.LastName)</a></h3>
+            </div>
+        </div> <!-- /.col -->
+    }
+    </div> <!-- /.row -->
 </div>
 
 <div>
     <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
+
+    <hr />
 
     @if (Int32.Parse(Model.NumberTickets) > 0)
     {

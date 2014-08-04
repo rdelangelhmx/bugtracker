@@ -18,7 +18,7 @@ namespace BugTracker.Models
         public int TicketID { get; set; }
         public string UserID { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Ticket Ticket { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

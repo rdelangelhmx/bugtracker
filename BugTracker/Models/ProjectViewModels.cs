@@ -44,18 +44,21 @@ namespace BugTracker.Models
         [Display(Name = "# Members")]
         public string NumberMembers { get; set; }
 
+		public IEnumerable<EditUserViewModel> Members { get; set; }
+
         [Display(Name = "Tickets")]
         public IEnumerable<TicketViewModel> ProjectTickets { get; set; }
 
         public DetailsProjectViewModel() { }
 
-        public DetailsProjectViewModel(Project project, IEnumerable<TicketViewModel> tvm) : this ()
+        public DetailsProjectViewModel(Project project, IEnumerable<TicketViewModel> tvm, IEnumerable<EditUserViewModel> editUserViewModel) : this ()
         {
             this.ID = project.ID;
             this.Name = project.Name;
             this.NumberTickets = project.Tickets.Count().ToString();
             this.NumberMembers = project.AspNetUsers.Count().ToString();
             this.ProjectTickets = tvm;
+			this.Members = editUserViewModel;
         }
     }
 

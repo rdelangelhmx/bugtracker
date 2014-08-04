@@ -1,0 +1,98 @@
+﻿@model BugTracker.Models.EditUserViewModel
+
+<h3 class="">Edit Profile Settings</h3>
+
+<hr />
+
+<br />
+@using (Html.BeginForm("Update", "Account", new { username = Model.UserName }, FormMethod.Post, new { @class = "form-horizontal", enctype="multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    <div class="form-group">
+        <label class="col-md-3">Avatar</label>
+        <div class="col-md-7">
+            <div class="fileupload fileupload-new" data-provides="fileupload">
+                <div id="result" class="fileupload-new thumbnail" style="width: 180px; height: 180px;">
+                    <img src="@Model.AvatarFilePath" alt="Profile Avatar" />
+                </div>
+                <div id="file2upload" class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 200px; line-height: 20px;"></div>
+                <div>
+                    <span class="btn btn-default btn-file">
+                        <span class="fileupload-new">Select image</span>
+                        <span class="fileupload-exists">Change</span>
+                        <input type="file" id="AvatarFile" name="AvatarFile" />
+                    </span>
+                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                </div>
+            </div>
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+
+    <div class="form-group">
+
+        <label class="col-md-3">Username</label>
+
+        <div class="col-md-7">
+            <!-- Username input box (disabled) -->
+            @Html.TextBoxFor(m => m.UserName, new { disabled = "disabled", @class = "form-control" })
+        </div> <!-- /.col -->
+
+    </div> <!-- /.form-group -->
+
+    <div class="form-group">
+        <label class="col-md-3">First Name</label>
+        <div class="col-md-7">
+            <!-- First Name input box -->
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+    <div class="form-group">
+        <label class="col-md-3">Last Name</label>
+        <div class="col-md-7">
+            <!-- Last Name input box -->
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+    <div class="form-group">
+
+        <label class="col-md-3">Email Address</label>
+
+        <div class="col-md-7">
+            <!-- Email address input box-->
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+    <div class="form-group">
+        <label class="col-md-3">Website</label>
+        <div class="col-md-7">
+            <!-- "Website" Input Box -->
+            @Html.TextBoxFor(m => m.Website, new { @class = "form-control" })
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+    <div class="form-group">
+        <label class="col-md-3">About You</label>
+        <div class="col-md-7">
+            <!-- "About You" textarea  goes here -->
+            @Html.TextAreaFor(m => m.About, new { @class = "form-control" })
+        </div> <!-- /.col -->
+    </div> <!-- /.form-group -->
+
+    <br />
+
+    <div class="form-group">
+
+        <div class="col-md-7 col-md-push-3">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            &nbsp;
+            <button type="reset" class="btn btn-default">Cancel</button>
+        </div> <!-- /.col -->
+
+    </div> <!-- /.form-group -->
+}
