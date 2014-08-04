@@ -21,11 +21,11 @@ var App = function () {
             var host = window.location.host;
 
             $.ajax({
-                url: "https://" + host + '/users/logout',
+                url: "http://" + host + '/users/logout',
                 type: 'POST',
                 data: data
             }).done(function () {
-                window.location = "https://" + host;
+                window.location = "http://" + host;
             });
         });
     })(window);
