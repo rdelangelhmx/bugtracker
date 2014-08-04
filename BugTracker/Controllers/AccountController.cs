@@ -13,6 +13,7 @@ using Owin;
 using BugTracker.Models;
 using System.Net;
 using System.Data.Entity;
+using System.IO;
 
 namespace BugTracker.Controllers
 {
@@ -71,7 +72,7 @@ namespace BugTracker.Controllers
 		// PUT: users/{username}
 		[HttpPut]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> Update(string username, EditUserViewModel model)
+		public async Task<ActionResult> Update(string username, EditUserViewModel model, HttpPostedFileBase AvatarFile)
 		{
 			if (ModelState.IsValid)
 			{
@@ -81,6 +82,21 @@ namespace BugTracker.Controllers
 				user.Email = model.Email;
 				user.Website = model.Website;
 				user.About = model.About;
+
+				if ((AvatarFile != null) && (AvatarFile.ContentLength > 0) && !String.IsNullOrEmpty(AvatarFile.FileName))
+				{
+					string FileName = AvatarFile.FileName;
+					string FileContentType = AvatarFile.ContentType;
+					//byte[] FileBytes = new byte[AvatarFile.ContentLength];
+					//AvatarFile.InputStream.Read(FileBytes, 0, Convert.ToInt32(AvatarFile.ContentLength));
+
+					// Finally save file bytes to a folder on disk!
+					string AvatarFilePath = Path.Combine(Server.MapPath("~\\img\\avatars\\"), FileName);
+					AvatarFile.SaveAs(AvatarFilePath);
+
+					// Assign Avatar file path to user model
+					user.AvatarFilePath = AvatarFilePath;
+				}
 
 				db.Entry(user).State = EntityState.Modified;
 				await db.SaveChangesAsync();

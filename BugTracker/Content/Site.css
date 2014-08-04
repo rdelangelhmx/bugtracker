@@ -1,14 +1,14 @@
 ﻿
 /* Set padding to keep content from hitting the edges */
-.body-content {
+/*.body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 #logo {
-    padding-top: 5px;
-    font-family: 'Lato', sans-serif;
-    font-size: 64px;
+    margin: 20px;
+    font-family: Helvetica, sans-serif;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
     color: #000;

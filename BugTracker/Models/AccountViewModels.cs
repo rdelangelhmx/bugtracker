@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Web;
 
 namespace BugTracker.Models
 {
@@ -133,6 +135,7 @@ namespace BugTracker.Models
 
 		public EditUserViewModel(AspNetUser user) : this()
 		{
+			this.AvatarFilePath = "/img/avatars/" + Path.GetFileName(user.AvatarFilePath);
 			this.UserId = user.Id;
 			this.UserName = user.UserName;
 			this.FirstName = user.FirstName;
@@ -143,6 +146,8 @@ namespace BugTracker.Models
 		}
 
 		public string UserId { get; set; }
+
+		public string AvatarFilePath { get; set; }
 
 		[Display(Name = "Username")]
 		public string UserName { get; set; }

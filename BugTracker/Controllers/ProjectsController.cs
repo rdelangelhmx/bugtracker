@@ -57,7 +57,13 @@ namespace BugTracker.Controllers
                 projectTicketViewModels.Add(new TicketViewModel(item));
             }
 
-            DetailsProjectViewModel model = new DetailsProjectViewModel(project, projectTicketViewModels);
+			List<EditUserViewModel> projectMembers = new List<EditUserViewModel>();
+			foreach (var item in project.AspNetUsers.ToList())
+			{
+				projectMembers.Add(new EditUserViewModel(item));
+			}
+
+            DetailsProjectViewModel model = new DetailsProjectViewModel(project, projectTicketViewModels, projectMembers);
 
             return View(model);
         }
