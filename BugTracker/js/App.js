@@ -21,7 +21,7 @@ var App = function () {
             var host = window.location.host;
 
             $.ajax({
-                url: "http://" + host + '/users/logout',
+                url: "http://" + host + '/Account/LogOff',
                 type: 'POST',
                 data: data
             }).done(function () {

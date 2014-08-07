@@ -1,10 +1,7 @@
 ﻿@model BugTracker.Models.EditUserViewModel
 
-<h3 class="">Edit Profile Settings</h3>
+<h3 class="content-title"><u>Edit Profile</u></h3>
 
-<hr />
-
-<br />
 @using (Html.BeginForm("Update", "Account", new { username = Model.UserName }, FormMethod.Post, new { @class = "form-horizontal", enctype="multipart/form-data" }))
 {
     @Html.AntiForgeryToken()

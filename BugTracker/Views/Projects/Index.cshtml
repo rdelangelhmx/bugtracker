@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Projects";
 }
-
+<h3 class="content-title"><u>Projects</u></h3>
 <div class="panel panel-default">
     <div class="panel-heading">
         <div>
@@ -41,7 +41,7 @@
                 </td>
                 <td>
                     <div class="btn-group-xs">
-                        <a class="glyphicon glyphicon-edit btn btn-primary" href="@Url.Action("Edit", new { id=item.ID })"></a>
+                        <a class="glyphicon glyphicon-edit btn btn-secondary" href="@Url.Action("Edit", new { id=item.ID })"></a>
                         <a class="glyphicon glyphicon-remove btn btn-danger" href="@Url.Action("Delete", "Projects", new { id=item.ID })"></a>
                     </div>
                 </td>

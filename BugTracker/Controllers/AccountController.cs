@@ -145,6 +145,7 @@ namespace BugTracker.Controllers
 				if (user != null)
 				{
 					await SignInAsync(user, model.RememberMe);
+					returnUrl = returnUrl ?? "/users/" + user.UserName;
 					return RedirectToLocal(returnUrl);
 				}
 				else
@@ -409,7 +410,7 @@ namespace BugTracker.Controllers
 		// POST: /Account/LogOff
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Route("users/logout")]
+		//[Route("users/logout")]
 		public ActionResult LogOff()
 		{
 			AuthenticationManager.SignOut();

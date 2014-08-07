@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44302</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -273,6 +274,7 @@
     <Content Include="assets\admin\img\avatars\avatar-2-lg.jpg" />
     <Content Include="assets\admin\img\avatars\avatar-2-md.jpg" />
     <Content Include="assets\admin\img\avatars\avatar-2-xs.jpg" />
+    <Content Include="assets\admin\img\favicon.ico" />
     <Content Include="assets\admin\img\gallery\zoom.png" />
     <Content Include="assets\admin\img\logo.png" />
     <Content Include="assets\admin\img\mockup.png" />
@@ -388,7 +390,7 @@
     <Content Include="css\custom.css" />
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\Login.css" />
-    <Content Include="css\multi-select.css" />
+    <Content Include="assets\admin\js\plugins\multiselect\multi-select.css" />
     <Content Include="css\reset.css" />
     <Content Include="css\style.css" />
     <Content Include="favicon.ico" />
@@ -450,8 +452,8 @@
     <Content Include="js\demos\popups.js" />
     <Content Include="js\demos\pricing.js" />
     <Content Include="js\demos\sliders.js" />
-    <Content Include="js\timeAgo.js" />
-    <Content Include="js\plugins\multiselect\jquery.multi-select.js" />
+    <Content Include="assets\admin\js\plugins\TimeAgo\timeAgo.js" />
+    <Content Include="assets\admin\js\plugins\multiselect\jquery.multi-select.js" />
     <Content Include="js\libs\bootstrap.js" />
     <Content Include="js\libs\bootstrap.min.js" />
     <Content Include="js\libs\css\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
@@ -802,6 +804,7 @@
     <Content Include="Views\Account\_UserSettingsPartial.cshtml" />
     <Content Include="Views\Home\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_LandingPageLayout.cshtml" />
+    <Content Include="Views\Shared\_BugTrackerLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -833,7 +836,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>64285</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44302/</IISUrl>
+          <IISUrl>http://localhost:64255/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

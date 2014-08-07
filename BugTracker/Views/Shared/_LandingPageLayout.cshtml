@@ -112,7 +112,10 @@
                         </li> -->
 
                         <li>
-                            <a href="../admin/account-login-social.html">Login</a>
+                            @if (!User.Identity.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("Login", "Account")">Login</a>
+                            }
                         </li>
 
                     </ul>

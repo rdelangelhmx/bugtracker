@@ -23,7 +23,7 @@ namespace BugTracker.Models
 	{
 		[Required]
 		[DataType(DataType.Password)]
-		[Display(Name = "Current password")]
+		[Display(Name = "Old Password")]
 		public string OldPassword { get; set; }
 
 		[Required]
@@ -33,7 +33,7 @@ namespace BugTracker.Models
 		public string NewPassword { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm new password")]
+		[Display(Name = "New Password Confirm")]
 		[Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
 	}
