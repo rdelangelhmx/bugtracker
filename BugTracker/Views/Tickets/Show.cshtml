@@ -3,105 +3,151 @@
 @{
     ViewBag.Title = @Model.Title + " - Info";
 }
-<div class="row">
-    <div class="col-lg-3">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div>
-                    <strong>Title:</strong>
-                    @Html.DisplayFor(model => model.Title)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Description:</strong>
-                    @Html.DisplayFor(model => model.Description)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Project:</strong>
-                    @Html.DisplayFor(model => model.Project)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Opened By:</strong>
-                    @Html.DisplayFor(model => model.Submitter)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Assigned To:</strong>
-                    @Html.DisplayFor(model => model.Assignee)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Priority:</strong>
-                    @Html.DisplayFor(model => model.Priority)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Status:</strong>
-                    @Html.DisplayFor(model => model.Status)
-                </div>
-            </li>
-            <li class="list-group-item">
-                <div>
-                    <strong>Type:</strong>
-                    @Html.DisplayFor(model => model.Type)
-                </div>
-            </li>
-        </ul>
-    </div>
 
-    <div class="col-lg-8">
-        <section id="ticketAttachments">
-            <h2><strong>@Model.Attachments.Count() @(Model.Attachments.Count() == 1 ? "Attachment" : "Attachments")</strong></h2>
-            @if (Model.Attachments.Count() > 0)
-            {
-                foreach (var item in Model.Attachments)
-                {
-                    <article>
-                        <header>
-                            <span><strong>Uploaded By:</strong> @item.UploadedBy.UserName</span> 
-                        </header>
-                    </article>
-                }
-            }
-            <a class="btn btn-default" href="@Url.Action("Create", "TicketAttachments")">New Attachment</a>
-        </section>
+<section class="demo-section">
 
-        <hr />
+    <h4 class="content-title"><u>Ticket : @Model.Title</u></h4>
 
-        <section id="ticketComments">
-            <h2><strong>@Model.Comments.Count() @(Model.Comments.Count() == 1 ? "Comment" : "Comments")</strong></h2>
-            <!-- TicketComments -->
-            @if (Model.Comments.Count() > 0)
-            {
-                foreach (var item in Model.Comments)
-                {
-                    <div class="ticket-comment">
-                        <h3><a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a></h3>
-                        
-                        <p>@item.Comment</p>
-                    </div>
-                }
-                <p>
-                    @Html.ActionLink("Comment", "New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, new { @class = "btn btn-default" })
-                </p>
-            }
-            else
-            {
-                <p>
-                    <a href="@Url.Action("New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
-                        Be the first to write a comment!
+    <div class="row">
+
+        <div class="col-md-3 col-sm-5">
+
+            <ul id="myTab" class="nav nav-pills nav-stacked">
+                <li class="active">
+                    <a href="#details-3" data-toggle="tab">
+                        <i class="fa fa-info-circle"></i>
+                        &nbsp;&nbsp;Details
                     </a>
-                </p>
-            }
-        </section>
-    </div>
-</div>
+                </li>
 
+                <li class="">
+                    <a href="#comments-3" data-toggle="tab">
+                        <i class="fa fa-comments"></i>
+                        &nbsp;&nbsp;Comments
+                        <span class="badge pull-right">@Model.Comments.Count()</span>
+                    </a>
+                </li>
+
+                <li class="">
+                    <a href="#attachments-3" data-toggle="tab">
+                        <i class="fa fa-files-o"></i>
+                        &nbsp;&nbsp;Attachments
+                        <span class="badge pull-right">@Model.Attachments.Count()</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div> <!-- /.col -->
+
+        <div class="col-md-9 col-sm-7">
+
+            <div id="myTabContent" class="tab-content stacked-content">
+
+                <div class="tab-pane fade active in" id="details-3">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Title:</strong>
+                                @Html.DisplayFor(model => model.Title)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Description:</strong>
+                                @Html.DisplayFor(model => model.Description)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Project:</strong>
+                                @Html.DisplayFor(model => model.Project)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Opened By:</strong>
+                                @Html.DisplayFor(model => model.Submitter)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Assigned To:</strong>
+                                @Html.DisplayFor(model => model.Assignee)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Priority:</strong>
+                                @Html.DisplayFor(model => model.Priority)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Status:</strong>
+                                @Html.DisplayFor(model => model.Status)
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <strong>Type:</strong>
+                                @Html.DisplayFor(model => model.Type)
+                            </div>
+                        </li>
+                    </ul>
+                </div> <!-- /.tab-pane -->
+
+                <div class="tab-pane fade" id="comments-3">
+                    <section id="ticketComments">
+                        <!-- TicketComments -->
+                        @if (Model.Comments.Count() > 0)
+                        {
+                            foreach (var item in Model.Comments)
+                            {
+                                <div class="ticket-comment">
+                                    <h3><a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a></h3>
+
+                                    <p>@item.Comment</p>
+                                </div>
+                            }
+                            <p>
+                                @Html.ActionLink("Comment", "New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, new { @class = "btn btn-default" })
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                <a href="@Url.Action("New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
+                                    Be the first to write a comment!
+                                </a>
+                            </p>
+                        }
+                    </section>
+                </div> <!-- /.tab-pane -->
+
+                <div class="tab-pane fade" id="attachments-3">
+                    <section id="ticketAttachments">
+                        @if (Model.Attachments.Count() > 0)
+                        {
+                            foreach (var item in Model.Attachments)
+                            {
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Uploaded by <a href="@Url.Action("Show", "Account", new { username = item.UploadedBy.UserName })">@item.UploadedBy.UserName</a>
+                                    </div>
+                                    <div class="panel-body">
+                                        @item.Description
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <a class="btn btn-default" href="@Url.Action("New", "TicketAttachments", new { accountUserName = ViewBag.UserName, projectId = ViewBag.ProjectId, ticketID = ViewBag.TicketId })">New Attachment</a>
+                    </section>
+                </div> <!-- /.tab-pane -->
+
+            </div> <!-- /.tab-content -->
+
+        </div> <!-- /.col -->
+
+    </div> <!-- /.row -->
+
+</section> <!-- /.demo-section -->

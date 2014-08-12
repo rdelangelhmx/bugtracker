@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Show(string accountId, int projectId, int? id)
+        public ActionResult Show(string accountUsername, int projectId, int? id)
         {
             if (id == null)
             {
@@ -90,7 +90,7 @@ namespace BugTracker.Controllers
                 return HttpNotFound();
             }
 
-			ViewBag.AccountId = accountId;
+			ViewBag.Username = accountUsername;
 			ViewBag.ProjectId = projectId;
 			ViewBag.TicketId = id;
             return View(model);

@@ -1,10 +1,10 @@
-﻿@model BugTracker.Models.TicketAttachmentViewModel
+﻿@model BugTracker.Models.NewTicketAttachmentViewModel
 
 @{
     ViewBag.Title = "Add Ticket Attachment";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "multipart/form-data", accountUsername = ViewBag.UserName, projectId = ViewBag.ProjectID, ticketId = ViewBag.TicketID }))
 {
     @Html.AntiForgeryToken()
     
@@ -14,9 +14,9 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
    
         <div class="form-group">
-            @Html.LabelFor(model => model.DataFilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Attachment, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="file" id="AttachmentFile" name="AttachmentFile" />
+                @Html.TextBoxFor(model => model.Attachment, new { type = "file" })
             </div>
         </div> <!-- /.form-group -->
 

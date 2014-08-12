@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
+using System.IO;
 
 namespace BugTracker.Controllers
 {
@@ -29,6 +31,7 @@ namespace BugTracker.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TicketAttachment ticketAttachment = db.TicketAttachments.Find(id);
+
             if (ticketAttachment == null)
             {
                 return HttpNotFound();
@@ -36,29 +39,49 @@ namespace BugTracker.Controllers
             return View(ticketAttachment);
         }
 
-        // GET: TicketAttachments/Create
-        public ActionResult Create()
+        // GET: users/{accountUsername}/projects/{projectId}/tickets/{ticketId}/ticketattachments/new
+        public ActionResult New(string accountUsername, int projectId, int ticketId)
         {
-            ViewBag.TicketID = new SelectList(db.Tickets, "ID", "UserID");
-            return View();
+            ViewBag.UserName = accountUsername;
+            ViewBag.ProjectID = projectId;
+            ViewBag.TicketID = ticketId;
+            NewTicketAttachmentViewModel model = new NewTicketAttachmentViewModel();
+            return View(model);
         }
 
-        // POST: TicketAttachments/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: users/{accountUsername}/projects/{projectId}/tickets/{ticketId}/ticketattachments    
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TicketID,UserID,DataFilePath,Created,Description")] TicketAttachment ticketAttachment)
+        public ActionResult Create(string accountUsername, int projectId, int ticketId, NewTicketAttachmentViewModel model)
         {
             if (ModelState.IsValid)
             {
+                TicketAttachment ticketAttachment = new TicketAttachment()
+                {
+                    TicketID = ticketId,
+                    UserID = User.Identity.GetUserId(),
+                    Created = System.DateTimeOffset.Now,
+                    Description = model.Description
+                };
+
+                // Create this new directory if it doesn't already exist.
+                string directory = Server.MapPath(String.Format(@"~/Uploads/Project{0}/Ticket{1}/Attachments/", projectId, ticketId));
+
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                string FileName = model.Attachment.FileName;
+                string FileContentType = model.Attachment.ContentType;
+                string FilePath = directory + FileName;
+                model.Attachment.SaveAs(FilePath);
+                ticketAttachment.DataFilePath = FilePath;
+
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", "Tickets", new { accountUsername = accountUsername, projectId = projectId, id = ticketId });
             }
 
-            ViewBag.TicketID = new SelectList(db.Tickets, "ID", "UserID", ticketAttachment.TicketID);
-            return View(ticketAttachment);
+            return View(model);
         }
 
         // GET: TicketAttachments/Edit/5
