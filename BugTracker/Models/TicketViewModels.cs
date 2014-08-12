@@ -15,7 +15,8 @@ namespace BugTracker.Models
 
         public TicketViewModel() 
 		{
-			this.Comments = new List<TicketCommentViewModel>();
+            this.Comments = new List<TicketCommentViewModel>();
+            this.Attachments = new List<TicketAttachmentViewModel>();
 		}
 
         public TicketViewModel(Ticket ticket) : this()
@@ -39,6 +40,12 @@ namespace BugTracker.Models
 			{
 				this.Comments.Add(new TicketCommentViewModel(item));
 			}
+
+            // Form a list of TicketAttachments
+            foreach (var item in ticket.TicketAttachments)
+            {
+                this.Attachments.Add(new TicketAttachmentViewModel(item));
+            }
 			
         }
 
@@ -70,6 +77,9 @@ namespace BugTracker.Models
 
 		[Display(Name = "Comments")]
 		public ICollection<TicketCommentViewModel> Comments { get; set; }
+
+        [Display(Name = "Attachments")]
+        public ICollection<TicketAttachmentViewModel> Attachments { get; set; }
     }
 
     public class NewTicketViewModel

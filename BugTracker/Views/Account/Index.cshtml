@@ -4,8 +4,7 @@
     ViewBag.Title = "List of Users";
 }
 
-<h2>Index</h2>
-
+<h2>All Users</h2>
 <p>
     <a href="@Url.Action("New", "Account")">Create New User</a>
 </p>
@@ -23,7 +22,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            <a href="@Url.Action("Show", "Account", new { id = item.UserId })">@item.UserName</a>
+            <a href="@Url.Action("Show", "Account", new { username = item.UserName})">@item.UserName</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)

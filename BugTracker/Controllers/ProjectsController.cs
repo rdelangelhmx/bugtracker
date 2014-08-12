@@ -109,7 +109,7 @@ namespace BugTracker.Controllers
 				// Add selected users to project list
 				foreach (var item in model.SelectedUsers)
 				{
-					project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
+                    project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
 				}
 
 				//// Add newly created project to users

@@ -15,10 +15,10 @@ namespace BugTracker.Controllers
         private BugTrackerEntities1 db = new BugTrackerEntities1();
 
         // GET: TicketAttachments
-        public ActionResult Index()
+        public ActionResult Index(string accountUsername, int projectId, int ticketId)
         {
             var ticketAttachments = db.TicketAttachments.Include(t => t.Ticket);
-            return View(ticketAttachments.ToList());
+            return View(ticketAttachments.Where(t => t.ID == ticketId).ToList());
         }
 
         // GET: TicketAttachments/Details/5

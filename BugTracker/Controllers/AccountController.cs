@@ -46,6 +46,8 @@ namespace BugTracker.Controllers
 
 		//
 		// GET: /Account/ListUsers
+        [Route("admin/users", Name="adminListUsers")]
+        [Authorize(Roles="Admin")]
 		public ActionResult Index()
 		{
 			List<AspNetUser> users = db.AspNetUsers.ToList();
@@ -416,6 +418,134 @@ namespace BugTracker.Controllers
 			AuthenticationManager.SignOut();
 			return RedirectToAction("Index", "Home");
 		}
+
+        /* 
+         * 
+         * ROLES!
+         * 
+         * */
+        // GET: /Account/ListRoles
+        [Route("admin/roles", Name="rolesList")]
+        [Authorize(Roles="Admin")]
+        public ActionResult ListRoles()
+        {
+            var Db = new ApplicationDbContext(); // Create database instance
+            var roles = Db.Roles; // Return list of IdentityRole objects
+            var model = new List<RolesViewModel>();
+
+            foreach (var item in roles)
+            {
+                var r = new RolesViewModel(item);
+                model.Add(r);
+            }
+
+            return View(model);
+        }
+
+        //
+        // GET: /Account/CreateRole
+        public ActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        //[Authorize(Roles = "Administrator")]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRole(RolesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+                var result = rm.Create(new IdentityRole(model.RoleName));
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/EditRole/:id
+        public ActionResult EditRole(string id)
+        {
+            var Db = new ApplicationDbContext();
+            var role = Db.Roles.FirstOrDefault(m => m.Id == id);
+
+            return View(new RolesViewModel(role));
+        }
+
+        //
+        // POST: /Account/EditRole/:id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditRole(RolesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+                var role = await rm.FindByIdAsync(model.RoleId);
+                role.Name = model.RoleName;
+
+                var result = await rm.UpdateAsync(role);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Account/DeleteRole/:id
+        public ActionResult DeleteRole(string id)
+        {
+            var Db = new ApplicationDbContext();
+            var role = Db.Roles.FirstOrDefault(m => m.Id == id);
+
+            return View(new RolesViewModel(role));
+        }
+
+        //
+        // POST: /Account/DeleteRole/:id
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DeleteRole(RolesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+                var role = await rm.FindByIdAsync(model.RoleId);
+                var result = await rm.DeleteAsync(role);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ListRoles");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+
+            // If we get this far, something failed, redisplay form
+            return View(model);
+        }
 
 		protected override void Dispose(bool disposing)
 		{

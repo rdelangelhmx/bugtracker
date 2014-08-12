@@ -58,6 +58,24 @@
     </div>
 
     <div class="col-lg-8">
+        <section id="ticketAttachments">
+            <h2><strong>@Model.Attachments.Count() @(Model.Attachments.Count() == 1 ? "Attachment" : "Attachments")</strong></h2>
+            @if (Model.Attachments.Count() > 0)
+            {
+                foreach (var item in Model.Attachments)
+                {
+                    <article>
+                        <header>
+                            <span><strong>Uploaded By:</strong> @item.UploadedBy.UserName</span> 
+                        </header>
+                    </article>
+                }
+            }
+            <a class="btn btn-default" href="@Url.Action("Create", "TicketAttachments")">New Attachment</a>
+        </section>
+
+        <hr />
+
         <section id="ticketComments">
             <h2><strong>@Model.Comments.Count() @(Model.Comments.Count() == 1 ? "Comment" : "Comments")</strong></h2>
             <!-- TicketComments -->
@@ -66,7 +84,7 @@
                 foreach (var item in Model.Comments)
                 {
                     <div class="ticket-comment">
-                            <h3><a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a></h3>
+                        <h3><a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a></h3>
                         
                         <p>@item.Comment</p>
                     </div>

@@ -25,6 +25,7 @@ namespace BugTracker
 					projects.Resources<TicketsController>(tickets =>
 					{
 						tickets.Resources<TicketCommentsController>();
+                        tickets.Resources<TicketAttachmentsController>();
 					});
 				});
 			});

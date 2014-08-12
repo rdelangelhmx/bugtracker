@@ -12,11 +12,11 @@
     <div class="row">
     @foreach (var item in Model.Members)
     {
-        <div class="col-md-3 col-sm-6">
-            <div class="thumbnail">
+        <div class="col-md-2 col-sm-6">
+            <div>
                 <div class="thumbnail-view">
-                    <a href="@item.AvatarFilePath" class="thumbnail-view-hover ui-lightbox"></a>
-                    <img src="@item.AvatarFilePath" style="width: 300px; height: 300px" alt="Gallery Image" />
+                    <a href="@Url.Action("Show", "Account", new { username = item.UserName })" class="thumbnail-view-hover ui-lightbox"></a>
+                    <img src="@item.AvatarFilePath" class="project-member" alt="Gallery Image" />
                 </div>
             </div>
             <div class="caption">

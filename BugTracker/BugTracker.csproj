@@ -229,6 +229,7 @@
     <Compile Include="Models\TicketAttachment.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TicketAttachmentViewModel.cs" />
     <Compile Include="Models\TicketComment.cs">
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>

@@ -8,5 +8,6 @@ namespace BugTracker.Models
 {
 	public partial class AspNetUserExt : IdentityUser
 	{
+        enum Permissions { ProjectManager, Developer }
 	}
 }

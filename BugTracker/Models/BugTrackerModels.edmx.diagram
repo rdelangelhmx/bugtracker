@@ -23,7 +23,7 @@
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_TicketPriorities" />
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_TicketStatuses" />
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_TicketTypes" />
-        <EntityTypeShape EntityType="BugTrackerModel.Project" Width="1.5" PointX="7" PointY="14.25" />
+        <EntityTypeShape EntityType="BugTrackerModel.Project" Width="1.5" PointX="7.25" PointY="13.875" />
         <AssociationConnector Association="BugTrackerModel.FK_Tickets_Projects" />
         <EntityTypeShape EntityType="BugTrackerModel.AspNetUser" Width="1.5" PointX="5.125" PointY="3.5" />
         <AssociationConnector Association="BugTrackerModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
