@@ -21,8 +21,7 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select {
     max-width: 400px;
 }
 
@@ -52,4 +51,46 @@ textarea {
     height: 128px;
     border: 1px solid #eee;
     border-radius: 4px;
+}
+
+#ticketComments {
+    margin-top: 20px;
+}
+
+.ticket-comment {
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: #efefef;
+    border-radius: 5px;
+}
+
+.comment-avatar {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #fefefe;
+    border-radius: 4px;
+}
+
+.comment-author:hover {
+    text-decoration: none;
+}
+
+.comment-body {
+    background-color: #fefefe;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+#ticketAttachments {
+    margin-top: 20px;
+}
+
+.ticket-attachment {
+    margin-bottom: 25px;
+}
+
+#fileAttachmentInput {
+    height: 0px;
+    width: 0px;
+    overflow: hidden;
 }

@@ -4,6 +4,37 @@
     ViewBag.Title = @Model.Title + " - Info";
 }
 
+@section Scripts {
+    <script>
+        function tabInit() {
+            var tab = '@ViewBag.tab';
+            console.log(tab);
+            if (tab) {
+                var elem = $("a[href='" + tab + "']")[0];
+                elem["click"].call(elem);
+            }
+        }
+
+        function fileAttachmentInit() {
+            $('#fileAttachmentBtn').click(function () {
+                $('.upfile').click();
+            });
+
+            $('input:file').change(function () {
+                console.log($(this).val());
+                var filename = $(this).val().replace(/\\/g, '/').replace(/.*\//, '');
+                $('#filename').html(filename);
+            });
+        }
+
+        $(function () {
+            tabInit();
+            fileAttachmentInit();
+        });
+    </script>
+}
+
+
 <section class="demo-section">
 
     <h4 class="content-title"><u>Ticket : @Model.Title</u></h4>
@@ -97,21 +128,31 @@
                 </div> <!-- /.tab-pane -->
 
                 <div class="tab-pane fade" id="comments-3">
+
+                    @Html.Partial("_NewCommentFormPartial", Model.NewComment)
+
                     <section id="ticketComments">
                         <!-- TicketComments -->
                         @if (Model.Comments.Count() > 0)
                         {
-                            foreach (var item in Model.Comments)
+                            foreach (var item in Model.Comments.Reverse())
                             {
                                 <div class="ticket-comment">
-                                    <h3><a href="@Url.Action("Show", "Account", new { username = item.Author })">@item.Author</a></h3>
-
-                                    <p>@item.Comment</p>
+                                    <header>
+                                        <h3>
+                                            <a href="@Url.Action("Show", "Account", new { username = item.Author })" class="comment-author">
+                                                <span>
+                                                    <img src="@item.AuthorPic" class="comment-avatar" />
+                                                </span>
+                                                @item.Author
+                                            </a>
+                                        </h3>
+                                    </header>
+                                    <section class="comment-body">
+                                        @item.Comment
+                                    </section>
                                 </div>
                             }
-                            <p>
-                                @Html.ActionLink("Comment", "New", "TicketComments", new { accountId = ViewBag.AccountId, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, new { @class = "btn btn-default" })
-                            </p>
                         }
                         else
                         {
@@ -125,12 +166,15 @@
                 </div> <!-- /.tab-pane -->
 
                 <div class="tab-pane fade" id="attachments-3">
+                    
+                    @Html.Partial("_NewAttachmentFormPartial", Model.NewAttachment)
+
                     <section id="ticketAttachments">
                         @if (Model.Attachments.Count() > 0)
                         {
-                            foreach (var item in Model.Attachments)
+                            foreach (var item in Model.Attachments.Reverse())
                             {
-                                <div class="panel panel-default">
+                                <div class="panel panel-default ticket-attachment">
                                     <div class="panel-heading">
                                         Uploaded by <a href="@Url.Action("Show", "Account", new { username = item.UploadedBy.UserName })">@item.UploadedBy.UserName</a>
                                     </div>

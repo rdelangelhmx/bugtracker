@@ -806,6 +806,8 @@
     <Content Include="Views\Home\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_LandingPageLayout.cshtml" />
     <Content Include="Views\Shared\_BugTrackerLayout.cshtml" />
+    <Content Include="Views\Tickets\_NewCommentFormPartial.cshtml" />
+    <Content Include="Views\Tickets\_NewAttachmentFormPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

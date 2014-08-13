@@ -1,0 +1,33 @@
+﻿@model BugTracker.Models.NewTicketAttachmentViewModel
+
+@using (Html.BeginForm("Create", "TicketAttachments", new { accountUsername = ViewBag.Username, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="share-widget clearfix">
+        @Html.TextAreaFor(m => m.Description,
+                                                htmlAttributes: new
+                                                {
+                                                    @class = "form-control share-widget-textarea",
+                                                    rows = "3",
+                                                    placeholder = "Describe this attachment...",
+                                                    tabindex = "1"
+                                                })
+
+        <div class="share-widget-actions">
+            <div class="share-widget-types pull-left">
+                <a id="fileAttachmentBtn" href="javascript:;" class="fa fa-file-o ui-tooltip" title="Choose a file"><i></i></a>
+                <span id="filename"></span>
+                <div id="fileAttachmentInput">
+                    @Html.TextBoxFor(model => model.Attachment, new { type = "file", @class = "upfile" })
+                    @*<input id="upfile" type="file" value="upload" />*@
+                </div>
+            </div>
+            
+            <div class="pull-right">
+                <input type="submit" value="Post" class="btn btn-primary btn-sm" />
+            </div>
+        </div> <!-- /.share-widget-actions -->
+
+    </div> <!-- /.share-widget -->
+}

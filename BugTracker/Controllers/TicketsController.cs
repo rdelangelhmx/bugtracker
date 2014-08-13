@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Show(string accountUsername, int projectId, int? id)
+        public ActionResult Show(string accountUsername, int projectId, int? id, string currentTab = "")
         {
             if (id == null)
             {
@@ -89,7 +89,8 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
-
+            
+            ViewBag.tab = TempData["tab"] ?? "";
 			ViewBag.Username = accountUsername;
 			ViewBag.ProjectId = projectId;
 			ViewBag.TicketId = id;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace BugTracker.Models
 {
@@ -13,6 +14,7 @@ namespace BugTracker.Models
 		public string Comment { get; set; }
 		public string Author { get; set; }
 		public string AuthorId { get; set; }
+        public string AuthorPic { get; set; }
 
 		public TicketCommentViewModel() { }
 
@@ -21,6 +23,7 @@ namespace BugTracker.Models
 			this.Comment = ticketComment.Comment;
 			this.Author = ticketComment.AspNetUser.UserName;
 			this.AuthorId = ticketComment.AspNetUser.Id;
+            this.AuthorPic = "/img/avatars/" + Path.GetFileName(ticketComment.AspNetUser.AvatarFilePath);
 		}
 	}
 
@@ -29,10 +32,6 @@ namespace BugTracker.Models
 		[Required]
 		[Display(Name = "Comment")]
 		public string Comment { get; set; }
-
-		[Required]
-		[Display(Name = "Author")]
-		public string Author { get; set; }
 
 		public NewTicketCommentViewModel() { }
 	}
