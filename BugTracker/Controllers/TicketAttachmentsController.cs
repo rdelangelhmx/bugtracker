@@ -78,6 +78,7 @@ namespace BugTracker.Controllers
 
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
+                TempData["tab"] = "#attachments-3";
                 return RedirectToAction("Show", "Tickets", new { accountUsername = accountUsername, projectId = projectId, id = ticketId });
             }
 
@@ -141,6 +142,15 @@ namespace BugTracker.Controllers
             db.TicketAttachments.Remove(ticketAttachment);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public FileResult Download(int projectId, int ticketId, string fileName)
+        {
+   
+            var fileType = Path.GetExtension(fileName);
+ 
+            var path = Server.MapPath(String.Format(@"~/Uploads/Project{0}/Ticket{1}/Attachments/", projectId, ticketId));
+            return File(path + fileName, MimeMapping.GetMimeMapping(fileName));
         }
 
         protected override void Dispose(bool disposing)

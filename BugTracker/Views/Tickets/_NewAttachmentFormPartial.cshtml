@@ -20,7 +20,7 @@
                 <span id="filename"></span>
                 <div id="fileAttachmentInput">
                     @Html.TextBoxFor(model => model.Attachment, new { type = "file", @class = "upfile" })
-                    @*<input id="upfile" type="file" value="upload" />*@
+                    @Html.ValidationMessageFor(model => model.Attachment)
                 </div>
             </div>
             

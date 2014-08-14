@@ -176,7 +176,11 @@
                             {
                                 <div class="panel panel-default ticket-attachment">
                                     <div class="panel-heading">
-                                        Uploaded by <a href="@Url.Action("Show", "Account", new { username = item.UploadedBy.UserName })">@item.UploadedBy.UserName</a>
+                                        <a href="@Url.Action("Download", "TicketAttachments", new { fileName = item.FileName, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
+                                            <i class="fa fa-file"></i>
+                                        </a>
+
+                                        Uploaded by <a href="@Url.Action("Show", "Account", new { username = item.UploadedBy.UserName })">@item.UploadedBy.UserName</a> on @item.DateCreated
                                     </div>
                                     <div class="panel-body">
                                         @item.Description
@@ -184,7 +188,6 @@
                                 </div>
                             }
                         }
-                        <a class="btn btn-default" href="@Url.Action("New", "TicketAttachments", new { accountUserName = ViewBag.UserName, projectId = ViewBag.ProjectId, ticketID = ViewBag.TicketId })">New Attachment</a>
                     </section>
                 </div> <!-- /.tab-pane -->
 

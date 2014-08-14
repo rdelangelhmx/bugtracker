@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using BugTracker.Validations;
 
 namespace BugTracker.Models
 {
@@ -16,7 +18,8 @@ namespace BugTracker.Models
         {
             this.UploadedBy = new EditUserViewModel(db.AspNetUsers.FirstOrDefault(u => u.Id == ticketAttachment.UserID));
             this.Description = ticketAttachment.Description;
-            this.DataFilePath = ticketAttachment.DataFilePath;
+            this.FileName = Path.GetFileName(ticketAttachment.DataFilePath);
+            this.DateCreated = ticketAttachment.Created.ToLocalTime().ToString("g");
         }
 
         public int ID { get; set; }
@@ -27,33 +30,21 @@ namespace BugTracker.Models
         [Display(Name = "Description")]
         public string Description { get; set; }
 
-        
         [Display(Name = "Attachment")]
-        public string DataFilePath { get; set; }
+        public string FileName { get; set; }
 
-        [Required]
-        public HttpPostedFileBase AttachmentFile { get; set; }
+        public string DateCreated { get; set; }
     }
 
 
     public class NewTicketAttachmentViewModel
     {
-        public NewTicketAttachmentViewModel()
-        {
-
-        }
-
-        public NewTicketAttachmentViewModel(TicketAttachment ticketAttachment) : this()
-        {
-
-        }
+        public NewTicketAttachmentViewModel() { }
 
         [Required]
-        [Display(Name = "Description")]
         public string Description { get; set; }
 
-        [Required]
-        [Display(Name = "File Attachment")]
+        [ValidateFile(ErrorMessage="File type must be jpeg or pdf and of size less than 1MB!")]
         public HttpPostedFileBase Attachment { get; set; }
     }
 }
