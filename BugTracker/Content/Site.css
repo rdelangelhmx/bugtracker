@@ -62,6 +62,7 @@ select {
     padding: 10px;
     background-color: #efefef;
     border-radius: 5px;
+    position: relative;
 }
 
 .comment-avatar {
@@ -94,3 +95,19 @@ select {
     width: 0px;
     overflow: hidden;
 }
+
+.comment-date {
+    position: absolute;
+    top: 1px;
+    left: -65px;
+    background-color: #d74b4b;
+    color: #fff;
+    padding: 5px;
+    border: 1px solid #c74b4b;
+    border-radius: 4px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    width: 60px;
+} 
+

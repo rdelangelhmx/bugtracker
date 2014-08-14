@@ -138,7 +138,6 @@
                             foreach (var item in Model.Comments.Reverse())
                             {
                                 <div class="ticket-comment">
-                                    <header>
                                         <h3>
                                             <a href="@Url.Action("Show", "Account", new { username = item.Author })" class="comment-author">
                                                 <span>
@@ -147,7 +146,9 @@
                                                 @item.Author
                                             </a>
                                         </h3>
-                                    </header>
+                                        <div class="comment-date">
+                                            @item.DateCreated
+                                        </div>
                                     <section class="comment-body">
                                         @item.Comment
                                     </section>
@@ -176,10 +177,10 @@
                             {
                                 <div class="panel panel-default ticket-attachment">
                                     <div class="panel-heading">
-                                        <a href="@Url.Action("Download", "TicketAttachments", new { fileName = item.FileName, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
+                                        <a class="ui-tooltip" title="Download" href="@Url.Action("Download", "TicketAttachments", new { fileName = item.FileName, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId })">
                                             <i class="fa fa-file"></i>
                                         </a>
-
+                                        &nbsp;
                                         Uploaded by <a href="@Url.Action("Show", "Account", new { username = item.UploadedBy.UserName })">@item.UploadedBy.UserName</a> on @item.DateCreated
                                     </div>
                                     <div class="panel-body">

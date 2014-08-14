@@ -15,6 +15,7 @@ namespace BugTracker.Models
 		public string Author { get; set; }
 		public string AuthorId { get; set; }
         public string AuthorPic { get; set; }
+        public string DateCreated { get; set; }
 
 		public TicketCommentViewModel() { }
 
@@ -24,6 +25,7 @@ namespace BugTracker.Models
 			this.Author = ticketComment.AspNetUser.UserName;
 			this.AuthorId = ticketComment.AspNetUser.Id;
             this.AuthorPic = "/img/avatars/" + Path.GetFileName(ticketComment.AspNetUser.AvatarFilePath);
+            this.DateCreated = ticketComment.Created.ToLocalTime().ToString("MMM\nd");
 		}
 	}
 

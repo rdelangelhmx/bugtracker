@@ -58,7 +58,7 @@ namespace BugTracker.Controllers
 				TicketComment ticketComment = new TicketComment();
 				ticketComment.Ticket = ticket;
 				ticketComment.AspNetUser = db.AspNetUsers.FirstOrDefault(u => u.UserName == User.Identity.Name);
-				ticketComment.Created = DateTime.UtcNow;
+				ticketComment.Created = DateTimeOffset.Now;
 				ticketComment.Comment = model.Comment;
 				ticketComment.UserID = ticketComment.AspNetUser.Id;
 
