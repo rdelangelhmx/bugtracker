@@ -88,11 +88,6 @@ namespace BugTracker.Controllers
 				if ((AvatarFile != null) && (AvatarFile.ContentLength > 0) && !String.IsNullOrEmpty(AvatarFile.FileName))
 				{
 					string FileName = AvatarFile.FileName;
-					string FileContentType = AvatarFile.ContentType;
-					//byte[] FileBytes = new byte[AvatarFile.ContentLength];
-					//AvatarFile.InputStream.Read(FileBytes, 0, Convert.ToInt32(AvatarFile.ContentLength));
-
-					// Finally save file bytes to a folder on disk!
 					string AvatarFilePath = Path.Combine(Server.MapPath("~\\img\\avatars\\"), FileName);
 					AvatarFile.SaveAs(AvatarFilePath);
 
