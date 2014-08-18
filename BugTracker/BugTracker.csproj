@@ -253,6 +253,9 @@
       <DependentUpon>BugTrackerModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketViewModels.cs" />
+    <Compile Include="Models\UserProjectRole.cs">
+      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Startup.cs" />
@@ -561,6 +564,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

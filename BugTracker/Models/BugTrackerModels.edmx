@@ -164,6 +164,16 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
         </EntityType>
+        <EntityType Name="UserProjectRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="RoleID" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -412,6 +422,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserProjectRole_AspNetRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1" />
+          <End Role="UserProjectRole" Type="Self.UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectRole_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserProjectRole" Type="Self.UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectRole_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="UserProjectRole" Type="Self.UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BugTrackerModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -429,6 +475,7 @@
           <EntitySet Name="TicketStatuses" EntityType="Self.TicketStatuses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketsUsers" EntityType="Self.TicketsUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketTypes" EntityType="Self.TicketTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProjectRole" EntityType="Self.UserProjectRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -508,6 +555,18 @@
           <AssociationSet Name="FK_TicketsUsers_Tickets" Association="Self.FK_TicketsUsers_Tickets">
             <End Role="Tickets" EntitySet="Tickets" />
             <End Role="TicketsUsers" EntitySet="TicketsUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectRole_AspNetRoles" Association="Self.FK_UserProjectRole_AspNetRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectRole_AspNetUsers" Association="Self.FK_UserProjectRole_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectRole_Projects" Association="Self.FK_UserProjectRole_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRole" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -669,6 +728,19 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Ticket" EntitySet="Tickets" />
           </AssociationSet>
+          <EntitySet Name="UserProjectRoles" EntityType="BugTrackerModel.UserProjectRole" />
+          <AssociationSet Name="FK_UserProjectRole_AspNetRoles" Association="BugTrackerModel.FK_UserProjectRole_AspNetRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectRole_AspNetUsers" Association="BugTrackerModel.FK_UserProjectRole_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProjectRole_Projects" Association="BugTrackerModel.FK_UserProjectRole_Projects">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="UserProjectRole" EntitySet="UserProjectRoles" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
@@ -677,6 +749,7 @@
           <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="BugTrackerModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+          <NavigationProperty Name="UserProjectRoles" Relationship="BugTrackerModel.FK_UserProjectRole_AspNetRoles" FromRole="AspNetRole" ToRole="UserProjectRole" />
         </EntityType>
         <EntityType Name="AspNetUserClaim">
           <Key>
@@ -818,6 +891,7 @@
           <Property Name="Creator" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Tickets" Relationship="BugTrackerModel.FK_Tickets_Projects" FromRole="Project" ToRole="Ticket" />
           <NavigationProperty Name="AspNetUsers" Relationship="BugTrackerModel.ProjectUsers" FromRole="Project" ToRole="AspNetUser" />
+          <NavigationProperty Name="UserProjectRoles" Relationship="BugTrackerModel.FK_UserProjectRole_Projects" FromRole="Project" ToRole="UserProjectRole" />
         </EntityType>
         <Association Name="FK_Tickets_Projects">
           <End Type="BugTrackerModel.Project" Role="Project" Multiplicity="1" />
@@ -861,6 +935,7 @@
           <NavigationProperty Name="AspNetRoles" Relationship="BugTrackerModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
           <NavigationProperty Name="Projects" Relationship="BugTrackerModel.ProjectUsers" FromRole="AspNetUser" ToRole="Project" />
           <NavigationProperty Name="Tickets" Relationship="BugTrackerModel.TicketsUsers" FromRole="AspNetUser" ToRole="Ticket" />
+          <NavigationProperty Name="UserProjectRoles" Relationship="BugTrackerModel.FK_UserProjectRole_AspNetUsers" FromRole="AspNetUser" ToRole="UserProjectRole" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -949,6 +1024,55 @@
         <Association Name="TicketsUsers">
           <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
           <End Type="BugTrackerModel.Ticket" Role="Ticket" Multiplicity="*" />
+        </Association>
+        <EntityType Name="UserProjectRole">
+          <Key>
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="ProjectID" />
+            <PropertyRef Name="RoleID" />
+          </Key>
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="RoleID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetRole" Relationship="BugTrackerModel.FK_UserProjectRole_AspNetRoles" FromRole="UserProjectRole" ToRole="AspNetRole" />
+          <NavigationProperty Name="AspNetUser" Relationship="BugTrackerModel.FK_UserProjectRole_AspNetUsers" FromRole="UserProjectRole" ToRole="AspNetUser" />
+          <NavigationProperty Name="Project" Relationship="BugTrackerModel.FK_UserProjectRole_Projects" FromRole="UserProjectRole" ToRole="Project" />
+        </EntityType>
+        <Association Name="FK_UserProjectRole_AspNetRoles">
+          <End Type="BugTrackerModel.AspNetRole" Role="AspNetRole" Multiplicity="1" />
+          <End Type="BugTrackerModel.UserProjectRole" Role="UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="RoleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectRole_AspNetUsers">
+          <End Type="BugTrackerModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="BugTrackerModel.UserProjectRole" Role="UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProjectRole_Projects">
+          <End Type="BugTrackerModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="BugTrackerModel.UserProjectRole" Role="UserProjectRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserProjectRole">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1126,6 +1250,15 @@
               <ScalarProperty Name="Id" ColumnName="UserID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="UserProjectRoles">
+            <EntityTypeMapping TypeName="BugTrackerModel.UserProjectRole">
+              <MappingFragment StoreEntitySet="UserProjectRole">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

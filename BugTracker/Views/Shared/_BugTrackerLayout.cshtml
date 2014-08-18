@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 
 @{
-    string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value;
+    string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value ?? "";
 }
 
 <!DOCTYPE html>

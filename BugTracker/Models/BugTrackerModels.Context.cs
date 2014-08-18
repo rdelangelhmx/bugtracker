@@ -38,5 +38,6 @@ namespace BugTracker.Models
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<UserProjectRole> UserProjectRoles { get; set; }
     }
 }

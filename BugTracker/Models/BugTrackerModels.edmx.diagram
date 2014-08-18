@@ -35,6 +35,10 @@
         <AssociationConnector Association="BugTrackerModel.AspNetUserRoles" />
         <AssociationConnector Association="BugTrackerModel.ProjectUsers" />
         <AssociationConnector Association="BugTrackerModel.TicketsUsers" />
+        <EntityTypeShape EntityType="BugTrackerModel.UserProjectRole" Width="1.5" PointX="10.5" PointY="11.75" />
+        <AssociationConnector Association="BugTrackerModel.FK_UserProjectRole_AspNetRoles" />
+        <AssociationConnector Association="BugTrackerModel.FK_UserProjectRole_AspNetUsers" />
+        <AssociationConnector Association="BugTrackerModel.FK_UserProjectRole_Projects" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

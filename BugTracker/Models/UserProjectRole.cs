@@ -12,18 +12,14 @@ namespace BugTracker.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AspNetRole
+    public partial class UserProjectRole
     {
-        public AspNetRole()
-        {
-            this.AspNetUsers = new HashSet<AspNetUser>();
-            this.UserProjectRoles = new HashSet<UserProjectRole>();
-        }
+        public string UserID { get; set; }
+        public int ProjectID { get; set; }
+        public string RoleID { get; set; }
     
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
-        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
-        public virtual ICollection<UserProjectRole> UserProjectRoles { get; set; }
+        public virtual AspNetRole AspNetRole { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Project Project { get; set; }
     }
 }
