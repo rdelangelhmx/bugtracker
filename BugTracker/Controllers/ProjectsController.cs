@@ -111,7 +111,7 @@ namespace BugTracker.Controllers
                 // Persist Project Manager to UserProjectRoles table
                 db.UserProjectRoles.Add(new UserProjectRole()
                 {
-                    UserID = users.FirstOrDefault(u => u.UserName == project.Manager).Id,
+                    UserID = users.FirstOrDefault(u => u.Id == project.Manager).Id,
                     ProjectID = project.ID,
                     RoleID = roles.FirstOrDefault(r => r.Name == "Project Manager").Id
                 });
@@ -194,7 +194,7 @@ namespace BugTracker.Controllers
                     project.Name = model.Name;
                     project.Manager = model.Manager;
                     var projectManagerRoleID = roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
-                    project.UserProjectRoles.FirstOrDefault(r => r.RoleID == projectManagerRoleID).UserID = users.FirstOrDefault(u => u.UserName == project.Manager).Id;
+                    project.UserProjectRoles.FirstOrDefault(r => r.RoleID == projectManagerRoleID).UserID = users.FirstOrDefault(u => u.Id == project.Manager).Id;
                 }
 
                 project.UserProjectRoles.Clear();
