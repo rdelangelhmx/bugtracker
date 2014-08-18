@@ -567,7 +567,13 @@ namespace BugTracker.Controllers
 		private async Task SignInAsync(ApplicationUser user, bool isPersistent)
 		{
 			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-			AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));
+            var identity = await user.GenerateUserIdentityAsync(UserManager);
+
+            AspNetUser userEntity = await db.AspNetUsers.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+            string avatarPath = "/img/avatars/" + Path.GetFileName(userEntity.AvatarFilePath);
+
+            identity.AddClaim(new Claim("AvatarImage", avatarPath));
+			AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
 		}
 
 		private void AddErrors(IdentityResult result)

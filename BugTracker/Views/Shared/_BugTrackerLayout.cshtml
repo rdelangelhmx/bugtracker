@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNet.Identity;
 @using System.Security.Claims;
 
+@{
+    string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value;
+}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -221,7 +225,8 @@
          
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <img src="~/assets/admin/img/avatars/avatar-1-xs.jpg" class="navbar-profile-avatar" alt="">
+                                <img class="avatar" src="@AvatarImage" />
+                                &nbsp;
                                 <i class="fa fa-caret-down"></i>
                             </a>
 

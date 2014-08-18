@@ -19,6 +19,13 @@
     font-weight: 400;
 }
 
+.avatar {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+}
+
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select {
