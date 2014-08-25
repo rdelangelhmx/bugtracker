@@ -186,6 +186,10 @@ li.member {
     display: inline-block;
 }
 
+.project-tickets h3 {
+    display: inline-block;
+}
+
 .btn-group-xs {
     display: inline-block;
 }

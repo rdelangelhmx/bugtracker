@@ -415,6 +415,7 @@
     <Content Include="img\avatars\avatar-large-2.jpg" />
     <Content Include="assets\admin\js\plugins\TimeAgo\timeAgo.js" />
     <Content Include="assets\admin\js\plugins\multiselect\jquery.multi-select.js" />
+    <Content Include="img\bughero-bobby.png" />
     <Content Include="img\avatars\default-avatar.png" />
     <Content Include="img\bughero.png" />
     <Content Include="img\bughero2.png" />

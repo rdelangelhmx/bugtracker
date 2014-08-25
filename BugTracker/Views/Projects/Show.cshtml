@@ -19,7 +19,16 @@
 
 <div class="row">
     <div class="col-lg-10">
-        <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
+        <div class="project-tickets">
+            <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
+            &nbsp;
+
+            <div class="btn-group-xs">
+                <a class="btn btn-success btn-sm" href="@Url.Action("New", "Tickets", new { projectId = Model.ID })">
+                    <i class="glyphicon glyphicon-plus"></i>
+                </a>
+            </div>
+        </div>
 
         <hr />
 
