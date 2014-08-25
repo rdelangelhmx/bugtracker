@@ -20,7 +20,7 @@ namespace BugTracker.Controllers
     {
         public TicketsController() { }
 
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
         private ApplicationDbContext Db = new ApplicationDbContext();
         private UserManager<ApplicationUser> UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
 
@@ -77,7 +77,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        public ActionResult Show(string accountUsername, int projectId, int? id, string currentTab = "")
+        public ActionResult Show(int projectId, int? id, string currentTab = "")
         {
             if (id == null)
             {
@@ -91,7 +91,6 @@ namespace BugTracker.Controllers
             }
             
             ViewBag.tab = TempData["tab"] ?? "";
-			ViewBag.Username = accountUsername;
 			ViewBag.ProjectId = projectId;
 			ViewBag.TicketId = id;
             return View(model);

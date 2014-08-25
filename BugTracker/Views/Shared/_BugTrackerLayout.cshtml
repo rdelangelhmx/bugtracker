@@ -2,7 +2,7 @@
 @using System.Security.Claims;
 
 @{
-    string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value ?? "";
+    //string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value ?? "";
 }
 
 <!DOCTYPE html>
@@ -37,7 +37,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-admin.css">
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-flat.css">
-
+    <link href="~/css/custom.css" rel="stylesheet" />
     <!-- My CSS -->
     <link href="~/Content/Site.css" rel="stylesheet" />
     <!-- Favicon -->
@@ -57,16 +57,18 @@
         <header class="navbar navbar-inverse" role="banner">
 
             <div class="container">
-
                 <div class="navbar-header">
+                    <br />
+                    <div class="HeadLogoWrapper  navbar-brand-img">
+                        <img class="logo" src="~/img/bughero2.png" alt="Bug Hero" />
+                        <a href="/">
+                            <h3 class="logo-text">BUG HERO</h3>
+                        </a>
+                    </div>
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <i class="fa fa-cog"></i>
                     </button>
-
-                    <a href="./" class="navbar-brand navbar-brand-img">
-                        <img src="~/assets/admin/img/logo.png" alt="MVP Ready">
-                    </a>
                 </div> <!-- /.navbar-header -->
 
 
@@ -225,9 +227,16 @@
          
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <img class="avatar" src="@AvatarImage" />
-                                &nbsp;
-                                <i class="fa fa-caret-down"></i>
+                                @*@if (AvatarImage != "")
+                                {
+                                    <img class="avatar" src="@AvatarImage" />
+                                }
+                                else
+                                {
+                                    <span>Account</span>
+                                }*@
+                                
+                                <i class="fa fa-cog fa-lg"></i>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -303,18 +312,18 @@
         <div class="content">
 
             <div class="container">
-
                @RenderBody()
-
             </div> <!-- /.container -->
 
-        </div> <!-- .content -->
 
+            
+        </div> <!-- .content -->
+       @RenderSection("SideBar", required: false)
     </div> <!-- /#wrapper -->
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">Copyright &copy; 2013 MVP Ready.</p>
+            <p class="pull-left">Copyright &copy; 2014 Bug Hero.</p>
         </div>
     </footer>
 

@@ -12,11 +12,13 @@ namespace BugTracker.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
-    public partial class BugTrackerEntities1 : DbContext
+    public partial class BugTrackerEntities : DbContext
     {
-        public BugTrackerEntities1()
-            : base("name=BugTrackerEntities1")
+        public BugTrackerEntities()
+            : base("name=BugTrackerEntities")
         {
         }
     
@@ -25,19 +27,28 @@ namespace BugTracker.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<TicketAttachment> TicketAttachments { get; set; }
         public virtual DbSet<TicketComment> TicketComments { get; set; }
         public virtual DbSet<TicketHistory> TicketHistories { get; set; }
         public virtual DbSet<TicketNotification> TicketNotifications { get; set; }
         public virtual DbSet<TicketPriority> TicketPriorities { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<TicketStatus> TicketStatuses { get; set; }
         public virtual DbSet<TicketType> TicketTypes { get; set; }
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<Project> Projects { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<UserProjectRole> UserProjectRoles { get; set; }
+    
+        public virtual ObjectResult<GetUserProjectRoles_Result> GetUserProjectRoles(string userName)
+        {
+            var userNameParameter = userName != null ?
+                new ObjectParameter("UserName", userName) :
+                new ObjectParameter("UserName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetUserProjectRoles_Result>("GetUserProjectRoles", userNameParameter);
+        }
     }
 }

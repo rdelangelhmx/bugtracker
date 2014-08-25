@@ -17,7 +17,6 @@ namespace BugTracker.Models
         public Project()
         {
             this.Tickets = new HashSet<Ticket>();
-            this.AspNetUsers = new HashSet<AspNetUser>();
             this.UserProjectRoles = new HashSet<UserProjectRole>();
         }
     
@@ -27,7 +26,6 @@ namespace BugTracker.Models
         public string Creator { get; set; }
     
         public virtual ICollection<Ticket> Tickets { get; set; }
-        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
         public virtual ICollection<UserProjectRole> UserProjectRoles { get; set; }
     }
 }

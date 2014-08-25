@@ -10,7 +10,7 @@ namespace BugTracker.Models
 {
     public class TicketAttachmentViewModel
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
 
         public TicketAttachmentViewModel() { }
 
@@ -41,7 +41,6 @@ namespace BugTracker.Models
     {
         public NewTicketAttachmentViewModel() { }
 
-        [Required]
         public string Description { get; set; }
 
         [ValidateFile(ErrorMessage="File type must be jpeg or pdf and of size less than 1MB!")]

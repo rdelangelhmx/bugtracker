@@ -9,7 +9,7 @@ namespace BugTracker.Models
 {
 	public class TicketCommentViewModel
 	{
-		private BugTrackerEntities1 db = new BugTrackerEntities1();
+		private BugTrackerEntities db = new BugTrackerEntities();
 
 		public string Comment { get; set; }
 		public string Author { get; set; }

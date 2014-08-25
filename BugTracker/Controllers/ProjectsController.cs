@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using BugTracker.Models;
 
 namespace BugTracker.Controllers
@@ -13,17 +14,21 @@ namespace BugTracker.Controllers
 	[Authorize]
     public class ProjectsController : Controller
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
 
 		// GET: accounts/{accountUsername}/projects
         public ActionResult Index(string accountUsername)
         {
-			var projects = db.AspNetUsers.FirstOrDefault(user => user.UserName == accountUsername).Projects;
+            ViewBag.AccountUserName = accountUsername;
+            var users = db.AspNetUsers.Include("UserProjectRoles");
+            var user = users.Where(u => u.UserName == accountUsername).Single();
 
+            
+            var projects = user.UserProjectRoles;
             List<ProjectViewModel> model = new List<ProjectViewModel>();
             foreach (var item in projects)
             {
-                model.Add(new ProjectViewModel(item));
+                model.Add(new ProjectViewModel(item, user.Id));
             }
 
 			if (Request.IsAjaxRequest())
@@ -34,7 +39,6 @@ namespace BugTracker.Controllers
 			{
 				return View(model);
 			}
-            
         }
 
         // GET: projects/5
@@ -58,9 +62,11 @@ namespace BugTracker.Controllers
             }
 
 			List<EditUserViewModel> projectMembers = new List<EditUserViewModel>();
-			foreach (var item in project.AspNetUsers.ToList())
+            var userIDs = db.UserProjectRoles.Where(u => u.ProjectID == id).Select(u => u.UserID);
+            var users = db.AspNetUsers;
+			foreach (var item in userIDs.ToList())
 			{
-				projectMembers.Add(new EditUserViewModel(item));
+				projectMembers.Add(new EditUserViewModel(users.Find(item)));
 			}
 
             DetailsProjectViewModel model = new DetailsProjectViewModel(project, projectTicketViewModels, projectMembers);
@@ -77,7 +83,7 @@ namespace BugTracker.Controllers
 
 			CreateProjectViewModel model = new CreateProjectViewModel();
 			model.SelectedUsers = new List<string>();
-			model.SelectedUsers.Add(user.Id);
+            //model.SelectedUsers.Add(user.Id);
 
 			model.Users = users.Select(u => new SelectListItem
 			{
@@ -97,43 +103,40 @@ namespace BugTracker.Controllers
             if (ModelState.IsValid)
             {
 				// Get currently logged in user
-				IEnumerable<AspNetUser> users = db.AspNetUsers.Include(u => u.UserProjectRoles).Include(u => u.Projects);
+                IEnumerable<AspNetUser> users = db.AspNetUsers.Include(u => u.UserProjectRoles);
                 IEnumerable<AspNetRole> roles = db.AspNetRoles;
-
-				AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUserName);
 
 				// Create new project from info contained in the CreatProjectViewModel
 				Project project = new Project();
 				project.Name = model.Name;
-				project.Creator = user.UserName;
+				project.Creator = User.Identity.GetUserName();
 				project.Manager = model.Manager;
+                db.Projects.Add(project);
+                db.SaveChanges();
 
                 // Persist Project Manager to UserProjectRoles table
+                var projectManagerRoleID = roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
                 db.UserProjectRoles.Add(new UserProjectRole()
                 {
                     UserID = users.FirstOrDefault(u => u.Id == project.Manager).Id,
                     ProjectID = project.ID,
-                    RoleID = roles.FirstOrDefault(r => r.Name == "Project Manager").Id
+                    RoleID = projectManagerRoleID
                 });
 
 				// Add selected users to project list
+                var developerRoleID = roles.FirstOrDefault(r => r.Name == "Developer").Id;
 				foreach (var item in model.SelectedUsers)
 				{
-                    project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
                     db.UserProjectRoles.Add(new UserProjectRole()
                     {
-                        UserID = users.FirstOrDefault(u => u.Id == item).Id,
+                        UserID = item,
                         ProjectID = project.ID,
-                        RoleID = roles.FirstOrDefault(r => r.Name == "Developer").Id
+                        RoleID = developerRoleID
                     });
 				}
 
-				//// Add newly created project to users
-				//user.Projects.Add(project);
-
 				// Save changes to database
-				db.Entry(user).State = EntityState.Modified;
-                db.Projects.Add(project);
+                db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
 				return RedirectToAction("Index", new { accountId = accountUserName });
             }
@@ -150,20 +153,9 @@ namespace BugTracker.Controllers
             }
 
 			IEnumerable<AspNetUser> users = db.AspNetUsers;
-
-			AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUserName);
 			ViewBag.UserName = accountUserName;
 
-			Project project = user.Projects.FirstOrDefault(p => p.ID == id);
-			if (project == null)
-            {
-                return HttpNotFound();
-            }
-
-            // Get all users assigned to this project.
-
-
-			EditProjectViewModel model = new EditProjectViewModel(project);
+			EditProjectViewModel model = new EditProjectViewModel(db.Projects.FirstOrDefault(p=> p.ID == id));
 			model.Users = users.Select(x => new SelectListItem
 			{
 				Value = x.Id,
@@ -185,40 +177,51 @@ namespace BugTracker.Controllers
 				List<AspNetUser> users = db.AspNetUsers.ToList();
                 List<AspNetRole> roles = db.AspNetRoles.ToList();
 				AspNetUser user = users.FirstOrDefault(u => u.UserName == accountUsername);
-				Project project = user.Projects.FirstOrDefault(p => p.ID == model.ID);
+				UserProjectRole userProjectRole = db.UserProjectRoles.FirstOrDefault(p => p.ProjectID == model.ID);
+                Project project = db.Projects.FirstOrDefault(p => p.ID == userProjectRole.ProjectID);
 
-                // If a NEW project manager was assigned, 
-                // reassign them on the domain model
+                // Update Project Manager, if needed.
                 if (project.Manager != model.Manager)
                 {
                     project.Name = model.Name;
                     project.Manager = model.Manager;
                     var projectManagerRoleID = roles.FirstOrDefault(r => r.Name == "Project Manager").Id;
-                    project.UserProjectRoles.FirstOrDefault(r => r.RoleID == projectManagerRoleID).UserID = users.FirstOrDefault(u => u.Id == project.Manager).Id;
+                    var projectManager = users.FirstOrDefault(u => u.Id == project.Manager);
+                    
+                    var projectManagerRoleToRemove = db.UserProjectRoles.Where(x => x.ProjectID == project.ID && x.RoleID == projectManagerRoleID);
+                    db.UserProjectRoles.RemoveRange(projectManagerRoleToRemove);
+                    db.UserProjectRoles.Add(new UserProjectRole
+                    {
+                        UserID = project.Manager,
+                        ProjectID = project.ID,
+                        RoleID = projectManagerRoleID
+                    });
                 }
 
-                project.UserProjectRoles.Clear();
-				project.AspNetUsers.Clear();
+                // Update Developers
+                var projectDeveloperRoleID = roles.FirstOrDefault(r => r.Name == "Developer").Id;
+                var projectDeveloperRolesToRemove = db.UserProjectRoles.Where(x => x.ProjectID == project.ID && x.RoleID == projectDeveloperRoleID);
+                db.UserProjectRoles.RemoveRange(projectDeveloperRolesToRemove);
 				foreach (var item in model.SelectedUsers)
 				{
-					project.AspNetUsers.Add(users.FirstOrDefault(u => u.Id == item));
-                    db.UserProjectRoles.Add(new UserProjectRole()
+                    db.UserProjectRoles.Add(new UserProjectRole
                     {
-                        UserID = users.FirstOrDefault(u => u.Id == item).Id,
+                        UserID = item,
                         ProjectID = project.ID,
-                        RoleID = roles.FirstOrDefault(r => r.Name == "Developer").Id
+                        RoleID = projectDeveloperRoleID
                     });
 				}
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Show", new { id = id });
             }
             return View(model);
         }
 
         // GET: Projects/Delete/5
-        public ActionResult Delete(int? id)
+        [Route("projects/{id}/delete")]
+        public ActionResult Delete(int id)
         {
             if (id == null)
             {
@@ -229,6 +232,7 @@ namespace BugTracker.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(project);
         }
 
@@ -237,11 +241,25 @@ namespace BugTracker.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Destroy(int id)
         {
+            // Find the project to be deleted.
             Project project = db.Projects.Find(id);
+
+            // Remove all UserProjectRoles
+            db.UserProjectRoles.RemoveRange(project.UserProjectRoles);
+            
+            // Remove all tickets and their associated assets
+            var projectTickets = project.Tickets;
+            foreach (var ticket in projectTickets)
+            {
+                db.TicketComments.RemoveRange(ticket.TicketComments);
+                db.TicketAttachments.RemoveRange(ticket.TicketAttachments);
+            }
 			db.Tickets.RemoveRange(project.Tickets);
+
+            // Finally Remove Project.
             db.Projects.Remove(project);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { accountUsername = User.Identity.GetUserName() });
         }
 
         protected override void Dispose(bool disposing)

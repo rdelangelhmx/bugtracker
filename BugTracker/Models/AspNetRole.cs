@@ -16,14 +16,14 @@ namespace BugTracker.Models
     {
         public AspNetRole()
         {
-            this.AspNetUsers = new HashSet<AspNetUser>();
             this.UserProjectRoles = new HashSet<UserProjectRole>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
         public string Id { get; set; }
         public string Name { get; set; }
     
-        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
         public virtual ICollection<UserProjectRole> UserProjectRoles { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

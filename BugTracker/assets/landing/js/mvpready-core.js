@@ -17,20 +17,20 @@ var mvpready_core = function () {
   "use strict"
 
   var getLayoutColors = function () {
-    var colors
+      var colors;
     
-    colors = ['#D74B4B', '#475F77', '#BCBCBC', '#777777', '#6685a4', '#E68E8E'] // Slate
+      colors = ['#D74B4B', '#475F77', '#BCBCBC', '#777777', '#6685a4', '#E68E8E']; // Slate
     //colors = ['#2980b9', '#7CB268', '#A9A9A9', '#888888', '#74B5E0', '#B3D1A7'] // Belize    
     //colors = ['#6B5C93', '#444444', '#569BAA', '#AFB7C2', '#A89EC2', '#A9CCD3'] // Square
     //colors = ['#e74c3c', '#444444', '#569BAA', '#AFB7C2', '#F2A299', '#A9CBD3'] // Pom
     //colors = ['#3498DB', '#2c3e50', '#569BAA', '#AFB7C2', '#ACCDD5', '#6487AA'] // Royal
     //colors = ['#E5723F', '#67B0DE', '#373737', '#BCBCBC', '#F2BAA2', '#267BAE'] // Carrot
 
-    return colors
+      return colors;
   }   
 
   var isLayoutCollapsed = function () {
-    return $('.navbar-toggle').css ('display') == 'block'
+      return $('.navbar-toggle').css('display') == 'block';
   }
 
   var initFormValidation = function( ) {
@@ -73,8 +73,8 @@ var mvpready_core = function () {
   }
 
   var initTooltips = function () {
-    $('.ui-tooltip').tooltip ({ container: 'body' })
-    $('.ui-popover').popover ({ container: 'body' })
+    $('.ui-tooltip').tooltip({ container: 'body' })
+    $('.ui-popover').popover({ container: 'body' })
   }
 
   var initBackToTop = function () {

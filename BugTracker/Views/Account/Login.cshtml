@@ -39,7 +39,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-admin.css">
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-flat.css">
-    <!-- <link href="./css/custom.css" rel="stylesheet">-->
+    <link href="~/css/custom.css" rel="stylesheet">
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
 
@@ -57,14 +57,17 @@
         <div class="container">
 
             <div class="navbar-header">
+                <br />
+                <div class="HeadLogoWrapper  navbar-brand-img">
+                    <img class="logo" src="~/img/bughero2.png" alt="Bug Hero" />
+                    <a href="/">
+                        <h3 class="logo-text">BUG HERO</h3>
+                    </a>
+                </div>
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <i class="fa fa-cog"></i>
                 </button>
-
-                <a href="../landing" class="navbar-brand navbar-brand-img">
-                    <img src="~/assets/admin/img/logo.png" alt="MVP Ready">
-                </a>
             </div> <!-- /.navbar-header -->
 
             <nav class="collapse navbar-collapse" role="navigation">
@@ -103,20 +106,7 @@
                     @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder="Password", tabindex="2" })
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div> <!-- /.form-group -->
-
-                <div class="form-group clearfix">
-                    <div class="pull-left">
-                        <label class="checkbox-inline">
-                                @Html.CheckBoxFor(m => m.RememberMe, new { tabindex = "3" })
-                                @Html.LabelFor(m => m.RememberMe)
-                        </label>
-                    </div>
-
-                    <div class="pull-right">
-                        <a href="./account-forgot.html">Forgot Password?</a>
-                    </div>
-                </div> <!-- /.form-group -->
-
+                
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block btn-lg" tabindex="4">
                         Signin &nbsp; <i class="fa fa-play-circle"></i>

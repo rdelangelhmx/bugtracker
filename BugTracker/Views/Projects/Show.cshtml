@@ -1,93 +1,130 @@
 ﻿@model BugTracker.Models.DetailsProjectViewModel
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = @Model.Name;
 }
-
-<div>
-    <h3>@Model.NumberMembers @(Model.NumberMembers == "1" ? "Member" : "Members")</h3>
-
-    <hr />
-
-    <div class="row">
-    @foreach (var item in Model.Members)
+<div class="project-header">
+    <h1>@Model.Name</h1>
+    &nbsp;
+    @if (Model.isProjectManager(User.Identity.GetUserId())) 
     {
-        <div class="col-md-2 col-sm-6">
-            <div>
-                <div class="thumbnail-view">
-                    <a href="@Url.Action("Show", "Account", new { username = item.UserName })" class="thumbnail-view-hover ui-lightbox"></a>
-                    <img src="@item.AvatarFilePath" class="project-member" alt="Gallery Image" />
-                </div>
-            </div>
-            <div class="caption">
-                <h3><a href="@Url.Action("Show", "Account", new { username = item.UserName })">@(item.FirstName + " " + item.LastName)</a></h3>
-            </div>
-        </div> <!-- /.col -->
+        <div class="btn-group-xs">
+            <a class="glyphicon glyphicon-edit btn btn-secondary" href="@Url.Action("Edit", new { id=Model.ID })"></a>
+            <a class="glyphicon glyphicon-remove btn btn-danger delete-ticket-btn" href="@Url.Action("Delete", "Projects", new { id = Model.ID })"></a>
+        </div>
     }
-    </div> <!-- /.row -->
+
+  
 </div>
 
-<div>
-    <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
+<div class="row">
+    <div class="col-lg-10">
+        <h3>@Model.NumberTickets @(Model.NumberTickets == "1" ? "Ticket" : "Tickets")</h3>
 
-    <hr />
+        <hr />
 
-    @if (Int32.Parse(Model.NumberTickets) > 0)
-    {
-        <table class="table table-condensed">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Submitter)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Assignee)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Priority)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Status)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Type)
-                </th>
-            </tr>
-            @foreach (var item in Model.ProjectTickets)
-            {
+        @if (Int32.Parse(Model.NumberTickets) > 0)
+        {
+            <table class="table table-striped table-bordered table-hover">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelitem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Submitter)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Assignee)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Priority)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Type)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Submitter)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Assignee)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Priority)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.ProjectTickets.FirstOrDefault().Type)
+                    </th>
                 </tr>
-            }
-        </table>
-    }
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+                @foreach (var item in Model.ProjectTickets)
+                {
+                    <tr class="linkable-row" data-href="@Url.Action("Show", "Tickets", new { projectId = Model.ID, id = item.ID })">
+                        <td>
+                            @Html.DisplayFor(modelitem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Submitter)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Assignee)
+                        </td>
+                        <td>
+                            @if (item.Priority == "Low") {
+                                <label class="label label-info">
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </label>
+                            }
+                            else if (item.Priority == "Medium")
+                            {
+                                <label class="label label-warning">
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </label>
+                            }
+                            else if (item.Priority == "High")
+                            {
+                                <label class="label label-danger">
+                                    @Html.DisplayFor(modelItem => item.Priority)
+                                </label>
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Type)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+
+ </div>
+
+
+
+@section SideBar {
+    <div class="side-bar">
+        <header class="">
+            <h3>Members</h3>
+        </header>
+        <section id="members">
+            <ul class="member-list">
+                @foreach (var item in Model.Members)
+                {
+                    <li class="member">
+                        <img src="@item.AvatarFilePath" class="project-member" alt="Gallery Image" />
+                        &nbsp;
+                        <a href="@Url.Action("Show", "Account", new { username = item.UserName })">@(item.FirstName + " " + item.LastName)</a>
+                    </li>
+                }
+            </ul>
+        </section>
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(function () {
+            $('.linkable-row').click(function () {
+                window.document.location = $(this).attr("data-href");
+            });
+        });
+    </script>
+}

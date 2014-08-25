@@ -22,13 +22,20 @@ namespace BugTracker
 
 				accounts.Resources<ProjectsController>(projects =>
 				{
-					projects.Resources<TicketsController>(tickets =>
-					{
-						tickets.Resources<TicketCommentsController>();
-                        tickets.Resources<TicketAttachmentsController>();
-					});
+                    projects.Only("Index", "New", "Create");
 				});
 			});
+
+            map.Resources<ProjectsController>(projects =>
+            {
+                projects.Only("Show", "Edit", "Update", "Destroy");
+
+                projects.Resources<TicketsController>(tickets =>
+                {
+                    tickets.Resources<TicketCommentsController>();
+                    tickets.Resources<TicketAttachmentsController>();
+                });
+            });
 
 			//map.Resources<ProjectsController>(projects => projects.Resources<TicketsController>());
 

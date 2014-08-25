@@ -10,7 +10,7 @@ namespace BugTracker.Models
 {
     public class TicketViewModel
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
         private ApplicationDbContext Db = new ApplicationDbContext();
 
         public TicketViewModel() 
@@ -118,7 +118,7 @@ namespace BugTracker.Models
 
     public class EditTicketViewModel
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
         private ApplicationDbContext Db = new ApplicationDbContext();
 
         public int ID { get; set; }
