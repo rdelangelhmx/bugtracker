@@ -1,6 +1,9 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity;
+
+@{
     ViewBag.Title = "BugHero";
 }
+
 
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -10,7 +13,7 @@
 <html lang="en" class="no-js">
  <!--<![endif]-->
 <head>
-    <title>Homepage &middot; MVP Ready Admin</title>
+    <title>Bug Hero</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +34,7 @@
     <link href="~/assets/landing/css/mvpready-landing.css" rel="stylesheet">
     <link href="~/assets/landing/css/mvpready-flat.css" rel="stylesheet">
     <link href="~/assets/landing/css/animate.css" rel="stylesheet">
-    <!-- <link href="./css/custom.css" rel="stylesheet">-->
+    <link href="~/css/custom.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -48,12 +51,14 @@
         <header class="navbar navbar-inverse" role="banner">
 
             <div class="container">
-
                 <div class="navbar-header">
-                    <a href="./" class="navbar-brand navbar-brand-img">
-                        <img src="~/assets/landing/img/logo.png" alt="MVP Ready">
-                    </a>
-
+                    <br />
+                    <div class="HeadLogoWrapper  navbar-brand-img">
+                        <img class="logo" src="~/img/bughero2.png" alt="Bug Hero" />
+                        <a href="../">
+                            <h3 class="logo-text">BUG HERO</h3>
+                        </a>
+                    </div>
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <i class="fa fa-bars"></i>
@@ -70,21 +75,12 @@
                         </li>
 
                         <li class="">
-                            <a href="./page-features.html">Features</a>
+                            <a href="#features">Features</a>
                         </li>
 
                         <li class="">
-                            <a href="./page-faq.html">FAQ</a>
+                            <a href="#faq">FAQ</a>
                         </li>
-
-                        <li class="">
-                            <a href="./page-pricing.html">Pricing</a>
-                        </li>
-
-                        <li class="">
-                            <a href="./page-contact.html">Contact</a>
-                        </li>
-
                         <!-- <li class="dropdown">
 
                           <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
@@ -112,7 +108,11 @@
                         </li> -->
 
                         <li>
-                            @if (!User.Identity.IsAuthenticated)
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a href="@Url.Action("Index", "Projects", new { accountUsername = User.Identity.GetUserName() })">Fight Some Bugs!</a>
+                            }
+                            else
                             {
                                 <a href="@Url.Action("Login", "Account")">Login</a>
                             }
@@ -168,10 +168,15 @@
 
                 <div class="col-sm-3">
                     <h4 class="content-title">
-                        <span>MVP Ready</span>
+                        <span>Contact</span>
                     </h4>
+                    <p>
+                        Bug Hero is an ASP.NET MVC 5 app created by <a href="http://aleury.github.io">Adam Eury</a> during his time as a student at <a href="http://www.coderfoundry.com">Coder Foundry</a>.
+                    </p>
+                    <p>
+                        Want to hire me? Awesome! Please contact <a href="mailto:agregory@coderfoundry.com">Amy Gregory</a>, the Director of Recruiting and Marketing <a href="http://www.coderfoundry.com">Coder Foundry</a>.
+                    </p>
 
-                    Aliquam fringilla, sapien egetferas scelerisque placerat, lorem libero cursus lorem, sed sodales lorem libero eu sapien. Nunc mattis feugiat justo vel faucibus. Nulla consequat feugiat malesuada.
                 </div> <!-- /.col -->
 
 
@@ -191,7 +196,7 @@
                         <span>Stay Connected</span>
                     </h4>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero, nam quae veniam optio sunt exercitationem.</p>
+                    <p>You could check us out on Facebook, Twitter, and Google+ if we had an online presence. But we don't because this is a toy app. Not real company.</p>
 
                     <br>
 
@@ -222,7 +227,7 @@
                         <span>Stay Updated</span>
                     </h4>
 
-                    <p>Get emails about new theme launches &amp;  future updates.</p>
+                    <p>Get emails about future updates.</p>
 
                     <form action="/" class="form">
 
@@ -232,7 +237,7 @@
                         </div> <!-- /.form-group -->
 
                         <div class="form-group">
-                            <button class="btn btn-transparent">Subscribe Me</button>
+                            <button class="btn btn-transparent">Subscribe</button>
                         </div> <!-- /.form-group -->
 
                     </form>
@@ -251,7 +256,7 @@
             <div class="row">
 
                 <div class="col-sm-12">
-                    <p>Copyright &copy; 2013 MVP Ready.</p>
+                    <p>Copyright &copy; 2014 Bug Hero.</p>
                 </div> <!-- /.col -->
 
             </div> <!-- /.row -->
@@ -264,7 +269,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="~/assets/landing/js/libs/jquery-1.10.2.min.js"></script>
-    <script src="./js/libs/bootstrap.min.js"></script>
+    <script src="~/assets/landing/js/libs/bootstrap.min.js"></script>
 
     <script src="~/assets/landing/js/plugins/timeago/jquery.timeago.js"></script>
     <script src="~/assets/landing/js/plugins/tweetable/tweetable.jquery.min.js"></script>
@@ -278,7 +283,5 @@
     <!-- App JS -->
     <script src="~/assets/landing/js/mvpready-core.js"></script>
     <script src="~/assets/landing/js/mvpready-landing.js"></script>
-
-
 </body>
 </html>

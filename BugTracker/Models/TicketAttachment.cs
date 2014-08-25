@@ -21,7 +21,7 @@ namespace BugTracker.Models
         public System.DateTimeOffset Created { get; set; }
         public string Description { get; set; }
     
-        public virtual Ticket Ticket { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Ticket Ticket { get; set; }
     }
 }

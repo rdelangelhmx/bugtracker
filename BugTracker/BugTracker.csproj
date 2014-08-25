@@ -191,68 +191,75 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ProjectManager.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUser.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaim.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserExt.cs" />
     <Compile Include="Models\AspNetUserLogin.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BugTrackerModels.Context.cs">
+    <Compile Include="Models\BugTrackerModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BugTrackerModels.Context.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BugTrackerModels.cs">
+    <Compile Include="Models\BugTrackerModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BugTrackerModels.Designer.cs">
+    <Compile Include="Models\BugTrackerModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>BugTrackerModels.edmx</DependentUpon>
+      <DependentUpon>BugTrackerModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GetUserProjectRoles_Result.cs">
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Project.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectViewModels.cs" />
     <Compile Include="Models\SharedViewModels.cs" />
     <Compile Include="Models\Ticket.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketAttachment.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketAttachmentViewModel.cs" />
     <Compile Include="Models\TicketComment.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketCommentViewModel.cs" />
     <Compile Include="Models\TicketHistory.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketNotification.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketPriority.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketStatus.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketType.cs">
-      <DependentUpon>BugTrackerModels.tt</DependentUpon>
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TicketViewModels.cs" />
+    <Compile Include="Models\UserProjectRole.cs">
+      <DependentUpon>BugTrackerModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes.cs" />
     <Compile Include="Startup.cs" />
@@ -408,25 +415,12 @@
     <Content Include="img\avatars\avatar-large-2.jpg" />
     <Content Include="assets\admin\js\plugins\TimeAgo\timeAgo.js" />
     <Content Include="assets\admin\js\plugins\multiselect\jquery.multi-select.js" />
+    <Content Include="img\avatars\default-avatar.png" />
+    <Content Include="img\bughero.png" />
+    <Content Include="img\bughero2.png" />
+    <Content Include="img\BugHero_byBobby.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\BugTrackerModels.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>BugTrackerModels.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\BugTrackerModels.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BugTrackerModels.edmx</DependentUpon>
-      <LastGenOutput>BugTrackerModels.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\BugTrackerModels.edmx.diagram">
-      <DependentUpon>BugTrackerModels.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\BugTrackerModels.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>BugTrackerModels.edmx</DependentUpon>
-      <LastGenOutput>BugTrackerModels.cs</LastGenOutput>
-    </Content>
     <Content Include="assets\admin\css\bootstrap.css.map" />
     <Content Include="assets\admin\fonts\fontawesome-webfont.eot" />
     <Content Include="assets\admin\fonts\fontawesome-webfont.ttf" />
@@ -447,6 +441,23 @@
     <Content Include="assets\landing\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="assets\landing\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="assets\landing\js\libs\jquery-1.10.2.min.map" />
+    <EntityDeploy Include="Models\BugTrackerModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BugTrackerModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\BugTrackerModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BugTrackerModel.edmx</DependentUpon>
+      <LastGenOutput>BugTrackerModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\BugTrackerModel.edmx.diagram">
+      <DependentUpon>BugTrackerModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Models\BugTrackerModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BugTrackerModel.edmx</DependentUpon>
+      <LastGenOutput>BugTrackerModel.cs</LastGenOutput>
+    </Content>
     <None Include="Properties\PublishProfiles\aleury-bugtracker - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\aleury-bugtracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

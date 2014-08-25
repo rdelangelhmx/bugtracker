@@ -21,7 +21,7 @@ namespace BugTracker.Controllers
 	public class AccountController : Controller
 	{
 		private ApplicationUserManager _userManager;
-		private BugTrackerEntities1 db = new BugTrackerEntities1();
+		private BugTrackerEntities db = new BugTrackerEntities();
 
 		public AccountController()
 		{
@@ -180,6 +180,7 @@ namespace BugTracker.Controllers
 					AspNetUser user = db.AspNetUsers.FirstOrDefault(u => u.Id == applicationUser.Id);
 					user.FirstName = model.FirstName;
 					user.LastName = model.LastName;
+                    user.AvatarFilePath = Server.MapPath("~\\img\\avatars\\default-avatar.png");
 					db.Entry(user).State = EntityState.Modified;
 					db.SaveChanges();
 
@@ -567,7 +568,13 @@ namespace BugTracker.Controllers
 		private async Task SignInAsync(ApplicationUser user, bool isPersistent)
 		{
 			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-			AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, await user.GenerateUserIdentityAsync(UserManager));
+            var identity = await user.GenerateUserIdentityAsync(UserManager);
+
+            AspNetUser userEntity = await db.AspNetUsers.FirstOrDefaultAsync(u => u.UserName == user.UserName);
+            string avatarPath = "/img/avatars/" + Path.GetFileName(userEntity.AvatarFilePath);
+
+            identity.AddClaim(new Claim("AvatarImage", avatarPath));
+			AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
 		}
 
 		private void AddErrors(IdentityResult result)

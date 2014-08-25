@@ -14,7 +14,7 @@ namespace BugTracker.Controllers
 {
     public class TicketAttachmentsController : Controller
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
 
         // GET: TicketAttachments
         public ActionResult Index(string accountUsername, int projectId, int ticketId)
@@ -52,7 +52,7 @@ namespace BugTracker.Controllers
         // POST: users/{accountUsername}/projects/{projectId}/tickets/{ticketId}/ticketattachments    
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string accountUsername, int projectId, int ticketId, NewTicketAttachmentViewModel model)
+        public ActionResult Create(int projectId, int ticketId, NewTicketAttachmentViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -79,10 +79,10 @@ namespace BugTracker.Controllers
                 db.TicketAttachments.Add(ticketAttachment);
                 db.SaveChanges();
                 TempData["tab"] = "#attachments-3";
-                return RedirectToAction("Show", "Tickets", new { accountUsername = accountUsername, projectId = projectId, id = ticketId });
+                return RedirectToAction("Show", "Tickets", new {projectId = projectId, id = ticketId });
             }
-
-            return View(model);
+            
+            return View("New", model);
         }
 
         // GET: TicketAttachments/Edit/5

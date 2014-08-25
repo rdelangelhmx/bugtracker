@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNet.Identity;
 @using System.Security.Claims;
 
+@{
+    //string AvatarImage = ((ClaimsIdentity)User.Identity).FindFirst("AvatarImage").Value ?? "";
+}
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -33,7 +37,7 @@
     <!-- App CSS -->
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-admin.css">
     <link rel="stylesheet" href="~/assets/admin/css/mvpready-flat.css">
-
+    <link href="~/css/custom.css" rel="stylesheet" />
     <!-- My CSS -->
     <link href="~/Content/Site.css" rel="stylesheet" />
     <!-- Favicon -->
@@ -53,22 +57,24 @@
         <header class="navbar navbar-inverse" role="banner">
 
             <div class="container">
-
                 <div class="navbar-header">
+                    <br />
+                    <div class="HeadLogoWrapper  navbar-brand-img">
+                        <img class="logo" src="~/img/bughero2.png" alt="Bug Hero" />
+                        <a href="/">
+                            <h3 class="logo-text">BUG HERO</h3>
+                        </a>
+                    </div>
                     <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <i class="fa fa-cog"></i>
                     </button>
-
-                    <a href="./" class="navbar-brand navbar-brand-img">
-                        <img src="~/assets/admin/img/logo.png" alt="MVP Ready">
-                    </a>
                 </div> <!-- /.navbar-header -->
 
 
                 <nav class="collapse navbar-collapse" role="navigation">
 
-                    <ul class="nav navbar-nav noticebar navbar-left">
+                    @*<ul class="nav navbar-nav noticebar navbar-left">
 
                         <li class="dropdown">
                             <a href="./page-notifications.html" class="dropdown-toggle" data-toggle="dropdown">
@@ -193,7 +199,7 @@
                             </ul>
                         </li>
 
-                    </ul>
+                    </ul>*@
 
 
 
@@ -221,8 +227,16 @@
          
                         <li class="dropdown navbar-profile">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:;">
-                                <img src="~/assets/admin/img/avatars/avatar-1-xs.jpg" class="navbar-profile-avatar" alt="">
-                                <i class="fa fa-caret-down"></i>
+                                @*@if (AvatarImage != "")
+                                {
+                                    <img class="avatar" src="@AvatarImage" />
+                                }
+                                else
+                                {
+                                    <span>Account</span>
+                                }*@
+                                
+                                <i class="fa fa-cog fa-lg"></i>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
@@ -274,10 +288,10 @@
 
                 <nav class="collapse mainnav-collapse" role="navigation">
 
-                    <form class="mainnav-form pull-right" role="search">
+                    @*<form class="mainnav-form pull-right" role="search">
                         <input type="text" class="form-control input-md mainnav-search-query" placeholder="Search">
                         <button class="btn btn-sm mainnav-form-btn"><i class="fa fa-search"></i></button>
-                    </form>
+                    </form>*@
 
                     <ul class="mainnav-menu">
 
@@ -298,18 +312,18 @@
         <div class="content">
 
             <div class="container">
-
                @RenderBody()
-
             </div> <!-- /.container -->
 
-        </div> <!-- .content -->
 
+            
+        </div> <!-- .content -->
+       @RenderSection("SideBar", required: false)
     </div> <!-- /#wrapper -->
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">Copyright &copy; 2013 MVP Ready.</p>
+            <p class="pull-left">Copyright &copy; 2014 Bug Hero.</p>
         </div>
     </footer>
 

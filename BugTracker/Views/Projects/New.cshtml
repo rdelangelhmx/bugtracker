@@ -24,7 +24,7 @@
                 <div class="form-group">
                     <label class="col-md-3">Project Manager</label>
                     <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.Manager, Model.Users, new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.Manager, Model.Users, "Choose one...", new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
                     </div> 
                 </div>
@@ -56,6 +56,18 @@
             $('#my-select').multiSelect({
                 selectableHeader: "<div><strong>Select Users</strong></div>",
                 selectionHeader: "<div><strong>Project Members</strong></div>",
+            });
+
+            var pastManager = "";
+            $('#Manager').click(function () {
+                pastManager = $('#Manager option:selected').text();
+            });
+
+            $('#Manager').change(function () {
+                var selected = $('#Manager option:selected').text();
+                $('.ms-list .ms-elem-selectable:contains(' + pastManager + ')').show();
+                $('.ms-list li:contains(' + selected + ')').hide();
+                $('#my-select option:contains(' + selected + ')').prop('selected', null);
             });
         });
     </script>

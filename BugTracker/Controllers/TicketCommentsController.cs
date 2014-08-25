@@ -12,7 +12,7 @@ namespace BugTracker.Controllers
 {
     public class TicketCommentsController : Controller
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
 
 		// GET: users/{accountId}/projects/{projectId}/tickets/{ticketId}/ticketcomments
         public ActionResult Index(string accountId, int projectId, int ticketId)

@@ -12,7 +12,7 @@ namespace BugTracker.Controllers
 {
     public class TicketPrioritiesController : Controller
     {
-        private BugTrackerEntities1 db = new BugTrackerEntities1();
+        private BugTrackerEntities db = new BugTrackerEntities();
 
         // GET: TicketPriorities
         public ActionResult Index()

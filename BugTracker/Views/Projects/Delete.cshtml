@@ -4,31 +4,19 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Are you sure you want to delete this project?</h2>
+<hr />
+<h3>@Html.DisplayFor(model => model.Name)</h3>
+<p>
+    Deleting this project will also delete its tickets; including all comments and attachments.
+</p>
+@using (Html.BeginForm("Destroy", "Projects", new { id = Model.ID }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HttpMethodOverride(HttpVerbs.Delete)
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm("Destroy", "Projects", new { id = Model.ID }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index", new { })
-        </div>
-    }
-</div>
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-danger" />&nbsp;
+        @Html.ActionLink("Cancel", "Show", "Projects", new { id = Model.ID }, new { @class="btn btn-default" })
+    </div>
+}

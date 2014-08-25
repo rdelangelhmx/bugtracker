@@ -2287,7 +2287,9 @@ table.table thead .sorting_desc_disabled,
 /* ----------------------------------------------- */
 .content {
   position: relative;
-  margin-bottom: 2em;
+  margin: 0;
+  padding: 0px;
+  min-height: 100%;
 }
 .layout {
   margin-top: -40px;

@@ -1,59 +1,163 @@
 ﻿@model BugTracker.Models.RegisterViewModel
 @{
+    Layout = null;
     ViewBag.Title = "Register";
-}
-
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-        </div>
-    </div>
-    
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
 }
 
 @section scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js">
+ <!--<![endif]-->
+<head>
+    <title>Signup &middot; MVP Ready Admin</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Google Font: Open Sans -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,800,800italic">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300,700">
+
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="~/assets/admin/css/font-awesome.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/assets/admin/css/bootstrap.min.css">
+
+    <!-- App CSS -->
+    <link rel="stylesheet" href="~/assets/admin/css/mvpready-admin.css">
+    <link rel="stylesheet" href="~/assets/admin/css/mvpready-flat.css">
+     <link href="~/css/custom.css" rel="stylesheet">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="account-bg">
+
+    <header class="navbar navbar-inverse" role="banner">
+
+        <div class="container">
+            <div class="navbar-header">
+                <br />
+                <div class="HeadLogoWrapper  navbar-brand-img">
+                    <img class="logo" src="~/img/bughero2.png" alt="Bug Hero" />
+                    <a href="/">
+                        <h3 class="logo-text">BUG HERO</h3>
+                    </a>
+                </div>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-cog"></i>
+                </button>
+            </div> <!-- /.navbar-header -->
+
+            <nav class="collapse navbar-collapse" role="navigation">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="../"><i class="fa fa-angle-double-left"></i> &nbsp;Back to Home</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div> <!-- /.container -->
+
+    </header>
+
+    <div class="account-wrapper">
+
+        <div class="account-body">
+
+            <h3>Get Started with a Free Account.</h3>
+
+            <h5>Hurry! Your project is in need of bug termination!</h5>
+
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form account-form", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "placeholder-hidden" })
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username", tabindex = "1" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "placeholder-hidden" })
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", tabindex = "2" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FirstName, new { @class = "placeholder-hidden" })
+                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "First Name", tabindex = "3" })
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.LastName, new { @class = "placeholder-hidden" })
+                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Last Name", tabindex = "4"})
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "placeholder-hidden" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password", tabindex = "5" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "placeholder-hidden" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password", tabindex = "6" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-secondary btn-block btn-lg" tabindex="6">
+                        Create My Account &nbsp; <i class="fa fa-play-circle"></i>
+                    </button>
+                </div> <!-- /.form-group -->
+            }
+        </div> <!-- /.account-body -->
+
+        <div class="account-footer">
+            <p>
+                Already have an account? &nbsp;
+                <a href="@Url.Action("Login", "Account")" class="">Login to your Account!</a>
+            </p>
+        </div> <!-- /.account-footer -->
+
+    </div> <!-- /.account-wrapper -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Core JS -->
+    <script src="./js/libs/jquery-1.10.2.min.js"></script>
+    <script src="./js/libs/bootstrap.min.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="./js/libs/excanvas.compiled.js"></script>
+    <![endif]-->
+    <!-- App JS -->
+    <script src="./js/mvpready-core.js"></script>
+    <script src="./js/mvpready-admin.js"></script>
+
+    <!-- Plugin JS -->
+    <script src="./js/mvpready-account.js"></script>
+
+
+
+</body>
+</html>
