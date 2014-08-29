@@ -3,7 +3,15 @@
 @using (Html.BeginForm("Create", "TicketAttachments", new { accountUsername = ViewBag.Username, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-
+    
+    <p>
+        <strong>
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class="text-danger" })
+            <br />
+            @Html.ValidationMessageFor(model => model.Attachment, "", new { @class="text-danger" })
+        </strong>
+    </p>
+    <h4>Upload a JPEG or PDF:</h4>
     <div class="share-widget clearfix">
         @Html.TextAreaFor(m => m.Description,
                                                 htmlAttributes: new
@@ -20,7 +28,6 @@
                 <span id="filename"></span>
                 <div id="fileAttachmentInput">
                     @Html.TextBoxFor(model => model.Attachment, new { type = "file", @class = "upfile" })
-                    @Html.ValidationMessageFor(model => model.Attachment)
                 </div>
             </div>
             

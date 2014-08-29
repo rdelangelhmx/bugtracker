@@ -41,8 +41,11 @@ namespace BugTracker.Models
     {
         public NewTicketAttachmentViewModel() { }
 
+        [Required(ErrorMessage="A description of the attachment is required!")]
+        [MinLength(10, ErrorMessage="Description must have at least 10 characters!")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage="A file must be attached!")]
         [ValidateFile(ErrorMessage="File type must be jpeg or pdf and of size less than 1MB!")]
         public HttpPostedFileBase Attachment { get; set; }
     }

@@ -3,7 +3,13 @@
 @using (Html.BeginForm("Create", "TicketComments", new { accountUsername = ViewBag.Username, projectId = ViewBag.ProjectId, ticketId = ViewBag.TicketId }, FormMethod.Post, null))
 {
     @Html.AntiForgeryToken()
-
+    <p>
+        <strong>
+            @Html.ValidationMessageFor(m => m.Comment, "", new { @class = "text-danger" })
+        </strong>
+    </p>
+    
+    
     <div class="share-widget clearfix">
         @Html.TextAreaFor(m => m.Comment,
                                             htmlAttributes: new
@@ -13,12 +19,13 @@
                                                 placeholder = "Enlighten us with your wisdom!",
                                                 tabindex = "1"
                                             })
+        
 
         <div class="share-widget-actions">
             <div class="pull-right">
                 <input type="submit" value="Post" class="btn btn-primary btn-sm" />
             </div>
         </div> <!-- /.share-widget-actions -->
-
+        
     </div> <!-- /.share-widget -->
 }

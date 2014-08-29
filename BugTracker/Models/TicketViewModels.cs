@@ -94,25 +94,35 @@ namespace BugTracker.Models
         public NewTicketViewModel() { }
 
         [Display(Name = "Title")]
+        [Required]
         public string Title { get; set; }
 
         [Display(Name = "Description")]
+        [Required]
         public string Description { get; set; }
 
         [Display(Name = "Assignee")]
         public SelectList Assignees { get; set; }
+
+        [Required]
         public string Assignee { get; set; }
 
         [Display(Name = "Priority")]
         public SelectList Priorities { get; set; }
+
+        [Required]
         public string Priority { get; set; }
 
         [Display(Name = "Status")]
         public SelectList Statuses { get; set; }
+
+        [Required]
         public string Status { get; set; }
 
         [Display(Name = "Type")]
         public SelectList Types { get; set; }
+
+        [Required]
         public string Type { get; set; }
     }
 

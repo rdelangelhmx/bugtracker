@@ -31,8 +31,8 @@ namespace BugTracker.Models
 
 	public class NewTicketCommentViewModel
 	{
-		[Required]
-		[Display(Name = "Comment")]
+		[Required(ErrorMessage="A Comment is Required!")]
+        [MinLength(10, ErrorMessage="A Comment must be at least 10 characters in length!")]
 		public string Comment { get; set; }
 
 		public NewTicketCommentViewModel() { }

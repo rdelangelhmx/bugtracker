@@ -235,6 +235,8 @@ namespace BugTracker.Controllers
         public ActionResult Destroy(int projectId, int id)
         {
             Ticket ticket = db.Tickets.Find(id);
+            db.TicketAttachments.RemoveRange(ticket.TicketAttachments);
+            db.TicketComments.RemoveRange(ticket.TicketComments);
             db.Tickets.Remove(ticket);
             db.SaveChanges();
             return RedirectToAction("Index");
